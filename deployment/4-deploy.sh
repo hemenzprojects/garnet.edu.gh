@@ -82,6 +82,11 @@ echo "Creating storage link..."
 docker compose -f docker-compose.prod.yml exec -T backend php artisan storage:link || true
 echo -e "${GREEN}✓ Storage link created${NC}"
 
+# Publish Filament assets
+echo "Publishing Filament assets..."
+docker compose -f docker-compose.prod.yml exec -T backend php artisan filament:assets || true
+echo -e "${GREEN}✓ Filament assets published${NC}"
+
 # Optimize Laravel
 echo "Optimizing Laravel..."
 docker compose -f docker-compose.prod.yml exec -T backend php artisan config:cache

@@ -34,6 +34,9 @@ RUN apk add --no-cache --virtual .build-deps $PHPIZE_DEPS \
 # Install Composer
 COPY --from=composer:latest /usr/bin/composer /usr/bin/composer
 
+# Install Node.js and npm for Filament assets
+RUN apk add --no-cache nodejs npm
+
 # Set working directory
 WORKDIR /var/www/html
 
@@ -46,6 +49,12 @@ RUN composer install \
     --optimize-autoloader \
     --prefer-dist \
     --no-interaction
+
+# Install npm dependencies and build Filament assets
+RUN npm install && npm run build
+
+# Publish Filament assets
+RUN php artisan filament:assets || true
 
 # Set permissions
 RUN chown -R www-data:www-data /var/www/html \
