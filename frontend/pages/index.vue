@@ -61,29 +61,45 @@
         </div>
 
         <div v-else class="grid grid-cols-1 md:grid-cols-3 gap-8">
-          <div
+          <NuxtLink
             v-for="item in news"
             :key="item.id"
-            class="bg-white p-8 rounded-2xl shadow-sm hover:shadow-xl transition-all duration-300 group"
+            :to="`/news/${item.slug}`"
+            class="bg-white rounded-2xl shadow-sm hover:shadow-xl transition-all duration-300 group overflow-hidden flex flex-col"
           >
-            <div class="flex items-center gap-2 text-sm text-gray-500 mb-4">
-              <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" />
-              </svg>
-              <span>{{ new Date(item.published_at).toLocaleDateString('en-GB', { day: 'numeric', month: 'short', year: 'numeric' }) }}</span>
+            <!-- Featured Image -->
+            <div v-if="item.featured_image" class="aspect-video w-full overflow-hidden bg-gray-100">
+              <img
+                :src="getNewsImageUrl(item.featured_image)"
+                :alt="item.title"
+                class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
+                loading="lazy"
+              />
             </div>
-            <h3 class="text-xl font-bold text-gray-900 mb-3 group-hover:text-primary transition">{{ item.title }}</h3>
-            <p class="text-gray-600 mb-6 leading-relaxed">{{ item.excerpt }}</p>
-            <NuxtLink
-              :to="`/news/${item.slug}`"
-              class="inline-flex items-center gap-2 text-accent hover:gap-3 transition-all font-semibold"
-            >
-              <span>Read more</span>
-              <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 8l4 4m0 0l-4 4m4-4H3" />
+            <div v-else class="aspect-video w-full bg-gradient-to-br from-primary to-accent flex items-center justify-center">
+              <svg class="w-16 h-16 text-white opacity-50" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 20H5a2 2 0 01-2-2V6a2 2 0 012-2h10a2 2 0 012 2v1m2 13a2 2 0 01-2-2V7m2 13a2 2 0 002-2V9a2 2 0 00-2-2h-2m-4-3H9M7 16h6M7 8h6v4H7V8z" />
               </svg>
-            </NuxtLink>
-          </div>
+            </div>
+
+            <!-- Card Content -->
+            <div class="p-8 flex-1 flex flex-col">
+              <div class="flex items-center gap-2 text-sm text-gray-500 mb-4">
+                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" />
+                </svg>
+                <span>{{ new Date(item.published_at).toLocaleDateString('en-GB', { day: 'numeric', month: 'short', year: 'numeric' }) }}</span>
+              </div>
+              <h3 class="text-xl font-bold text-gray-900 mb-3 group-hover:text-primary transition">{{ item.title }}</h3>
+              <p class="text-gray-600 mb-6 leading-relaxed flex-1">{{ item.excerpt }}</p>
+              <div class="inline-flex items-center gap-2 text-accent group-hover:gap-3 transition-all font-semibold">
+                <span>Read more</span>
+                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 8l4 4m0 0l-4 4m4-4H3" />
+                </svg>
+              </div>
+            </div>
+          </NuxtLink>
         </div>
       </div>
     </section>
@@ -92,6 +108,10 @@
 
 <script setup>
 const { fetchServices, fetchNews } = useApi()
+const { getImageUrl } = useImageUrl()
+
+// Helper to get news image URL
+const getNewsImageUrl = (path) => getImageUrl(path)
 
 // Fetch services from backend
 const { data: services, pending: servicesPending, error: servicesError } = await useAsyncData(

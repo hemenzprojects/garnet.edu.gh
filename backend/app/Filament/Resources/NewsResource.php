@@ -24,17 +24,37 @@ class NewsResource extends Resource
         return $form
             ->schema([
                 Forms\Components\TextInput::make('title')
-                    ->required(),
+                    ->required()
+                    ->live(onBlur: true)
+                    ->afterStateUpdated(fn ($state, callable $set) => $set('slug', \Illuminate\Support\Str::slug($state))),
                 Forms\Components\TextInput::make('slug')
-                    ->required(),
+                    ->required()
+                    ->unique(ignorable: fn ($record) => $record),
                 Forms\Components\Textarea::make('excerpt')
                     ->required()
+                    ->rows(3)
                     ->columnSpanFull(),
-                Forms\Components\Textarea::make('content')
+                Forms\Components\RichEditor::make('content')
                     ->required()
-                    ->columnSpanFull(),
+                    ->columnSpanFull()
+                    ->fileAttachmentsDisk('public')
+                    ->fileAttachmentsDirectory('news/content'),
                 Forms\Components\FileUpload::make('featured_image')
-                    ->image(),
+                    ->image()
+                    ->disk('public')
+                    ->directory('news/featured')
+                    ->imageEditor()
+                    ->maxSize(5120),
+                Forms\Components\FileUpload::make('attachments')
+                    ->multiple()
+                    ->disk('public')
+                    ->directory('news/attachments')
+                    ->acceptedFileTypes(['application/pdf', 'application/msword', 'application/vnd.openxmlformats-officedocument.wordprocessingml.document', 'application/vnd.ms-excel', 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet', 'image/*'])
+                    ->maxSize(10240)
+                    ->downloadable()
+                    ->reorderable()
+                    ->columnSpanFull()
+                    ->helperText('Upload documents, PDFs, images or other files (max 10MB each)'),
                 Forms\Components\TextInput::make('category'),
                 Forms\Components\Toggle::make('is_published')
                     ->required(),

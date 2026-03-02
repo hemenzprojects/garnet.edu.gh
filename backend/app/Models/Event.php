@@ -13,6 +13,7 @@ class Event extends Model
         'location',
         'venue',
         'featured_image',
+        'attachments',
         'start_date',
         'end_date',
         'registration_link',
@@ -25,5 +26,6 @@ class Event extends Model
         'end_date' => 'datetime',
         'is_published' => 'boolean',
         'is_featured' => 'boolean',
+        'attachments' => 'array',
     ];
 }

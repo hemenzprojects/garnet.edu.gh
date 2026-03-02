@@ -4,10 +4,13 @@
       <div class="flex items-center justify-between">
         <!-- Logo -->
         <NuxtLink to="/" class="flex items-center space-x-2">
-          <div class="w-10 h-10 bg-gradient-to-br from-primary to-accent rounded-lg flex items-center justify-center">
-            <span class="text-white font-bold text-xl">G</span>
+          <div v-if="logoUrl" class="h-12 flex items-center">
+            <img :src="logoUrl" :alt="siteName" class="h-full w-auto object-contain" />
           </div>
-          <span class="text-2xl font-bold text-gray-900">GARNET<span class="text-accent">.</span></span>
+          <div v-else class="w-10 h-10 bg-gradient-to-br from-primary to-accent rounded-lg flex items-center justify-center">
+            <span class="text-white font-bold text-xl">{{ siteName.charAt(0) }}</span>
+          </div>
+          <span class="text-2xl font-bold text-gray-900">{{ siteName }}<span class="text-accent">.</span></span>
         </NuxtLink>
 
         <!-- Desktop Menu -->
@@ -63,5 +66,29 @@
 </template>
 
 <script setup>
+const props = defineProps({
+  branding: {
+    type: Object,
+    default: null
+  }
+})
+
+const config = useRuntimeConfig()
 const mobileMenuOpen = ref(false)
+
+// Computed properties for branding
+const siteName = computed(() => props.branding?.site_name || 'GARNET')
+const logoUrl = computed(() => {
+  if (!props.branding?.logo) return ''
+
+  // Handle full URLs
+  if (props.branding.logo.startsWith('http://') || props.branding.logo.startsWith('https://')) {
+    return props.branding.logo
+  }
+
+  // Construct storage URL using the public backend URL
+  const backendUrl = config.public.backendUrl || config.public.apiBase.replace('/api/v1', '')
+  const cleanPath = props.branding.logo.startsWith('/') ? props.branding.logo.substring(1) : props.branding.logo
+  return `${backendUrl}/storage/${cleanPath}`
+})
 </script>

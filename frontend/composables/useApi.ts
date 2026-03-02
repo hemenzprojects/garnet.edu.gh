@@ -46,6 +46,10 @@ export const useApi = () => {
     return await $fetch(`${apiBase}/settings`)
   }
 
+  const fetchBranding = async () => {
+    return await $fetch(`${apiBase}/branding`)
+  }
+
   return {
     fetchPages,
     fetchPage,
@@ -58,5 +62,6 @@ export const useApi = () => {
     fetchServices,
     fetchService,
     fetchSettings,
+    fetchBranding,
   }
 }

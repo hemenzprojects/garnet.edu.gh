@@ -12,6 +12,7 @@ class News extends Model
         'excerpt',
         'content',
         'featured_image',
+        'attachments',
         'category',
         'is_published',
         'is_featured',
@@ -22,5 +23,6 @@ class News extends Model
         'is_published' => 'boolean',
         'is_featured' => 'boolean',
         'published_at' => 'datetime',
+        'attachments' => 'array',
     ];
 }

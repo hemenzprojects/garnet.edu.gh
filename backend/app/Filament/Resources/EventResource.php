@@ -24,20 +24,45 @@ class EventResource extends Resource
         return $form
             ->schema([
                 Forms\Components\TextInput::make('title')
-                    ->required(),
-                Forms\Components\TextInput::make('slug')
-                    ->required(),
-                Forms\Components\Textarea::make('description')
                     ->required()
-                    ->columnSpanFull(),
-                Forms\Components\TextInput::make('location'),
-                Forms\Components\TextInput::make('venue'),
+                    ->live(onBlur: true)
+                    ->afterStateUpdated(fn ($state, callable $set) => $set('slug', \Illuminate\Support\Str::slug($state))),
+                Forms\Components\TextInput::make('slug')
+                    ->required()
+                    ->unique(ignorable: fn ($record) => $record),
+                Forms\Components\RichEditor::make('description')
+                    ->required()
+                    ->columnSpanFull()
+                    ->fileAttachmentsDisk('public')
+                    ->fileAttachmentsDirectory('events/content'),
+                Forms\Components\TextInput::make('location')
+                    ->placeholder('e.g., Accra, Ghana'),
+                Forms\Components\TextInput::make('venue')
+                    ->placeholder('e.g., Accra International Conference Centre'),
                 Forms\Components\FileUpload::make('featured_image')
-                    ->image(),
+                    ->image()
+                    ->disk('public')
+                    ->directory('events/featured')
+                    ->imageEditor()
+                    ->maxSize(5120),
+                Forms\Components\FileUpload::make('attachments')
+                    ->multiple()
+                    ->disk('public')
+                    ->directory('events/attachments')
+                    ->acceptedFileTypes(['application/pdf', 'application/msword', 'application/vnd.openxmlformats-officedocument.wordprocessingml.document', 'application/vnd.ms-excel', 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet', 'image/*'])
+                    ->maxSize(10240)
+                    ->downloadable()
+                    ->reorderable()
+                    ->columnSpanFull()
+                    ->helperText('Upload event documents, schedules, PDFs or other files (max 10MB each)'),
                 Forms\Components\DateTimePicker::make('start_date')
-                    ->required(),
-                Forms\Components\DateTimePicker::make('end_date'),
-                Forms\Components\TextInput::make('registration_link'),
+                    ->required()
+                    ->native(false),
+                Forms\Components\DateTimePicker::make('end_date')
+                    ->native(false),
+                Forms\Components\TextInput::make('registration_link')
+                    ->url()
+                    ->placeholder('https://example.com/register'),
                 Forms\Components\Toggle::make('is_published')
                     ->required(),
                 Forms\Components\Toggle::make('is_featured')

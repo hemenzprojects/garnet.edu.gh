@@ -8,6 +8,7 @@ use App\Http\Controllers\Api\EventController;
 use App\Http\Controllers\Api\MemberController;
 use App\Http\Controllers\Api\ServiceController;
 use App\Http\Controllers\Api\SettingController;
+use App\Http\Controllers\Api\BrandingController;
 
 Route::get('/user', function (Request $request) {
     return $request->user();
@@ -38,4 +39,7 @@ Route::prefix('v1')->group(function () {
     // Settings
     Route::get('/settings', [SettingController::class, 'index']);
     Route::get('/settings/{key}', [SettingController::class, 'show']);
+
+    // Branding
+    Route::get('/branding', [BrandingController::class, 'index']);
 });
