@@ -11,9 +11,11 @@ RUN npm ci
 # Copy application files
 COPY . .
 
-# Build argument for API base URL
+# Build arguments for API URLs
 ARG NUXT_PUBLIC_API_BASE
+ARG NUXT_PUBLIC_BACKEND_URL
 ENV NUXT_PUBLIC_API_BASE=${NUXT_PUBLIC_API_BASE}
+ENV NUXT_PUBLIC_BACKEND_URL=${NUXT_PUBLIC_BACKEND_URL}
 
 # Build the application
 RUN npm run build
