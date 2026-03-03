@@ -20,6 +20,11 @@ frontend/.nuxt/
 frontend/.output/
 frontend/dist/
 
+# Frontend build artifacts (generated during deployment)
+frontend-public/_nuxt/
+frontend-public/images/
+frontend-public/builds/
+
 # Backend
 backend/vendor/
 backend/node_modules/
