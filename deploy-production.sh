@@ -27,16 +27,16 @@ echo -e "${YELLOW}[1/6] Pulling latest code from repository...${NC}"
 git pull origin main
 
 echo -e "${YELLOW}[2/6] Stopping existing containers...${NC}"
-docker-compose -f docker-compose.prod.yml down
+docker compose -f docker-compose.prod.yml down
 
 echo -e "${YELLOW}[3/6] Building frontend container with production settings...${NC}"
-docker-compose -f docker-compose.prod.yml build --no-cache frontend
+docker compose -f docker-compose.prod.yml build --no-cache frontend
 
 echo -e "${YELLOW}[4/6] Building backend container...${NC}"
-docker-compose -f docker-compose.prod.yml build --no-cache backend
+docker compose -f docker-compose.prod.yml build --no-cache backend
 
 echo -e "${YELLOW}[5/6] Starting all services...${NC}"
-docker-compose -f docker-compose.prod.yml up -d
+docker compose -f docker-compose.prod.yml up -d
 
 echo -e "${YELLOW}[6/6] Running post-deployment tasks...${NC}"
 
@@ -44,23 +44,30 @@ echo -e "${YELLOW}[6/6] Running post-deployment tasks...${NC}"
 echo "  - Waiting for containers to start..."
 sleep 10
 
+# Copy frontend static assets from container to filesystem
+echo "  - Copying frontend static assets..."
+sudo rm -rf frontend-public/_nuxt
+sudo docker cp garnet_frontend:/app/.output/public/. frontend-public/
+sudo chown -R $(whoami):$(whoami) frontend-public/
+echo "  - Frontend assets copied successfully"
+
 # Run Laravel migrations
 echo "  - Running database migrations..."
-docker-compose -f docker-compose.prod.yml exec -T backend php artisan migrate --force
+docker compose -f docker-compose.prod.yml exec -T backend php artisan migrate --force
 
 # Cache Laravel config
 echo "  - Caching Laravel configuration..."
-docker-compose -f docker-compose.prod.yml exec -T backend php artisan config:cache
-docker-compose -f docker-compose.prod.yml exec -T backend php artisan route:cache
-docker-compose -f docker-compose.prod.yml exec -T backend php artisan view:cache
+docker compose -f docker-compose.prod.yml exec -T backend php artisan config:cache
+docker compose -f docker-compose.prod.yml exec -T backend php artisan route:cache
+docker compose -f docker-compose.prod.yml exec -T backend php artisan view:cache
 
 # Publish Filament assets
 echo "  - Publishing Filament assets..."
-docker-compose -f docker-compose.prod.yml exec -T backend php artisan filament:assets || true
+docker compose -f docker-compose.prod.yml exec -T backend php artisan filament:assets || true
 
 # Create storage link if not exists
 echo "  - Creating storage symlink..."
-docker-compose -f docker-compose.prod.yml exec -T backend php artisan storage:link || true
+docker compose -f docker-compose.prod.yml exec -T backend php artisan storage:link || true
 
 # Check service status
 echo ""
@@ -69,12 +76,12 @@ echo "Deployment completed successfully!"
 echo "======================================${NC}"
 echo ""
 echo "Service Status:"
-docker-compose -f docker-compose.prod.yml ps
+docker compose -f docker-compose.prod.yml ps
 
 echo ""
 echo -e "${GREEN}Frontend:${NC} https://www2.garnet.edu.gh"
 echo -e "${GREEN}Admin Panel:${NC} https://www2.garnet.edu.gh/admin"
 echo -e "${GREEN}API:${NC} https://www2.garnet.edu.gh/api/v1"
 echo ""
-echo "View logs with: docker-compose -f docker-compose.prod.yml logs -f"
+echo "View logs with: docker compose -f docker-compose.prod.yml logs -f"
 echo ""
