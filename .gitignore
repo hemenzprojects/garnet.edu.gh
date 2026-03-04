@@ -24,6 +24,7 @@ frontend/dist/
 frontend-public/_nuxt/
 frontend-public/images/
 frontend-public/builds/
+frontend-public/favicon.ico
 
 # Backend
 backend/vendor/
