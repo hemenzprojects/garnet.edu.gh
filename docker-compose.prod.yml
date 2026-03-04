@@ -26,14 +26,14 @@ services:
       context: ./frontend
       dockerfile: Dockerfile.prod
       args:
-        - NUXT_PUBLIC_API_BASE=http://www2.garnet.edu.gh/api/v1
+        - NUXT_PUBLIC_API_BASE=https://www2.garnet.edu.gh/api/v1
         - NUXT_PUBLIC_BACKEND_URL=https://www2.garnet.edu.gh
     container_name: garnet_frontend
     restart: unless-stopped
     network_mode: host
     environment:
       - NODE_ENV=production
-      - NUXT_PUBLIC_API_BASE=http://www2.garnet.edu.gh/api/v1
+      - NUXT_PUBLIC_API_BASE=https://www2.garnet.edu.gh/api/v1
       - NUXT_PUBLIC_BACKEND_URL=https://www2.garnet.edu.gh
     depends_on:
       - backend
@@ -72,7 +72,7 @@ services:
     volumes:
       - ./nginx/nginx.conf:/etc/nginx/nginx.conf:ro
       - ./nginx/conf.d:/etc/nginx/conf.d:ro
-      - ./certbot/conf:/etc/letsencrypt:ro
+      - /etc/letsencrypt:/etc/letsencrypt:ro
       - ./certbot/www:/var/www/certbot:ro
       - ./backend/public:/var/www/backend/public:ro
       - backend_storage:/var/www/backend/storage:ro

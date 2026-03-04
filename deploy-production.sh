@@ -24,7 +24,7 @@ if [ "$confirm" != "yes" ]; then
 fi
 
 echo -e "${YELLOW}[1/6] Pulling latest code from repository...${NC}"
-git pull origin main
+git pull origin master
 
 echo -e "${YELLOW}[2/6] Stopping existing containers...${NC}"
 docker compose -f docker-compose.prod.yml down
