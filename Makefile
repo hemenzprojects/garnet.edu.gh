@@ -17,6 +17,10 @@ help:
 	@echo "  make frontend-shell  - Access frontend container shell"
 	@echo "  make frontend-logs   - View frontend logs"
 	@echo ""
+	@echo "  make be-dev          - Start backend development server"
+	@echo "  make fe-dev          - Start frontend development server"
+	@echo "  make fe-dev-clean    - Clean frontend cache and start dev server"
+	@echo ""
 	@echo "  make install         - Install dependencies (composer & npm)"
 	@echo "  make migrate         - Run database migrations"
 	@echo "  make migrate-fresh   - Drop all tables and re-run migrations"
@@ -92,8 +96,19 @@ docker-check:
 frontend-shell:
 	docker exec -it backend-frontend-1 sh
 
+#use node 20
 frontend-logs:
-	docker logs -f backend-frontend-1
+	docker logs -f backend-frontend-1frontend-logs:
+
+# Development servers
+be-dev:
+	cd backend && php artisan serve
+
+fe-dev:
+	cd frontend && npm run dev
+
+fe-dev-clean:
+	cd frontend && rm -rf .nuxt .output node_modules/.cache && npm run dev
 
 # Installation commands
 install:

@@ -9,6 +9,7 @@ use App\Http\Controllers\Api\MemberController;
 use App\Http\Controllers\Api\ServiceController;
 use App\Http\Controllers\Api\SettingController;
 use App\Http\Controllers\Api\BrandingController;
+use App\Http\Controllers\Api\ContactFormController;
 
 Route::get('/user', function (Request $request) {
     return $request->user();
@@ -42,4 +43,7 @@ Route::prefix('v1')->group(function () {
 
     // Branding
     Route::get('/branding', [BrandingController::class, 'index']);
+
+    // Contact Form
+    Route::post('/contact-form', [ContactFormController::class, 'store']);
 });

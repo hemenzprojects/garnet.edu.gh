@@ -92,7 +92,7 @@
               </div>
               <h3 class="text-xl font-bold text-gray-900 mb-3 group-hover:text-primary transition">{{ item.title }}</h3>
               <p class="text-gray-600 mb-6 leading-relaxed flex-1">{{ item.excerpt }}</p>
-              <div class="inline-flex items-center gap-2 text-accent group-hover:gap-3 transition-all font-semibold">
+              <div class="inline-flex items-center gap-2 group-hover:gap-3 transition-all font-semibold" :style="{ color: 'var(--color-accent)' }">
                 <span>Read more</span>
                 <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                   <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 8l4 4m0 0l-4 4m4-4H3" />
