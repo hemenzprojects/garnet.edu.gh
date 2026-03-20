@@ -38,5 +38,9 @@ const props = defineProps<{
 
 const { sortBlocks } = usePageBuilder()
 
-const sortedBlocks = computed(() => sortBlocks(props.blocks || []))
+const sortedBlocks = computed(() => {
+  // Filter out section metadata blocks (used only by Elementor editor)
+  const filteredBlocks = (props.blocks || []).filter(block => block.type !== '_section_meta')
+  return sortBlocks(filteredBlocks)
+})
 </script>

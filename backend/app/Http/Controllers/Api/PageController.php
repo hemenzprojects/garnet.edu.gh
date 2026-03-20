@@ -37,6 +37,57 @@ class PageController extends Controller
     }
 
     /**
+     * Get page for editing in visual editor
+     */
+    public function edit($id)
+    {
+        $page = Page::findOrFail($id);
+
+        return response()->json($page);
+    }
+
+    /**
+     * Update page blocks from visual editor
+     */
+    public function updateBlocks(Request $request, $id)
+    {
+        $page = Page::findOrFail($id);
+
+        $validated = $request->validate([
+            'blocks' => 'required|array',
+        ]);
+
+        $page->update([
+            'blocks' => $validated['blocks'],
+            'template_type' => 'builder',
+        ]);
+
+        return response()->json([
+            'success' => true,
+            'message' => 'Page blocks updated successfully',
+            'page' => $page
+        ]);
+    }
+
+    /**
+     * Publish page from visual editor
+     */
+    public function publish(Request $request, $id)
+    {
+        $page = Page::findOrFail($id);
+
+        $page->update([
+            'is_published' => true
+        ]);
+
+        return response()->json([
+            'success' => true,
+            'message' => 'Page published successfully',
+            'page' => $page
+        ]);
+    }
+
+    /**
      * Transform blocks to include dynamic data
      */
     protected function transformBlocks(?array $blocks): array

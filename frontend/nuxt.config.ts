@@ -4,8 +4,12 @@ export default defineNuxtConfig({
   modules: ['@nuxtjs/tailwindcss'],
 
   runtimeConfig: {
+    // Server-only runtime config (not exposed to client)
+    apiBaseSSR: process.env.NUXT_API_BASE_SSR || 'http://laravel.test/api/v1',
+
+    // Public runtime config (exposed to client)
     public: {
-      apiBase: process.env.NUXT_PUBLIC_API_BASE || 'http://localhost:8000/api/v1',
+      apiBase: process.env.NUXT_PUBLIC_API_BASE || 'http://localhost/api/v1',
       backendUrl: process.env.NUXT_PUBLIC_BACKEND_URL || 'http://localhost'
     }
   },

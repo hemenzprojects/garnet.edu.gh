@@ -278,8 +278,7 @@ class PageResource extends Resource
                                                 Forms\Components\TextInput::make('ctaText')
                                                     ->label('Call-to-Action Text'),
                                                 Forms\Components\TextInput::make('ctaLink')
-                                                    ->label('Call-to-Action Link')
-                                                    ->url(),
+                                                    ->label('Call-to-Action Link'),
                                                 Forms\Components\Select::make('height')
                                                     ->options([
                                                         'medium' => 'Medium (600px)',
@@ -378,8 +377,7 @@ class PageResource extends Resource
                                                             ->label('Card Description')
                                                             ->rows(3),
                                                         Forms\Components\TextInput::make('link')
-                                                            ->label('Link URL (Optional)')
-                                                            ->url(),
+                                                            ->label('Link URL (Optional)'),
                                                     ])
                                                     ->minItems(1)
                                                     ->maxItems(12)
@@ -647,6 +645,13 @@ class PageResource extends Resource
                 //
             ])
             ->actions([
+                Tables\Actions\Action::make('visual_editor')
+                    ->label('Page Builder')
+                    ->icon('heroicon-o-cube')
+                    ->color('primary')
+                    ->url(fn (Page $record): string => config('app.frontend_url', 'http://localhost:3000') . "/elementor/{$record->id}")
+                    ->openUrlInNewTab()
+                    ->visible(fn (Page $record): bool => $record->template_type === 'builder'),
                 Tables\Actions\EditAction::make(),
             ])
             ->bulkActions([

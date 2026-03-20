@@ -10,6 +10,7 @@ use App\Http\Controllers\Api\ServiceController;
 use App\Http\Controllers\Api\SettingController;
 use App\Http\Controllers\Api\BrandingController;
 use App\Http\Controllers\Api\ContactFormController;
+use App\Http\Controllers\Api\MediaController;
 
 Route::get('/user', function (Request $request) {
     return $request->user();
@@ -17,8 +18,15 @@ Route::get('/user', function (Request $request) {
 
 // Public API routes
 Route::prefix('v1')->group(function () {
+    // Media Upload
+    Route::post('/media/upload', [MediaController::class, 'upload']);
+    Route::post('/media/delete', [MediaController::class, 'delete']);
+
     // Pages
     Route::get('/pages', [PageController::class, 'index']);
+    Route::get('/pages/{id}/edit', [PageController::class, 'edit']);
+    Route::put('/pages/{id}/blocks', [PageController::class, 'updateBlocks']);
+    Route::post('/pages/{id}/publish', [PageController::class, 'publish']);
     Route::get('/pages/{slug}', [PageController::class, 'show']);
 
     // News

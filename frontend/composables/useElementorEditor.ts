@@ -1,0 +1,435 @@
+import { ref, computed } from 'vue'
+
+export interface ElementorWidget {
+  id: string
+  type: string
+  data: any
+}
+
+export interface ElementorColumn {
+  id: string
+  width: number // percentage
+  widgets: ElementorWidget[]
+}
+
+export interface ElementorSection {
+  id: string
+  type: 'section'
+  columns: ElementorColumn[]
+  settings: {
+    layout: 'boxed' | 'full_width'
+    gap: 'default' | 'narrow' | 'wide' | 'no'
+    height: 'default' | 'min-height' | 'fit-to-screen'
+    backgroundColor?: string
+    backgroundImage?: string
+    padding?: { top: number; right: number; bottom: number; left: number }
+    margin?: { top: number; bottom: number }
+  }
+}
+
+export const useElementorEditor = () => {
+  const sections = ref<ElementorSection[]>([])
+  const selectedElement = ref<{ type: 'section' | 'column' | 'widget'; id: string } | null>(null)
+  const isDragging = ref(false)
+  const isSaving = ref(false)
+  const hasChanges = ref(false)
+
+  const widgetLibrary = [
+    // Basic Widgets
+    { type: 'heading', label: 'Heading', icon: 'title', category: 'basic' },
+    { type: 'text_editor', label: 'Text Editor', icon: 'text_fields', category: 'basic' },
+    { type: 'image', label: 'Image', icon: 'image', category: 'basic' },
+    { type: 'button', label: 'Button', icon: 'smart_button', category: 'basic' },
+    { type: 'spacer', label: 'Spacer', icon: 'space_bar', category: 'basic' },
+    { type: 'divider', label: 'Divider', icon: 'horizontal_rule', category: 'basic' },
+
+    // Section Widgets
+    { type: 'hero', label: 'Hero Section', icon: 'wallpaper', category: 'sections' },
+    { type: 'stats', label: 'Counter', icon: 'analytics', category: 'sections' },
+    { type: 'card_grid', label: 'Card Grid', icon: 'grid_view', category: 'sections' },
+
+    // Form Widgets
+    { type: 'contact_form', label: 'Form', icon: 'contact_mail', category: 'forms' },
+    { type: 'search_box', label: 'Search', icon: 'search', category: 'forms' },
+
+    // Dynamic Widgets
+    { type: 'dynamic_news', label: 'Posts', icon: 'article', category: 'dynamic' },
+    { type: 'dynamic_events', label: 'Events', icon: 'event', category: 'dynamic' },
+    { type: 'dynamic_services', label: 'Services', icon: 'miscellaneous_services', category: 'dynamic' },
+    { type: 'dynamic_members', label: 'Members', icon: 'groups', category: 'dynamic' },
+  ]
+
+  const getDefaultWidgetData = (type: string): any => {
+    const defaults: Record<string, any> = {
+      heading: {
+        text: 'Your Heading',
+        tag: 'h2',
+        alignment: 'left',
+        color: '#000000',
+        typography: { size: 32, weight: 600 }
+      },
+      text_editor: {
+        content: '<p>Start typing...</p>',
+        alignment: 'left'
+      },
+      image: {
+        url: '',
+        alt: '',
+        alignment: 'center',
+        width: { size: 100, unit: '%' }
+      },
+      button: {
+        text: 'Click Here',
+        url: '#',
+        alignment: 'left',
+        size: 'md',
+        style: 'primary'
+      },
+      spacer: {
+        space: { size: 50, unit: 'px' }
+      },
+      divider: {
+        style: 'solid',
+        weight: { size: 1, unit: 'px' },
+        color: '#e0e0e0'
+      },
+      hero: {
+        heading: 'Welcome to Our Website',
+        subheading: 'Discover amazing content and services',
+        backgroundImage: '',
+        foregroundImage: '',
+        overlay: 'gradient',
+        ctaText: 'Get Started',
+        ctaLink: '#',
+        height: 'large',
+        showParticles: true
+      },
+      stats: {
+        heading: 'Our Achievements',
+        items: [
+          { value: '100', suffix: '+', label: 'Projects Completed' },
+          { value: '50', suffix: '+', label: 'Happy Clients' },
+          { value: '10', suffix: '', label: 'Years Experience' },
+          { value: '25', suffix: '+', label: 'Team Members' }
+        ],
+        columns: '4',
+        animate: true
+      },
+      card_grid: {
+        heading: 'Our Services',
+        cards: [
+          { image: '', title: 'Service 1', description: 'Description of service 1', link: '' },
+          { image: '', title: 'Service 2', description: 'Description of service 2', link: '' },
+          { image: '', title: 'Service 3', description: 'Description of service 3', link: '' }
+        ],
+        columns: '3'
+      },
+      contact_form: {
+        heading: 'Get In Touch',
+        description: 'Fill out the form below and we will get back to you as soon as possible.',
+        submitText: 'Send Message',
+        emailTo: 'info@example.com',
+        showPhone: true,
+        showCompany: true
+      },
+      search_box: {
+        placeholder: 'Search...',
+        searchScope: 'all',
+        size: 'md'
+      },
+      dynamic_news: {
+        heading: 'Latest News',
+        subheading: 'Stay updated with our latest articles and announcements',
+        items: [],
+        limit: 6,
+        layout: 'grid',
+        columns: '3',
+        showImage: true,
+        showExcerpt: true,
+        showDate: true,
+        showReadMore: true
+      },
+      dynamic_events: {
+        heading: 'Upcoming Events',
+        items: [],
+        limit: 6,
+        layout: 'grid',
+        filter: 'upcoming',
+        showLocation: true
+      },
+      dynamic_services: {
+        heading: 'Our Services',
+        items: [],
+        limit: 6,
+        layout: 'grid',
+        columns: '3',
+        showImage: true,
+        showExcerpt: true
+      },
+      dynamic_members: {
+        heading: 'Our Members',
+        items: [],
+        limit: 12,
+        layout: 'grid',
+        columns: '4',
+        showLogo: true,
+        showDescription: false
+      }
+    }
+    return defaults[type] || {}
+  }
+
+  const addSection = (columnWidths: number[] = [100]) => {
+    const columns: ElementorColumn[] = []
+
+    columnWidths.forEach((width, i) => {
+      columns.push({
+        id: `column-${Date.now()}-${i}`,
+        width,
+        widgets: []
+      })
+    })
+
+    const newSection: ElementorSection = {
+      id: `section-${Date.now()}`,
+      type: 'section',
+      columns,
+      settings: {
+        layout: 'boxed',
+        gap: 'default',
+        height: 'default'
+      }
+    }
+
+    sections.value.push(newSection)
+    hasChanges.value = true
+    return newSection
+  }
+
+  const addWidget = (sectionId: string, columnId: string, widgetType: string) => {
+    const section = sections.value.find(s => s.id === sectionId)
+    if (!section) return null
+
+    const column = section.columns.find(c => c.id === columnId)
+    if (!column) return null
+
+    const newWidget: ElementorWidget = {
+      id: `widget-${Date.now()}-${Math.random().toString(36).substr(2, 9)}`,
+      type: widgetType,
+      data: getDefaultWidgetData(widgetType)
+    }
+
+    column.widgets.push(newWidget)
+    hasChanges.value = true
+    return newWidget
+  }
+
+  const removeSection = (sectionId: string) => {
+    const index = sections.value.findIndex(s => s.id === sectionId)
+    if (index > -1) {
+      sections.value.splice(index, 1)
+      hasChanges.value = true
+      if (selectedElement.value?.id === sectionId) {
+        selectedElement.value = null
+      }
+    }
+  }
+
+  const removeWidget = (sectionId: string, columnId: string, widgetId: string) => {
+    const section = sections.value.find(s => s.id === sectionId)
+    if (!section) return
+
+    const column = section.columns.find(c => c.id === columnId)
+    if (!column) return
+
+    const index = column.widgets.findIndex(w => w.id === widgetId)
+    if (index > -1) {
+      column.widgets.splice(index, 1)
+      hasChanges.value = true
+      if (selectedElement.value?.id === widgetId) {
+        selectedElement.value = null
+      }
+    }
+  }
+
+  const moveWidget = (params: {
+    widgetId: string
+    fromSectionId: string
+    fromColumnId: string
+    toSectionId: string
+    toColumnId: string
+  }) => {
+    // Find and remove from source
+    const sourceSection = sections.value.find(s => s.id === params.fromSectionId)
+    const sourceColumn = sourceSection?.columns.find(c => c.id === params.fromColumnId)
+    const widgetIndex = sourceColumn?.widgets.findIndex(w => w.id === params.widgetId)
+
+    if (widgetIndex === undefined || widgetIndex === -1 || !sourceColumn) return
+
+    const widget = sourceColumn.widgets.splice(widgetIndex, 1)[0]
+
+    // Add to target
+    const targetSection = sections.value.find(s => s.id === params.toSectionId)
+    const targetColumn = targetSection?.columns.find(c => c.id === params.toColumnId)
+
+    if (targetColumn) {
+      targetColumn.widgets.push(widget)
+      hasChanges.value = true
+    }
+  }
+
+  const duplicateSection = (sectionId: string) => {
+    const section = sections.value.find(s => s.id === sectionId)
+    if (!section) return
+
+    const newSection = JSON.parse(JSON.stringify(section))
+    newSection.id = `section-${Date.now()}`
+    newSection.columns.forEach((col: ElementorColumn, i: number) => {
+      col.id = `column-${Date.now()}-${i}`
+      col.widgets.forEach((widget: ElementorWidget) => {
+        widget.id = `widget-${Date.now()}-${Math.random().toString(36).substr(2, 9)}`
+      })
+    })
+
+    const index = sections.value.findIndex(s => s.id === sectionId)
+    sections.value.splice(index + 1, 0, newSection)
+    hasChanges.value = true
+  }
+
+  const updateWidgetData = (sectionId: string, columnId: string, widgetId: string, data: any) => {
+    const section = sections.value.find(s => s.id === sectionId)
+    if (!section) return
+
+    const column = section.columns.find(c => c.id === columnId)
+    if (!column) return
+
+    const widget = column.widgets.find(w => w.id === widgetId)
+    if (!widget) return
+
+    widget.data = { ...widget.data, ...data }
+    hasChanges.value = true
+  }
+
+  const updateSectionSettings = (sectionId: string, settings: any) => {
+    const section = sections.value.find(s => s.id === sectionId)
+    if (!section) return
+
+    section.settings = { ...section.settings, ...settings }
+    hasChanges.value = true
+  }
+
+  const moveSection = (fromIndex: number, toIndex: number) => {
+    const section = sections.value.splice(fromIndex, 1)[0]
+    sections.value.splice(toIndex, 0, section)
+    hasChanges.value = true
+  }
+
+  const selectElement = (type: 'section' | 'column' | 'widget', id: string) => {
+    selectedElement.value = { type, id }
+  }
+
+  const loadFromBlocks = (blocks: any[]) => {
+    // Convert blocks back to section/column format
+    sections.value = []
+    let currentSection: ElementorSection | null = null
+
+    blocks.forEach(block => {
+      if (block.type === '_section_meta') {
+        // Create section with proper column structure
+        currentSection = {
+          id: block.id,
+          type: 'section',
+          columns: block.data.columns.map((c: any) => ({
+            id: c.id,
+            width: c.width,
+            widgets: []
+          })),
+          settings: block.data.settings || {
+            layout: 'boxed',
+            gap: 'default',
+            height: 'default'
+          }
+        }
+        sections.value.push(currentSection)
+      } else if (block._sectionId && currentSection) {
+        // Add widget to correct column
+        const column = currentSection.columns.find(c => c.id === block._columnId)
+        if (column) {
+          column.widgets.push({
+            id: block.id,
+            type: block.type,
+            data: block.data
+          })
+        }
+      } else if (block.type !== '_section_meta') {
+        // Fallback for old format: create 1-column section for each block
+        const section = addSection([100])
+        if (section) {
+          section.columns[0].widgets.push({
+            id: block.id || `widget-${Date.now()}`,
+            type: block.type,
+            data: block.data
+          })
+        }
+      }
+    })
+
+    hasChanges.value = false
+  }
+
+  const exportToBlocks = () => {
+    // Convert section/column format back to flat blocks for backend
+    const blocks: any[] = []
+
+    sections.value.forEach((section) => {
+      // Add section metadata as special block
+      blocks.push({
+        id: section.id,
+        type: '_section_meta',
+        data: {
+          columns: section.columns.map(c => ({ id: c.id, width: c.width })),
+          settings: section.settings
+        },
+        order: blocks.length
+      })
+
+      // Add widgets with column reference
+      section.columns.forEach(column => {
+        column.widgets.forEach(widget => {
+          blocks.push({
+            id: widget.id,
+            type: widget.type,
+            data: widget.data,
+            _columnId: column.id,
+            _sectionId: section.id,
+            order: blocks.length
+          })
+        })
+      })
+    })
+
+    return blocks
+  }
+
+  return {
+    sections,
+    selectedElement,
+    isDragging,
+    isSaving,
+    hasChanges,
+    widgetLibrary,
+    addSection,
+    addWidget,
+    removeSection,
+    removeWidget,
+    moveWidget,
+    duplicateSection,
+    updateWidgetData,
+    updateSectionSettings,
+    moveSection,
+    selectElement,
+    loadFromBlocks,
+    exportToBlocks,
+    getDefaultWidgetData
+  }
+}
