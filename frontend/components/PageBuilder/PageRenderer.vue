@@ -15,6 +15,7 @@
       <PageBuilderStats v-else-if="block.type === 'stats'" :data="block.data" :block-id="block.id || `block-${index}`" />
       <PageBuilderTwoColumn v-else-if="block.type === 'two_column'" :data="block.data" :block-id="block.id || `block-${index}`" />
       <PageBuilderCardGrid v-else-if="block.type === 'card_grid'" :data="block.data" :block-id="block.id || `block-${index}`" />
+      <PageBuilderIconCards v-else-if="block.type === 'icon_cards'" :data="block.data" :block-id="block.id || `block-${index}`" />
 
       <!-- Form Blocks -->
       <PageBuilderContactForm v-else-if="block.type === 'contact_form'" :data="block.data" :block-id="block.id || `block-${index}`" />

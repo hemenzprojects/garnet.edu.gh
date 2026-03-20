@@ -497,6 +497,66 @@ class PageResource extends Resource
                                                     ->default('3'),
                                             ]),
 
+                                        Block::make('icon_cards')
+                                            ->label('Icon Cards Section')
+                                            ->icon('heroicon-o-rectangle-stack')
+                                            ->schema([
+                                                Forms\Components\TextInput::make('heading')
+                                                    ->label('Section Heading (Optional)'),
+                                                Forms\Components\Textarea::make('subheading')
+                                                    ->label('Section Subheading (Optional)')
+                                                    ->rows(2),
+                                                Forms\Components\Repeater::make('cards')
+                                                    ->label('Cards')
+                                                    ->schema([
+                                                        Forms\Components\Select::make('icon')
+                                                            ->label('Icon')
+                                                            ->options([
+                                                                'rocket' => 'Rocket',
+                                                                'eye' => 'Eye',
+                                                                'star' => 'Star',
+                                                                'heart' => 'Heart',
+                                                                'lightbulb' => 'Lightbulb',
+                                                                'target' => 'Target',
+                                                                'shield' => 'Shield',
+                                                                'users' => 'Users',
+                                                            ])
+                                                            ->default('star'),
+                                                        Forms\Components\ColorPicker::make('iconColor')
+                                                            ->label('Icon Color')
+                                                            ->default('#3B82F6'),
+                                                        Forms\Components\ColorPicker::make('borderColor')
+                                                            ->label('Top Border Color')
+                                                            ->default('#3B82F6'),
+                                                        Forms\Components\TextInput::make('title')
+                                                            ->label('Card Title')
+                                                            ->required(),
+                                                        Forms\Components\Textarea::make('description')
+                                                            ->label('Card Description')
+                                                            ->rows(4)
+                                                            ->required(),
+                                                        Forms\Components\TextInput::make('link')
+                                                            ->label('Link URL (Optional)'),
+                                                        Forms\Components\TextInput::make('linkText')
+                                                            ->label('Link Text (Optional)')
+                                                            ->placeholder('Learn more'),
+                                                    ])
+                                                    ->minItems(1)
+                                                    ->maxItems(4)
+                                                    ->defaultItems(2)
+                                                    ->collapsible()
+                                                    ->itemLabel(fn (array $state): ?string => $state['title'] ?? null),
+                                                Forms\Components\Select::make('columns')
+                                                    ->label('Columns')
+                                                    ->options([
+                                                        '1' => '1 Column',
+                                                        '2' => '2 Columns',
+                                                        '3' => '3 Columns',
+                                                        '4' => '4 Columns',
+                                                    ])
+                                                    ->default('2'),
+                                            ]),
+
                                         // Form Blocks
                                         Block::make('contact_form')
                                             ->label('Contact Form')

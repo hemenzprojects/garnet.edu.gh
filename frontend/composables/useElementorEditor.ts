@@ -48,6 +48,7 @@ export const useElementorEditor = () => {
     { type: 'hero_split', label: 'Hero Split', icon: 'view_column', category: 'sections' },
     { type: 'stats', label: 'Counter', icon: 'analytics', category: 'sections' },
     { type: 'card_grid', label: 'Card Grid', icon: 'grid_view', category: 'sections' },
+    { type: 'icon_cards', label: 'Icon Cards', icon: 'dashboard_customize', category: 'sections' },
 
     // Form Widgets
     { type: 'contact_form', label: 'Form', icon: 'contact_mail', category: 'forms' },
@@ -143,6 +144,31 @@ export const useElementorEditor = () => {
           { image: '', title: 'Service 3', description: 'Description of service 3', link: '' }
         ],
         columns: '3'
+      },
+      icon_cards: {
+        heading: 'Our Mission & Vision',
+        subheading: '',
+        cards: [
+          {
+            icon: 'rocket',
+            iconColor: '#3B82F6',
+            borderColor: '#3B82F6',
+            title: 'Our Mission',
+            description: 'To facilitate the development of a robust and sustainable national research and education network that connects Ghanaian tertiary and research institutions to each other and to the rest of the world.',
+            link: '',
+            linkText: ''
+          },
+          {
+            icon: 'eye',
+            iconColor: '#9333EA',
+            borderColor: '#9333EA',
+            title: 'Our Vision',
+            description: 'To be the catalyst for digital transformation in Ghana\'s academic landscape, empowering researchers and students with high-speed connectivity and collaborative tools.',
+            link: '',
+            linkText: ''
+          }
+        ],
+        columns: '2'
       },
       contact_form: {
         heading: 'Get In Touch',

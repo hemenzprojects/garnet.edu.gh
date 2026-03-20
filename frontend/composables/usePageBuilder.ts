@@ -17,6 +17,7 @@ export const usePageBuilder = () => {
     stats: 'PageBuilderStats',
     two_column: 'PageBuilderTwoColumn',
     card_grid: 'PageBuilderCardGrid',
+    icon_cards: 'PageBuilderIconCards',
 
     // Form blocks
     contact_form: 'PageBuilderContactForm',

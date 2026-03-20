@@ -88,24 +88,11 @@
         <div v-else-if="activeTab === 'Style'">
           <div class="space-y-4">
             <!-- Background Color -->
-            <div>
-              <label class="block text-sm font-medium text-gray-700 mb-2">Background Color</label>
-              <div class="flex items-center space-x-2">
-                <input
-                  type="color"
-                  :value="elementData.backgroundColor || '#ffffff'"
-                  @input="updateSetting('backgroundColor', ($event.target as HTMLInputElement).value)"
-                  class="h-10 w-16 rounded border border-gray-300 cursor-pointer"
-                />
-                <input
-                  type="text"
-                  :value="elementData.backgroundColor || ''"
-                  @input="updateSetting('backgroundColor', ($event.target as HTMLInputElement).value)"
-                  placeholder="#ffffff"
-                  class="flex-1 px-3 py-2 border border-gray-300 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
-                />
-              </div>
-            </div>
+            <ElementorColorPicker
+              :model-value="elementData.backgroundColor || '#FFFFFF'"
+              @update:model-value="updateSetting('backgroundColor', $event)"
+              label="Background Color"
+            />
 
             <!-- Background Image -->
             <ElementorImageUpload
@@ -248,24 +235,11 @@
 
           <div v-else-if="activeTab === 'Style'" class="space-y-4">
             <!-- Color -->
-            <div>
-              <label class="block text-sm font-medium text-gray-700 mb-2">Color</label>
-              <div class="flex items-center space-x-2">
-                <input
-                  type="color"
-                  :value="elementData.color || '#000000'"
-                  @input="updateData('color', ($event.target as HTMLInputElement).value)"
-                  class="h-10 w-16 rounded border border-gray-300 cursor-pointer"
-                />
-                <input
-                  type="text"
-                  :value="elementData.color || ''"
-                  @input="updateData('color', ($event.target as HTMLInputElement).value)"
-                  placeholder="#000000"
-                  class="flex-1 px-3 py-2 border border-gray-300 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
-                />
-              </div>
-            </div>
+            <ElementorColorPicker
+              :model-value="elementData.color || '#000000'"
+              @update:model-value="updateData('color', $event)"
+              label="Color"
+            />
 
             <!-- Font Size -->
             <div>
@@ -529,24 +503,11 @@
             </div>
 
             <!-- Color -->
-            <div>
-              <label class="block text-sm font-medium text-gray-700 mb-2">Color</label>
-              <div class="flex items-center space-x-2">
-                <input
-                  type="color"
-                  :value="elementData.color || '#e0e0e0'"
-                  @input="updateData('color', ($event.target as HTMLInputElement).value)"
-                  class="h-10 w-16 rounded border border-gray-300 cursor-pointer"
-                />
-                <input
-                  type="text"
-                  :value="elementData.color || ''"
-                  @input="updateData('color', ($event.target as HTMLInputElement).value)"
-                  placeholder="#e0e0e0"
-                  class="flex-1 px-3 py-2 border border-gray-300 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
-                />
-              </div>
-            </div>
+            <ElementorColorPicker
+              :model-value="elementData.color || '#E0E0E0'"
+              @update:model-value="updateData('color', $event)"
+              label="Color"
+            />
 
             <!-- Weight -->
             <div>
@@ -698,20 +659,11 @@
             </div>
 
             <!-- Heading Line 1 Color -->
-            <div>
-              <label class="block text-sm font-medium text-gray-700 mb-2">Line 1 Color</label>
-              <select
-                :value="elementData.headingLine1Color || 'primary'"
-                @change="updateData('headingLine1Color', ($event.target as HTMLSelectElement).value)"
-                class="w-full px-3 py-2 border border-gray-300 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
-              >
-                <option value="primary">Primary (Navy Blue)</option>
-                <option value="purple">Purple</option>
-                <option value="accent">Accent (Cyan)</option>
-                <option value="secondary">Secondary (Green)</option>
-                <option value="gray">Gray</option>
-              </select>
-            </div>
+            <ElementorColorPicker
+              :model-value="elementData.headingLine1Color || '#0A1E3E'"
+              @update:model-value="updateData('headingLine1Color', $event)"
+              label="Line 1 Color"
+            />
 
             <!-- Heading Line 2 -->
             <div>
@@ -726,20 +678,11 @@
             </div>
 
             <!-- Heading Line 2 Color -->
-            <div>
-              <label class="block text-sm font-medium text-gray-700 mb-2">Line 2 Color</label>
-              <select
-                :value="elementData.headingLine2Color || 'purple'"
-                @change="updateData('headingLine2Color', ($event.target as HTMLSelectElement).value)"
-                class="w-full px-3 py-2 border border-gray-300 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
-              >
-                <option value="primary">Primary (Navy Blue)</option>
-                <option value="purple">Purple</option>
-                <option value="accent">Accent (Cyan)</option>
-                <option value="secondary">Secondary (Green)</option>
-                <option value="gray">Gray</option>
-              </select>
-            </div>
+            <ElementorColorPicker
+              :model-value="elementData.headingLine2Color || '#9333EA'"
+              @update:model-value="updateData('headingLine2Color', $event)"
+              label="Line 2 Color"
+            />
 
             <!-- Heading Line 3 -->
             <div>
@@ -754,20 +697,11 @@
             </div>
 
             <!-- Heading Line 3 Color -->
-            <div>
-              <label class="block text-sm font-medium text-gray-700 mb-2">Line 3 Color</label>
-              <select
-                :value="elementData.headingLine3Color || 'primary'"
-                @change="updateData('headingLine3Color', ($event.target as HTMLSelectElement).value)"
-                class="w-full px-3 py-2 border border-gray-300 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
-              >
-                <option value="primary">Primary (Navy Blue)</option>
-                <option value="purple">Purple</option>
-                <option value="accent">Accent (Cyan)</option>
-                <option value="secondary">Secondary (Green)</option>
-                <option value="gray">Gray</option>
-              </select>
-            </div>
+            <ElementorColorPicker
+              :model-value="elementData.headingLine3Color || '#0A1E3E'"
+              @update:model-value="updateData('headingLine3Color', $event)"
+              label="Line 3 Color"
+            />
 
             <!-- Subheading -->
             <div>
@@ -868,20 +802,11 @@
 
           <div v-else-if="activeTab === 'Style'" class="space-y-4">
             <!-- Feature Box Color -->
-            <div>
-              <label class="block text-sm font-medium text-gray-700 mb-2">Feature Box Color</label>
-              <select
-                :value="elementData.featureBoxColor || 'teal'"
-                @change="updateData('featureBoxColor', ($event.target as HTMLSelectElement).value)"
-                class="w-full px-3 py-2 border border-gray-300 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
-              >
-                <option value="teal">Teal</option>
-                <option value="primary">Primary (Navy Blue)</option>
-                <option value="purple">Purple</option>
-                <option value="accent">Accent (Cyan)</option>
-                <option value="secondary">Secondary (Green)</option>
-              </select>
-            </div>
+            <ElementorColorPicker
+              :model-value="elementData.featureBoxColor || '#0D9488'"
+              @update:model-value="updateData('featureBoxColor', $event)"
+              label="Feature Box Color"
+            />
 
             <!-- Height -->
             <div>
@@ -1079,6 +1004,159 @@
                 @change="updateData('columns', ($event.target as HTMLSelectElement).value)"
                 class="w-full px-3 py-2 border border-gray-300 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
               >
+                <option value="2">2 Columns</option>
+                <option value="3">3 Columns</option>
+                <option value="4">4 Columns</option>
+              </select>
+            </div>
+          </div>
+        </div>
+
+        <!-- Icon Cards Widget -->
+        <div v-else-if="widgetType === 'icon_cards'">
+          <div v-if="activeTab === 'Content'" class="space-y-4">
+            <!-- Heading -->
+            <div>
+              <label class="block text-sm font-medium text-gray-700 mb-2">Section Heading</label>
+              <input
+                type="text"
+                :value="elementData.heading"
+                @input="updateData('heading', ($event.target as HTMLInputElement).value)"
+                placeholder="Our Mission & Vision"
+                class="w-full px-3 py-2 border border-gray-300 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
+              />
+            </div>
+
+            <!-- Subheading -->
+            <div>
+              <label class="block text-sm font-medium text-gray-700 mb-2">Section Subheading</label>
+              <textarea
+                :value="elementData.subheading"
+                @input="updateData('subheading', ($event.target as HTMLTextAreaElement).value)"
+                rows="2"
+                placeholder="Optional subheading text"
+                class="w-full px-3 py-2 border border-gray-300 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
+              ></textarea>
+            </div>
+
+            <!-- Cards -->
+            <div>
+              <label class="block text-sm font-medium text-gray-700 mb-2">Cards</label>
+              <div class="space-y-4">
+                <div
+                  v-for="(card, index) in elementData.cards"
+                  :key="index"
+                  class="p-4 border border-gray-200 rounded-lg bg-gray-50"
+                >
+                  <div class="space-y-3">
+                    <!-- Icon -->
+                    <div>
+                      <label class="block text-xs font-medium text-gray-600 mb-1">Icon</label>
+                      <select
+                        :value="card.icon || 'star'"
+                        @input="updateIconCardItem(index, 'icon', ($event.target as HTMLSelectElement).value)"
+                        class="w-full px-2 py-1.5 border border-gray-300 rounded text-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
+                      >
+                        <option value="rocket">Rocket</option>
+                        <option value="eye">Eye</option>
+                        <option value="star">Star</option>
+                        <option value="heart">Heart</option>
+                        <option value="lightbulb">Lightbulb</option>
+                        <option value="target">Target</option>
+                        <option value="shield">Shield</option>
+                        <option value="users">Users</option>
+                      </select>
+                    </div>
+
+                    <!-- Icon Color -->
+                    <ElementorColorPicker
+                      :model-value="card.iconColor || '#3B82F6'"
+                      @update:model-value="updateIconCardItem(index, 'iconColor', $event)"
+                      label="Icon Color"
+                    />
+
+                    <!-- Border Color -->
+                    <ElementorColorPicker
+                      :model-value="card.borderColor || '#3B82F6'"
+                      @update:model-value="updateIconCardItem(index, 'borderColor', $event)"
+                      label="Border Color"
+                    />
+
+                    <!-- Title -->
+                    <div>
+                      <label class="block text-xs font-medium text-gray-600 mb-1">Title</label>
+                      <input
+                        type="text"
+                        :value="card.title"
+                        @input="updateIconCardItem(index, 'title', ($event.target as HTMLInputElement).value)"
+                        placeholder="Our Mission"
+                        class="w-full px-2 py-1.5 border border-gray-300 rounded text-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
+                      />
+                    </div>
+
+                    <!-- Description -->
+                    <div>
+                      <label class="block text-xs font-medium text-gray-600 mb-1">Description</label>
+                      <textarea
+                        :value="card.description"
+                        @input="updateIconCardItem(index, 'description', ($event.target as HTMLTextAreaElement).value)"
+                        placeholder="Card description..."
+                        rows="3"
+                        class="w-full px-2 py-1.5 border border-gray-300 rounded text-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
+                      ></textarea>
+                    </div>
+
+                    <!-- Link -->
+                    <div>
+                      <label class="block text-xs font-medium text-gray-600 mb-1">Link URL (Optional)</label>
+                      <input
+                        type="text"
+                        :value="card.link"
+                        @input="updateIconCardItem(index, 'link', ($event.target as HTMLInputElement).value)"
+                        placeholder="/about"
+                        class="w-full px-2 py-1.5 border border-gray-300 rounded text-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
+                      />
+                    </div>
+
+                    <!-- Link Text -->
+                    <div>
+                      <label class="block text-xs font-medium text-gray-600 mb-1">Link Text (Optional)</label>
+                      <input
+                        type="text"
+                        :value="card.linkText"
+                        @input="updateIconCardItem(index, 'linkText', ($event.target as HTMLInputElement).value)"
+                        placeholder="Learn more"
+                        class="w-full px-2 py-1.5 border border-gray-300 rounded text-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
+                      />
+                    </div>
+
+                    <button
+                      v-if="elementData.cards.length > 1"
+                      @click="removeIconCardItem(index)"
+                      class="text-xs text-red-600 hover:text-red-800 font-medium"
+                    >
+                      Remove Card
+                    </button>
+                  </div>
+                </div>
+              </div>
+              <button
+                @click="addIconCardItem"
+                class="mt-3 text-sm text-blue-600 hover:text-blue-800 font-medium"
+              >
+                + Add Card
+              </button>
+            </div>
+
+            <!-- Columns -->
+            <div>
+              <label class="block text-sm font-medium text-gray-700 mb-2">Columns</label>
+              <select
+                :value="elementData.columns || '2'"
+                @change="updateData('columns', ($event.target as HTMLSelectElement).value)"
+                class="w-full px-3 py-2 border border-gray-300 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
+              >
+                <option value="1">1 Column</option>
                 <option value="2">2 Columns</option>
                 <option value="3">3 Columns</option>
                 <option value="4">4 Columns</option>
@@ -1715,6 +1793,33 @@ const addCardItem = () => {
 }
 
 const removeCardItem = (index: number) => {
+  const cards = [...elementData.value.cards]
+  cards.splice(index, 1)
+  emit('update', { cards })
+}
+
+// Icon Cards helpers
+const updateIconCardItem = (index: number, key: string, value: any) => {
+  const cards = [...elementData.value.cards]
+  cards[index] = { ...cards[index], [key]: value }
+  emit('update', { cards })
+}
+
+const addIconCardItem = () => {
+  const cards = [...elementData.value.cards]
+  cards.push({
+    icon: 'star',
+    iconColor: '#3B82F6',
+    borderColor: '#3B82F6',
+    title: 'New Card',
+    description: 'Card description goes here.',
+    link: '',
+    linkText: ''
+  })
+  emit('update', { cards })
+}
+
+const removeIconCardItem = (index: number) => {
   const cards = [...elementData.value.cards]
   cards.splice(index, 1)
   emit('update', { cards })

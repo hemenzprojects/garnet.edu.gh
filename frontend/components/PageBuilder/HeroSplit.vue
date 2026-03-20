@@ -13,15 +13,15 @@
         <div class="space-y-6">
           <h1 class="text-4xl md:text-5xl lg:text-6xl font-bold leading-tight">
             <template v-if="data.headingLine1">
-              <span :class="headingLine1ColorClass">{{ data.headingLine1 }}</span>
+              <span :style="{ color: getHeadingColor(data.headingLine1Color, '#0A1E3E') }">{{ data.headingLine1 }}</span>
               <br />
             </template>
             <template v-if="data.headingLine2">
-              <span :class="headingLine2ColorClass">{{ data.headingLine2 }}</span>
+              <span :style="{ color: getHeadingColor(data.headingLine2Color, '#9333EA') }">{{ data.headingLine2 }}</span>
               <br />
             </template>
             <template v-if="data.headingLine3">
-              <span :class="headingLine3ColorClass">{{ data.headingLine3 }}</span>
+              <span :style="{ color: getHeadingColor(data.headingLine3Color, '#0A1E3E') }">{{ data.headingLine3 }}</span>
             </template>
           </h1>
 
@@ -51,10 +51,8 @@
         <!-- Right Content -->
         <div class="relative">
           <div
-            :class="[
-              'rounded-2xl p-12 md:p-16 shadow-2xl min-h-[400px] flex items-center justify-center',
-              featureBoxColorClass
-            ]"
+            class="rounded-2xl p-12 md:p-16 shadow-2xl min-h-[400px] flex items-center justify-center"
+            :style="getFeatureBoxStyle()"
           >
             <div class="text-center space-y-8">
               <div class="space-y-4">
@@ -128,31 +126,61 @@ const heightClass = computed(() => {
   return heightMap[props.data.height] || heightMap.large
 })
 
-const getColorClass = (color?: string, defaultColor: string = 'primary') => {
-  const colorMap: Record<string, string> = {
-    primary: 'text-primary',
-    purple: 'text-purple-600',
-    accent: 'text-accent',
-    secondary: 'text-secondary',
-    gray: 'text-gray-800',
+const getHeadingColor = (color?: string, defaultHex: string = '#0A1E3E') => {
+  // Support both hex colors and predefined color names
+  if (color?.startsWith('#')) {
+    return color
   }
-  return colorMap[color || defaultColor] || colorMap[defaultColor]
+
+  const colorMap: Record<string, string> = {
+    primary: '#0A1E3E',
+    purple: '#9333EA',
+    accent: '#00D9FF',
+    secondary: '#059669',
+    gray: '#1F2937',
+  }
+  return colorMap[color || ''] || defaultHex
 }
 
-const headingLine1ColorClass = computed(() => getColorClass(props.data.headingLine1Color, 'primary'))
-const headingLine2ColorClass = computed(() => getColorClass(props.data.headingLine2Color, 'purple'))
-const headingLine3ColorClass = computed(() => getColorClass(props.data.headingLine3Color, 'primary'))
+const getFeatureBoxStyle = () => {
+  const color = props.data.featureBoxColor
 
-const featureBoxColorClass = computed(() => {
-  const colorMap: Record<string, string> = {
-    teal: 'bg-gradient-to-br from-teal-600 to-teal-700',
-    primary: 'bg-gradient-to-br from-primary to-primary-dark',
-    purple: 'bg-gradient-to-br from-purple-600 to-purple-800',
-    accent: 'bg-gradient-to-br from-accent to-accent-dark',
-    secondary: 'bg-gradient-to-br from-secondary to-emerald-700',
+  // If it's a hex color, create gradient from it
+  if (color?.startsWith('#')) {
+    return {
+      background: `linear-gradient(to bottom right, ${color}, ${adjustColorBrightness(color, -20)})`
+    }
   }
-  return colorMap[props.data.featureBoxColor || 'teal'] || colorMap.teal
-})
+
+  // Fallback to predefined colors
+  const colorMap: Record<string, string> = {
+    teal: 'linear-gradient(to bottom right, #0D9488, #115E59)',
+    primary: 'linear-gradient(to bottom right, #0A1E3E, #050F1F)',
+    purple: 'linear-gradient(to bottom right, #9333EA, #6B21A8)',
+    accent: 'linear-gradient(to bottom right, #00D9FF, #00A8CC)',
+    secondary: 'linear-gradient(to bottom right, #059669, #047857)',
+  }
+
+  return {
+    background: colorMap[color || 'teal'] || colorMap.teal
+  }
+}
+
+// Helper to darken a color
+const adjustColorBrightness = (hex: string, percent: number) => {
+  const num = parseInt(hex.replace('#', ''), 16)
+  const amt = Math.round(2.55 * percent)
+  const R = (num >> 16) + amt
+  const G = (num >> 8 & 0x00FF) + amt
+  const B = (num & 0x0000FF) + amt
+
+  return '#' + (
+    0x1000000 +
+    (R < 255 ? (R < 1 ? 0 : R) : 255) * 0x10000 +
+    (G < 255 ? (G < 1 ? 0 : G) : 255) * 0x100 +
+    (B < 255 ? (B < 1 ? 0 : B) : 255)
+  ).toString(16).slice(1).toUpperCase()
+}
 </script>
 
 <style scoped>
