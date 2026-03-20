@@ -557,6 +557,67 @@ class PageResource extends Resource
                                                     ->default('2'),
                                             ]),
 
+                                        Block::make('timeline')
+                                            ->label('Timeline / History')
+                                            ->icon('heroicon-o-clock')
+                                            ->schema([
+                                                Forms\Components\TextInput::make('heading')
+                                                    ->label('Section Heading')
+                                                    ->placeholder('Our History'),
+                                                Forms\Components\ColorPicker::make('headingColor')
+                                                    ->label('Heading Color')
+                                                    ->default('#1E40AF'),
+                                                Forms\Components\Repeater::make('items')
+                                                    ->label('Timeline Items')
+                                                    ->schema([
+                                                        Forms\Components\TextInput::make('year')
+                                                            ->label('Year / Date')
+                                                            ->placeholder('2006'),
+                                                        Forms\Components\ColorPicker::make('yearColor')
+                                                            ->label('Year Text Color')
+                                                            ->default('#1E40AF'),
+                                                        Forms\Components\TextInput::make('title')
+                                                            ->label('Title')
+                                                            ->required()
+                                                            ->placeholder('The Foundation'),
+                                                        Forms\Components\Textarea::make('description')
+                                                            ->label('Description')
+                                                            ->rows(4)
+                                                            ->required(),
+                                                        Forms\Components\ColorPicker::make('backgroundColor')
+                                                            ->label('Background Color')
+                                                            ->default('#E5E7EB'),
+                                                        Forms\Components\Select::make('size')
+                                                            ->label('Card Size')
+                                                            ->options([
+                                                                'normal' => 'Normal',
+                                                                'large' => 'Large',
+                                                                'full' => 'Full Width',
+                                                            ])
+                                                            ->default('normal'),
+                                                        Forms\Components\Select::make('icon')
+                                                            ->label('Icon (Optional)')
+                                                            ->options([
+                                                                'none' => 'No Icon',
+                                                                'globe' => 'Globe',
+                                                                'star' => 'Star',
+                                                                'trophy' => 'Trophy',
+                                                                'rocket' => 'Rocket',
+                                                                'users' => 'Users',
+                                                                'lightbulb' => 'Lightbulb',
+                                                            ])
+                                                            ->default('none'),
+                                                        Forms\Components\Toggle::make('showIcon')
+                                                            ->label('Show Background Year/Number')
+                                                            ->default(true),
+                                                    ])
+                                                    ->minItems(1)
+                                                    ->maxItems(8)
+                                                    ->defaultItems(3)
+                                                    ->collapsible()
+                                                    ->itemLabel(fn (array $state): ?string => $state['title'] ?? null),
+                                            ]),
+
                                         // Form Blocks
                                         Block::make('contact_form')
                                             ->label('Contact Form')

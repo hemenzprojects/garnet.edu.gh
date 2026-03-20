@@ -1165,6 +1165,153 @@
           </div>
         </div>
 
+        <!-- Timeline Widget -->
+        <div v-else-if="widgetType === 'timeline'">
+          <div v-if="activeTab === 'Content'" class="space-y-4">
+            <!-- Heading -->
+            <div>
+              <label class="block text-sm font-medium text-gray-700 mb-2">Section Heading</label>
+              <input
+                type="text"
+                :value="elementData.heading"
+                @input="updateData('heading', ($event.target as HTMLInputElement).value)"
+                placeholder="Our History"
+                class="w-full px-3 py-2 border border-gray-300 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
+              />
+            </div>
+
+            <!-- Heading Color -->
+            <ElementorColorPicker
+              :model-value="elementData.headingColor || '#1E40AF'"
+              @update:model-value="updateData('headingColor', $event)"
+              label="Heading Color"
+            />
+
+            <!-- Timeline Items -->
+            <div>
+              <label class="block text-sm font-medium text-gray-700 mb-2">Timeline Items</label>
+              <div class="space-y-4">
+                <div
+                  v-for="(item, index) in elementData.items"
+                  :key="index"
+                  class="p-4 border border-gray-200 rounded-lg bg-gray-50"
+                >
+                  <div class="space-y-3">
+                    <!-- Year -->
+                    <div>
+                      <label class="block text-xs font-medium text-gray-600 mb-1">Year/Label</label>
+                      <input
+                        type="text"
+                        :value="item.year"
+                        @input="updateTimelineItem(index, 'year', ($event.target as HTMLInputElement).value)"
+                        placeholder="2006"
+                        class="w-full px-2 py-1.5 border border-gray-300 rounded text-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
+                      />
+                    </div>
+
+                    <!-- Year Color -->
+                    <ElementorColorPicker
+                      :model-value="item.yearColor || '#1E40AF'"
+                      @update:model-value="updateTimelineItem(index, 'yearColor', $event)"
+                      label="Year Color"
+                    />
+
+                    <!-- Title -->
+                    <div>
+                      <label class="block text-xs font-medium text-gray-600 mb-1">Title</label>
+                      <input
+                        type="text"
+                        :value="item.title"
+                        @input="updateTimelineItem(index, 'title', ($event.target as HTMLInputElement).value)"
+                        placeholder="Milestone Title"
+                        class="w-full px-2 py-1.5 border border-gray-300 rounded text-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
+                      />
+                    </div>
+
+                    <!-- Description -->
+                    <div>
+                      <label class="block text-xs font-medium text-gray-600 mb-1">Description</label>
+                      <textarea
+                        :value="item.description"
+                        @input="updateTimelineItem(index, 'description', ($event.target as HTMLTextAreaElement).value)"
+                        placeholder="Description of this milestone..."
+                        rows="3"
+                        class="w-full px-2 py-1.5 border border-gray-300 rounded text-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
+                      ></textarea>
+                    </div>
+
+                    <!-- Background Color -->
+                    <ElementorColorPicker
+                      :model-value="item.backgroundColor || '#E5E7EB'"
+                      @update:model-value="updateTimelineItem(index, 'backgroundColor', $event)"
+                      label="Background Color"
+                    />
+
+                    <!-- Card Size -->
+                    <div>
+                      <label class="block text-xs font-medium text-gray-600 mb-1">Card Size</label>
+                      <select
+                        :value="item.size || 'normal'"
+                        @input="updateTimelineItem(index, 'size', ($event.target as HTMLSelectElement).value)"
+                        class="w-full px-2 py-1.5 border border-gray-300 rounded text-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
+                      >
+                        <option value="normal">Normal</option>
+                        <option value="large">Large</option>
+                        <option value="full">Full Width</option>
+                      </select>
+                    </div>
+
+                    <!-- Icon -->
+                    <div>
+                      <label class="block text-xs font-medium text-gray-600 mb-1">Icon</label>
+                      <select
+                        :value="item.icon || 'none'"
+                        @input="updateTimelineItem(index, 'icon', ($event.target as HTMLSelectElement).value)"
+                        class="w-full px-2 py-1.5 border border-gray-300 rounded text-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
+                      >
+                        <option value="none">None</option>
+                        <option value="rocket">Rocket</option>
+                        <option value="star">Star</option>
+                        <option value="trophy">Trophy</option>
+                        <option value="globe">Globe</option>
+                        <option value="users">Users</option>
+                        <option value="lightbulb">Lightbulb</option>
+                      </select>
+                    </div>
+
+                    <!-- Show Icon Toggle -->
+                    <div>
+                      <label class="flex items-center gap-2 cursor-pointer">
+                        <input
+                          type="checkbox"
+                          :checked="item.showIcon !== false"
+                          @change="updateTimelineItem(index, 'showIcon', ($event.target as HTMLInputElement).checked)"
+                          class="rounded border-gray-300 text-blue-600 focus:ring-2 focus:ring-blue-500"
+                        />
+                        <span class="text-xs font-medium text-gray-700">Show Year Watermark</span>
+                      </label>
+                    </div>
+
+                    <button
+                      v-if="elementData.items.length > 1"
+                      @click="removeTimelineItem(index)"
+                      class="text-xs text-red-600 hover:text-red-800 font-medium"
+                    >
+                      Remove Item
+                    </button>
+                  </div>
+                </div>
+              </div>
+              <button
+                @click="addTimelineItem"
+                class="mt-3 text-sm text-blue-600 hover:text-blue-800 font-medium"
+              >
+                + Add Timeline Item
+              </button>
+            </div>
+          </div>
+        </div>
+
         <!-- Contact Form Widget -->
         <div v-else-if="widgetType === 'contact_form'">
           <div v-if="activeTab === 'Content'" class="space-y-4">
@@ -1823,6 +1970,34 @@ const removeIconCardItem = (index: number) => {
   const cards = [...elementData.value.cards]
   cards.splice(index, 1)
   emit('update', { cards })
+}
+
+// Timeline helpers
+const updateTimelineItem = (index: number, key: string, value: any) => {
+  const items = [...elementData.value.items]
+  items[index] = { ...items[index], [key]: value }
+  emit('update', { items })
+}
+
+const addTimelineItem = () => {
+  const items = [...elementData.value.items]
+  items.push({
+    year: new Date().getFullYear().toString(),
+    yearColor: '#1E40AF',
+    title: 'New Milestone',
+    description: 'Description of this milestone...',
+    backgroundColor: '#E5E7EB',
+    size: 'normal',
+    icon: 'none',
+    showIcon: true
+  })
+  emit('update', { items })
+}
+
+const removeTimelineItem = (index: number) => {
+  const items = [...elementData.value.items]
+  items.splice(index, 1)
+  emit('update', { items })
 }
 
 // Reset active tab when element changes

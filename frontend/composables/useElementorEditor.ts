@@ -49,6 +49,7 @@ export const useElementorEditor = () => {
     { type: 'stats', label: 'Counter', icon: 'analytics', category: 'sections' },
     { type: 'card_grid', label: 'Card Grid', icon: 'grid_view', category: 'sections' },
     { type: 'icon_cards', label: 'Icon Cards', icon: 'dashboard_customize', category: 'sections' },
+    { type: 'timeline', label: 'Timeline', icon: 'timeline', category: 'sections' },
 
     // Form Widgets
     { type: 'contact_form', label: 'Form', icon: 'contact_mail', category: 'forms' },
@@ -169,6 +170,52 @@ export const useElementorEditor = () => {
           }
         ],
         columns: '2'
+      },
+      timeline: {
+        heading: 'Our History',
+        headingColor: '#1E40AF',
+        items: [
+          {
+            year: '2006',
+            yearColor: '#1E40AF',
+            title: 'The Foundation',
+            description: 'The Ghanaian Academic and Research Network (GARNET) was formally incorporated as a non-profit organization, bringing together major public universities to explore shared digital infrastructure.',
+            backgroundColor: '#E5E7EB',
+            size: 'normal',
+            icon: 'none',
+            showIcon: true
+          },
+          {
+            year: '2012',
+            yearColor: '#9333EA',
+            title: 'WACREN Integration',
+            description: 'GARNET officially joined the West and Central African Research and Education Network (WACREN) as a founding member.',
+            backgroundColor: '#FFFFFF',
+            size: 'normal',
+            icon: 'none',
+            showIcon: false
+          },
+          {
+            year: '2018',
+            yearColor: '#1E40AF',
+            title: 'Network Core',
+            description: 'Successful deployment of the first dedicated high-speed fiber backbone connecting Kumasi, Accra, and Cape Coast.',
+            backgroundColor: '#FFFFFF',
+            size: 'normal',
+            icon: 'none',
+            showIcon: false
+          },
+          {
+            year: 'Today',
+            yearColor: '#FFFFFF',
+            title: 'Leading Digital Transformation',
+            description: 'Serving over 40 member institutions, GARNET provides not just bandwidth, but advanced identity management (eduroam), cloud services, and shared research repositories.',
+            backgroundColor: '#1E40AF',
+            size: 'full',
+            icon: 'globe',
+            showIcon: false
+          }
+        ]
       },
       contact_form: {
         heading: 'Get In Touch',
