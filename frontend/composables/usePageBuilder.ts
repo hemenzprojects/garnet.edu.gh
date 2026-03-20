@@ -13,6 +13,7 @@ export const usePageBuilder = () => {
 
     // Section blocks
     hero: 'PageBuilderHero',
+    hero_split: 'PageBuilderHeroSplit',
     stats: 'PageBuilderStats',
     two_column: 'PageBuilderTwoColumn',
     card_grid: 'PageBuilderCardGrid',

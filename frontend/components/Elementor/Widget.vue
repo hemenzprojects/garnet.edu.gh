@@ -116,6 +116,7 @@
 
       <!-- Other Widgets (use existing PageBuilder components) -->
       <PageBuilderHero v-else-if="widget.type === 'hero'" :data="widget.data" :block-id="widget.id" />
+      <PageBuilderHeroSplit v-else-if="widget.type === 'hero_split'" :data="widget.data" :block-id="widget.id" />
       <PageBuilderStats v-else-if="widget.type === 'stats'" :data="widget.data" :block-id="widget.id" />
       <PageBuilderCardGrid v-else-if="widget.type === 'card_grid'" :data="widget.data" :block-id="widget.id" />
       <PageBuilderContactForm v-else-if="widget.type === 'contact_form'" :data="widget.data" :block-id="widget.id" />

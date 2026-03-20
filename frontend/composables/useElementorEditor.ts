@@ -45,6 +45,7 @@ export const useElementorEditor = () => {
 
     // Section Widgets
     { type: 'hero', label: 'Hero Section', icon: 'wallpaper', category: 'sections' },
+    { type: 'hero_split', label: 'Hero Split', icon: 'view_column', category: 'sections' },
     { type: 'stats', label: 'Counter', icon: 'analytics', category: 'sections' },
     { type: 'card_grid', label: 'Card Grid', icon: 'grid_view', category: 'sections' },
 
@@ -103,6 +104,25 @@ export const useElementorEditor = () => {
         ctaLink: '#',
         height: 'large',
         showParticles: true
+      },
+      hero_split: {
+        headingLine1: 'Empowering Ghana\'s',
+        headingLine1Color: 'primary',
+        headingLine2: 'Intellectual',
+        headingLine2Color: 'purple',
+        headingLine3: 'Backbone',
+        headingLine3Color: 'primary',
+        subheading: 'Join a prestigious ecosystem of research and education institutions.',
+        primaryCtaText: 'Get Started',
+        primaryCtaLink: '#',
+        secondaryCtaText: 'Learn More',
+        secondaryCtaLink: '#',
+        featureBoxTopText: 'FEATURE',
+        featureBoxMainText: 'MAIN TEXT',
+        featureBoxBottomText: 'TAGLINE',
+        featureBoxColor: 'teal',
+        height: 'large',
+        showDecorations: true
       },
       stats: {
         heading: 'Our Achievements',

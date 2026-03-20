@@ -291,6 +291,111 @@ class PageResource extends Resource
                                                     ->default(true),
                                             ]),
 
+                                        Block::make('hero_split')
+                                            ->label('Hero Split Section')
+                                            ->icon('heroicon-o-rectangle-group')
+                                            ->schema([
+                                                Forms\Components\Fieldset::make('Heading Configuration')
+                                                    ->schema([
+                                                        Forms\Components\TextInput::make('headingLine1')
+                                                            ->label('Heading Line 1')
+                                                            ->placeholder('Empowering Ghana\'s'),
+                                                        Forms\Components\Select::make('headingLine1Color')
+                                                            ->label('Line 1 Color')
+                                                            ->options([
+                                                                'primary' => 'Primary (Navy Blue)',
+                                                                'purple' => 'Purple',
+                                                                'accent' => 'Accent (Cyan)',
+                                                                'secondary' => 'Secondary (Green)',
+                                                                'gray' => 'Gray',
+                                                            ])
+                                                            ->default('primary'),
+                                                        Forms\Components\TextInput::make('headingLine2')
+                                                            ->label('Heading Line 2')
+                                                            ->placeholder('Intellectual'),
+                                                        Forms\Components\Select::make('headingLine2Color')
+                                                            ->label('Line 2 Color')
+                                                            ->options([
+                                                                'primary' => 'Primary (Navy Blue)',
+                                                                'purple' => 'Purple',
+                                                                'accent' => 'Accent (Cyan)',
+                                                                'secondary' => 'Secondary (Green)',
+                                                                'gray' => 'Gray',
+                                                            ])
+                                                            ->default('purple'),
+                                                        Forms\Components\TextInput::make('headingLine3')
+                                                            ->label('Heading Line 3')
+                                                            ->placeholder('Backbone'),
+                                                        Forms\Components\Select::make('headingLine3Color')
+                                                            ->label('Line 3 Color')
+                                                            ->options([
+                                                                'primary' => 'Primary (Navy Blue)',
+                                                                'purple' => 'Purple',
+                                                                'accent' => 'Accent (Cyan)',
+                                                                'secondary' => 'Secondary (Green)',
+                                                                'gray' => 'Gray',
+                                                            ])
+                                                            ->default('primary'),
+                                                    ])
+                                                    ->columns(2),
+                                                Forms\Components\Textarea::make('subheading')
+                                                    ->label('Subheading')
+                                                    ->rows(3)
+                                                    ->placeholder('Join a prestigious ecosystem...'),
+                                                Forms\Components\Fieldset::make('Call to Action Buttons')
+                                                    ->schema([
+                                                        Forms\Components\TextInput::make('primaryCtaText')
+                                                            ->label('Primary Button Text')
+                                                            ->placeholder('Apply for Membership'),
+                                                        Forms\Components\TextInput::make('primaryCtaLink')
+                                                            ->label('Primary Button Link')
+                                                            ->placeholder('/membership/apply'),
+                                                        Forms\Components\TextInput::make('secondaryCtaText')
+                                                            ->label('Secondary Button Text')
+                                                            ->placeholder('View Benefits'),
+                                                        Forms\Components\TextInput::make('secondaryCtaLink')
+                                                            ->label('Secondary Button Link')
+                                                            ->placeholder('/membership/benefits'),
+                                                    ])
+                                                    ->columns(2),
+                                                Forms\Components\Fieldset::make('Feature Box (Right Side)')
+                                                    ->schema([
+                                                        Forms\Components\TextInput::make('featureBoxTopText')
+                                                            ->label('Top Text (Small)')
+                                                            ->placeholder('MADEMIIC'),
+                                                        Forms\Components\TextInput::make('featureBoxMainText')
+                                                            ->label('Main Text (Large)')
+                                                            ->placeholder('NAIDMIIC RESEARCH'),
+                                                        Forms\Components\TextInput::make('featureBoxBottomText')
+                                                            ->label('Bottom Text (Medium)')
+                                                            ->placeholder('SAFE WORK'),
+                                                        Forms\Components\Select::make('featureBoxColor')
+                                                            ->label('Feature Box Color')
+                                                            ->options([
+                                                                'teal' => 'Teal',
+                                                                'primary' => 'Primary (Navy Blue)',
+                                                                'purple' => 'Purple',
+                                                                'accent' => 'Accent (Cyan)',
+                                                                'secondary' => 'Secondary (Green)',
+                                                            ])
+                                                            ->default('teal'),
+                                                    ]),
+                                                Forms\Components\Fieldset::make('Layout Options')
+                                                    ->schema([
+                                                        Forms\Components\Select::make('height')
+                                                            ->options([
+                                                                'medium' => 'Medium (600px)',
+                                                                'large' => 'Large (700px)',
+                                                                'full' => 'Full Screen',
+                                                            ])
+                                                            ->default('large'),
+                                                        Forms\Components\Toggle::make('showDecorations')
+                                                            ->label('Show Background Decorations')
+                                                            ->default(true),
+                                                    ])
+                                                    ->columns(2),
+                                            ]),
+
                                         Block::make('stats')
                                             ->label('Statistics Section')
                                             ->icon('heroicon-o-chart-bar')

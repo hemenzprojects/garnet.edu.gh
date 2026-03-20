@@ -682,6 +682,236 @@
           </div>
         </div>
 
+        <!-- Hero Split Widget -->
+        <div v-else-if="widgetType === 'hero_split'">
+          <div v-if="activeTab === 'Content'" class="space-y-4">
+            <!-- Heading Line 1 -->
+            <div>
+              <label class="block text-sm font-medium text-gray-700 mb-2">Heading Line 1</label>
+              <input
+                type="text"
+                :value="elementData.headingLine1"
+                @input="updateData('headingLine1', ($event.target as HTMLInputElement).value)"
+                placeholder="Empowering Ghana's"
+                class="w-full px-3 py-2 border border-gray-300 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
+              />
+            </div>
+
+            <!-- Heading Line 1 Color -->
+            <div>
+              <label class="block text-sm font-medium text-gray-700 mb-2">Line 1 Color</label>
+              <select
+                :value="elementData.headingLine1Color || 'primary'"
+                @change="updateData('headingLine1Color', ($event.target as HTMLSelectElement).value)"
+                class="w-full px-3 py-2 border border-gray-300 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
+              >
+                <option value="primary">Primary (Navy Blue)</option>
+                <option value="purple">Purple</option>
+                <option value="accent">Accent (Cyan)</option>
+                <option value="secondary">Secondary (Green)</option>
+                <option value="gray">Gray</option>
+              </select>
+            </div>
+
+            <!-- Heading Line 2 -->
+            <div>
+              <label class="block text-sm font-medium text-gray-700 mb-2">Heading Line 2</label>
+              <input
+                type="text"
+                :value="elementData.headingLine2"
+                @input="updateData('headingLine2', ($event.target as HTMLInputElement).value)"
+                placeholder="Intellectual"
+                class="w-full px-3 py-2 border border-gray-300 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
+              />
+            </div>
+
+            <!-- Heading Line 2 Color -->
+            <div>
+              <label class="block text-sm font-medium text-gray-700 mb-2">Line 2 Color</label>
+              <select
+                :value="elementData.headingLine2Color || 'purple'"
+                @change="updateData('headingLine2Color', ($event.target as HTMLSelectElement).value)"
+                class="w-full px-3 py-2 border border-gray-300 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
+              >
+                <option value="primary">Primary (Navy Blue)</option>
+                <option value="purple">Purple</option>
+                <option value="accent">Accent (Cyan)</option>
+                <option value="secondary">Secondary (Green)</option>
+                <option value="gray">Gray</option>
+              </select>
+            </div>
+
+            <!-- Heading Line 3 -->
+            <div>
+              <label class="block text-sm font-medium text-gray-700 mb-2">Heading Line 3</label>
+              <input
+                type="text"
+                :value="elementData.headingLine3"
+                @input="updateData('headingLine3', ($event.target as HTMLInputElement).value)"
+                placeholder="Backbone"
+                class="w-full px-3 py-2 border border-gray-300 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
+              />
+            </div>
+
+            <!-- Heading Line 3 Color -->
+            <div>
+              <label class="block text-sm font-medium text-gray-700 mb-2">Line 3 Color</label>
+              <select
+                :value="elementData.headingLine3Color || 'primary'"
+                @change="updateData('headingLine3Color', ($event.target as HTMLSelectElement).value)"
+                class="w-full px-3 py-2 border border-gray-300 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
+              >
+                <option value="primary">Primary (Navy Blue)</option>
+                <option value="purple">Purple</option>
+                <option value="accent">Accent (Cyan)</option>
+                <option value="secondary">Secondary (Green)</option>
+                <option value="gray">Gray</option>
+              </select>
+            </div>
+
+            <!-- Subheading -->
+            <div>
+              <label class="block text-sm font-medium text-gray-700 mb-2">Subheading</label>
+              <textarea
+                :value="elementData.subheading"
+                @input="updateData('subheading', ($event.target as HTMLTextAreaElement).value)"
+                rows="3"
+                placeholder="Join a prestigious ecosystem..."
+                class="w-full px-3 py-2 border border-gray-300 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
+              ></textarea>
+            </div>
+
+            <!-- Primary CTA Text -->
+            <div>
+              <label class="block text-sm font-medium text-gray-700 mb-2">Primary Button Text</label>
+              <input
+                type="text"
+                :value="elementData.primaryCtaText"
+                @input="updateData('primaryCtaText', ($event.target as HTMLInputElement).value)"
+                placeholder="Get Started"
+                class="w-full px-3 py-2 border border-gray-300 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
+              />
+            </div>
+
+            <!-- Primary CTA Link -->
+            <div>
+              <label class="block text-sm font-medium text-gray-700 mb-2">Primary Button Link</label>
+              <input
+                type="text"
+                :value="elementData.primaryCtaLink"
+                @input="updateData('primaryCtaLink', ($event.target as HTMLInputElement).value)"
+                placeholder="/membership/apply"
+                class="w-full px-3 py-2 border border-gray-300 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
+              />
+            </div>
+
+            <!-- Secondary CTA Text -->
+            <div>
+              <label class="block text-sm font-medium text-gray-700 mb-2">Secondary Button Text</label>
+              <input
+                type="text"
+                :value="elementData.secondaryCtaText"
+                @input="updateData('secondaryCtaText', ($event.target as HTMLInputElement).value)"
+                placeholder="Learn More"
+                class="w-full px-3 py-2 border border-gray-300 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
+              />
+            </div>
+
+            <!-- Secondary CTA Link -->
+            <div>
+              <label class="block text-sm font-medium text-gray-700 mb-2">Secondary Button Link</label>
+              <input
+                type="text"
+                :value="elementData.secondaryCtaLink"
+                @input="updateData('secondaryCtaLink', ($event.target as HTMLInputElement).value)"
+                placeholder="/about"
+                class="w-full px-3 py-2 border border-gray-300 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
+              />
+            </div>
+
+            <!-- Feature Box Top Text -->
+            <div>
+              <label class="block text-sm font-medium text-gray-700 mb-2">Feature Box Top Text</label>
+              <input
+                type="text"
+                :value="elementData.featureBoxTopText"
+                @input="updateData('featureBoxTopText', ($event.target as HTMLInputElement).value)"
+                placeholder="MADEMIIC"
+                class="w-full px-3 py-2 border border-gray-300 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
+              />
+            </div>
+
+            <!-- Feature Box Main Text -->
+            <div>
+              <label class="block text-sm font-medium text-gray-700 mb-2">Feature Box Main Text</label>
+              <input
+                type="text"
+                :value="elementData.featureBoxMainText"
+                @input="updateData('featureBoxMainText', ($event.target as HTMLInputElement).value)"
+                placeholder="NAIDMIIC RESEARCH"
+                class="w-full px-3 py-2 border border-gray-300 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
+              />
+            </div>
+
+            <!-- Feature Box Bottom Text -->
+            <div>
+              <label class="block text-sm font-medium text-gray-700 mb-2">Feature Box Bottom Text</label>
+              <input
+                type="text"
+                :value="elementData.featureBoxBottomText"
+                @input="updateData('featureBoxBottomText', ($event.target as HTMLInputElement).value)"
+                placeholder="SAFE WORK"
+                class="w-full px-3 py-2 border border-gray-300 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
+              />
+            </div>
+          </div>
+
+          <div v-else-if="activeTab === 'Style'" class="space-y-4">
+            <!-- Feature Box Color -->
+            <div>
+              <label class="block text-sm font-medium text-gray-700 mb-2">Feature Box Color</label>
+              <select
+                :value="elementData.featureBoxColor || 'teal'"
+                @change="updateData('featureBoxColor', ($event.target as HTMLSelectElement).value)"
+                class="w-full px-3 py-2 border border-gray-300 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
+              >
+                <option value="teal">Teal</option>
+                <option value="primary">Primary (Navy Blue)</option>
+                <option value="purple">Purple</option>
+                <option value="accent">Accent (Cyan)</option>
+                <option value="secondary">Secondary (Green)</option>
+              </select>
+            </div>
+
+            <!-- Height -->
+            <div>
+              <label class="block text-sm font-medium text-gray-700 mb-2">Section Height</label>
+              <select
+                :value="elementData.height || 'large'"
+                @change="updateData('height', ($event.target as HTMLSelectElement).value)"
+                class="w-full px-3 py-2 border border-gray-300 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
+              >
+                <option value="medium">Medium</option>
+                <option value="large">Large</option>
+                <option value="full">Full Screen</option>
+              </select>
+            </div>
+
+            <!-- Show Decorations -->
+            <div>
+              <label class="flex items-center gap-2 cursor-pointer">
+                <input
+                  type="checkbox"
+                  :checked="elementData.showDecorations"
+                  @change="updateData('showDecorations', ($event.target as HTMLInputElement).checked)"
+                  class="rounded border-gray-300 text-blue-600 focus:ring-2 focus:ring-blue-500"
+                />
+                <span class="text-sm font-medium text-gray-700">Show Background Decorations</span>
+              </label>
+            </div>
+          </div>
+        </div>
+
         <!-- Stats Widget -->
         <div v-else-if="widgetType === 'stats'">
           <div v-if="activeTab === 'Content'" class="space-y-4">

@@ -11,6 +11,7 @@
 
       <!-- Section Blocks -->
       <PageBuilderHero v-else-if="block.type === 'hero'" :data="block.data" :block-id="block.id || `block-${index}`" />
+      <PageBuilderHeroSplit v-else-if="block.type === 'hero_split'" :data="block.data" :block-id="block.id || `block-${index}`" />
       <PageBuilderStats v-else-if="block.type === 'stats'" :data="block.data" :block-id="block.id || `block-${index}`" />
       <PageBuilderTwoColumn v-else-if="block.type === 'two_column'" :data="block.data" :block-id="block.id || `block-${index}`" />
       <PageBuilderCardGrid v-else-if="block.type === 'card_grid'" :data="block.data" :block-id="block.id || `block-${index}`" />
