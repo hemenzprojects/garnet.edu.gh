@@ -1,6 +1,12 @@
 
 <template>
   <section :class="heightClass" class="relative overflow-hidden">
+    <!-- Background Image -->
+    <div v-if="backgroundImageUrl" class="absolute inset-0">
+      <img :src="backgroundImageUrl" alt="" class="w-full h-full object-cover" />
+      <div class="absolute inset-0 bg-white/80"></div>
+    </div>
+
     <!-- Background decorative elements -->
     <div v-if="data.showDecorations" class="absolute inset-0 opacity-5">
       <div class="absolute top-0 right-0 w-96 h-96 bg-primary rounded-full blur-3xl"></div>
@@ -110,12 +116,19 @@ const props = defineProps<{
     featureBoxBottomText?: string
     featureBoxColor?: 'teal' | 'primary' | 'purple' | 'accent' | 'secondary'
 
+    // Background
+    backgroundImage?: string
+
     // Layout Options
     height: 'medium' | 'large' | 'full'
     showDecorations: boolean
   }
   blockId: string
 }>()
+
+const { transformImageUrl } = usePageBuilder()
+
+const backgroundImageUrl = computed(() => transformImageUrl(props.data.backgroundImage || null))
 
 const heightClass = computed(() => {
   const heightMap: Record<string, string> = {

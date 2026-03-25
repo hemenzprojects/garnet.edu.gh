@@ -49,6 +49,7 @@ export const useElementorEditor = () => {
     { type: 'stats', label: 'Counter', icon: 'analytics', category: 'sections' },
     { type: 'card_grid', label: 'Card Grid', icon: 'grid_view', category: 'sections' },
     { type: 'icon_cards', label: 'Icon Cards', icon: 'dashboard_customize', category: 'sections' },
+    { type: 'who_we_are', label: 'Who We Are', icon: 'info', category: 'sections' },
     { type: 'timeline', label: 'Timeline', icon: 'timeline', category: 'sections' },
 
     // Form Widgets
@@ -123,6 +124,7 @@ export const useElementorEditor = () => {
         featureBoxMainText: 'MAIN TEXT',
         featureBoxBottomText: 'TAGLINE',
         featureBoxColor: 'teal',
+        backgroundImage: '',
         height: 'large',
         showDecorations: true
       },
@@ -170,6 +172,78 @@ export const useElementorEditor = () => {
           }
         ],
         columns: '2'
+      },
+      who_we_are: {
+        heading: 'Who We Are',
+        headingColor: '#1E40AF',
+        description: 'GARNET is governed by a Board of Trustees representing our diverse member institutions. We operate on a collaborative model where technical expertise is shared across the network to benefit all.',
+        featureTitleColor: '#1E40AF',
+        features: [
+          {
+            icon: 'users',
+            iconColor: '#1E40AF',
+            iconBgColor: '#EBF5FF',
+            title: 'Member-Driven',
+            description: 'Decisions are made collectively for the advancement of all Ghanaian scholars.'
+          },
+          {
+            icon: 'shield',
+            iconColor: '#1E40AF',
+            iconBgColor: '#EBF5FF',
+            title: 'Trusted Authority',
+            description: 'The sole recognized NREN by the Ministry of Education and international bodies.'
+          }
+        ],
+        statCards: [
+          {
+            label: 'Research',
+            tagBox: 'RESEARCH/EDUCATION/COLLABORATION',
+            mainText: '',
+            subtitle: '',
+            description: '',
+            backgroundColor: '#2F5B5B',
+            backgroundImage: '',
+            showDecorations: true,
+            textEffect: 'normal',
+            size: 'large-tall'
+          },
+          {
+            label: '',
+            tagBox: '',
+            mainText: '10Gbps',
+            subtitle: 'BACKBONE SPEED',
+            description: '',
+            backgroundColor: '#3A5BA6',
+            backgroundImage: '',
+            showDecorations: false,
+            textEffect: 'normal',
+            size: 'normal'
+          },
+          {
+            label: '',
+            tagBox: '',
+            mainText: '40+',
+            subtitle: 'INSTITUTIONS',
+            description: '',
+            backgroundColor: '#7C2D8E',
+            backgroundImage: '',
+            showDecorations: false,
+            textEffect: 'normal',
+            size: 'normal'
+          },
+          {
+            label: '',
+            tagBox: '',
+            mainText: 'TECHNICAL TEAM',
+            subtitle: '',
+            description: '',
+            backgroundColor: '#2F5B5B',
+            backgroundImage: '',
+            showDecorations: false,
+            textEffect: 'glitch',
+            size: 'tall'
+          }
+        ]
       },
       timeline: {
         heading: 'Our History',

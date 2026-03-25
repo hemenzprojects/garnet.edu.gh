@@ -2,7 +2,7 @@
   <section class="py-20 bg-gradient-to-br from-primary to-primary-dark text-white relative overflow-hidden">
     <!-- Background Elements -->
     <div class="absolute inset-0">
-      <div v-for="i in 10" :key="`particle-${i}`" class="absolute w-3 h-3 bg-accent rounded-full opacity-20 animate-float" :style="getParticleStyle(i)"></div>
+      <div v-for="(particle, i) in particles" :key="`particle-${i}`" class="absolute w-3 h-3 bg-accent rounded-full opacity-20 animate-float" :style="particle"></div>
     </div>
 
     <div class="container mx-auto px-4 relative z-10">
@@ -56,18 +56,17 @@ const gridClass = computed(() => {
   return columnsMap[props.data.columns] || columnsMap['4']
 })
 
-const getParticleStyle = (index: number) => {
-  const left = Math.random() * 100
-  const top = Math.random() * 100
-  const delay = Math.random() * 6
-  return {
-    left: `${left}%`,
-    top: `${top}%`,
-    animationDelay: `${delay}s`,
-  }
-}
+// Generate particles only on client-side to avoid hydration mismatch
+const particles = ref<Array<{ left: string; top: string; animationDelay: string }>>([])
 
 onMounted(() => {
+  // Generate particles
+  particles.value = Array.from({ length: 10 }, () => ({
+    left: `${Math.random() * 100}%`,
+    top: `${Math.random() * 100}%`,
+    animationDelay: `${Math.random() * 6}s`,
+  }))
+
   if (props.data.animate) {
     // Counter animation logic would go here
     // For simplicity, we're just displaying the values

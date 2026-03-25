@@ -834,6 +834,14 @@
                 <span class="text-sm font-medium text-gray-700">Show Background Decorations</span>
               </label>
             </div>
+
+            <!-- Background Image -->
+            <ElementorImageUpload
+              :model-value="elementData.backgroundImage || ''"
+              @update:model-value="updateData('backgroundImage', $event)"
+              label="Background Image (Optional)"
+              type="general"
+            />
           </div>
         </div>
 
@@ -1161,6 +1169,277 @@
                 <option value="3">3 Columns</option>
                 <option value="4">4 Columns</option>
               </select>
+            </div>
+          </div>
+        </div>
+
+        <!-- Who We Are Widget -->
+        <div v-else-if="widgetType === 'who_we_are'">
+          <div v-if="activeTab === 'Content'" class="space-y-4">
+            <!-- Heading -->
+            <div>
+              <label class="block text-sm font-medium text-gray-700 mb-2">Section Heading</label>
+              <input
+                type="text"
+                :value="elementData.heading"
+                @input="updateData('heading', ($event.target as HTMLInputElement).value)"
+                placeholder="Who We Are"
+                class="w-full px-3 py-2 border border-gray-300 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
+              />
+            </div>
+
+            <!-- Heading Color -->
+            <ElementorColorPicker
+              :model-value="elementData.headingColor || '#1E40AF'"
+              @update:model-value="updateData('headingColor', $event)"
+              label="Heading Color"
+            />
+
+            <!-- Description -->
+            <div>
+              <label class="block text-sm font-medium text-gray-700 mb-2">Description</label>
+              <textarea
+                :value="elementData.description"
+                @input="updateData('description', ($event.target as HTMLTextAreaElement).value)"
+                rows="4"
+                placeholder="Main description text..."
+                class="w-full px-3 py-2 border border-gray-300 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
+              ></textarea>
+            </div>
+
+            <!-- Feature Title Color -->
+            <ElementorColorPicker
+              :model-value="elementData.featureTitleColor || '#1E40AF'"
+              @update:model-value="updateData('featureTitleColor', $event)"
+              label="Feature Title Color"
+            />
+
+            <!-- Feature Cards -->
+            <div>
+              <label class="block text-sm font-medium text-gray-700 mb-2">Feature Cards</label>
+              <div class="space-y-3">
+                <div
+                  v-for="(feature, index) in elementData.features"
+                  :key="index"
+                  class="p-4 border border-gray-200 rounded-lg bg-gray-50"
+                >
+                  <div class="space-y-3">
+                    <!-- Icon -->
+                    <div>
+                      <label class="block text-xs font-medium text-gray-600 mb-1">Icon</label>
+                      <select
+                        :value="feature.icon || 'users'"
+                        @input="updateWhoWeAreFeature(index, 'icon', ($event.target as HTMLSelectElement).value)"
+                        class="w-full px-2 py-1.5 border border-gray-300 rounded text-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
+                      >
+                        <option value="users">Users / Team</option>
+                        <option value="shield">Shield / Security</option>
+                        <option value="star">Star / Quality</option>
+                        <option value="heart">Heart / Care</option>
+                        <option value="globe">Globe / Global</option>
+                        <option value="lightbulb">Lightbulb / Ideas</option>
+                        <option value="target">Target / Goals</option>
+                      </select>
+                    </div>
+
+                    <!-- Icon Color -->
+                    <ElementorColorPicker
+                      :model-value="feature.iconColor || '#1E40AF'"
+                      @update:model-value="updateWhoWeAreFeature(index, 'iconColor', $event)"
+                      label="Icon Color"
+                    />
+
+                    <!-- Icon Background Color -->
+                    <ElementorColorPicker
+                      :model-value="feature.iconBgColor || '#EBF5FF'"
+                      @update:model-value="updateWhoWeAreFeature(index, 'iconBgColor', $event)"
+                      label="Icon Background"
+                    />
+
+                    <!-- Title -->
+                    <div>
+                      <label class="block text-xs font-medium text-gray-600 mb-1">Title</label>
+                      <input
+                        type="text"
+                        :value="feature.title"
+                        @input="updateWhoWeAreFeature(index, 'title', ($event.target as HTMLInputElement).value)"
+                        placeholder="Member-Driven"
+                        class="w-full px-2 py-1.5 border border-gray-300 rounded text-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
+                      />
+                    </div>
+
+                    <!-- Description -->
+                    <div>
+                      <label class="block text-xs font-medium text-gray-600 mb-1">Description</label>
+                      <textarea
+                        :value="feature.description"
+                        @input="updateWhoWeAreFeature(index, 'description', ($event.target as HTMLTextAreaElement).value)"
+                        placeholder="Feature description..."
+                        rows="3"
+                        class="w-full px-2 py-1.5 border border-gray-300 rounded text-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
+                      ></textarea>
+                    </div>
+
+                    <button
+                      v-if="elementData.features.length > 1"
+                      @click="removeWhoWeAreFeature(index)"
+                      class="text-xs text-red-600 hover:text-red-800 font-medium"
+                    >
+                      Remove Feature
+                    </button>
+                  </div>
+                </div>
+              </div>
+              <button
+                @click="addWhoWeAreFeature"
+                class="mt-3 text-sm text-blue-600 hover:text-blue-800 font-medium"
+              >
+                + Add Feature
+              </button>
+            </div>
+
+            <!-- Stat Cards -->
+            <div>
+              <label class="block text-sm font-medium text-gray-700 mb-2">Stat/Info Cards</label>
+              <div class="space-y-3">
+                <div
+                  v-for="(card, index) in elementData.statCards"
+                  :key="index"
+                  class="p-4 border border-gray-200 rounded-lg bg-gray-50"
+                >
+                  <div class="space-y-3">
+                    <!-- Label -->
+                    <div>
+                      <label class="block text-xs font-medium text-gray-600 mb-1">Label/Tag</label>
+                      <input
+                        type="text"
+                        :value="card.label"
+                        @input="updateWhoWeAreStatCard(index, 'label', ($event.target as HTMLInputElement).value)"
+                        placeholder="Research"
+                        class="w-full px-2 py-1.5 border border-gray-300 rounded text-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
+                      />
+                    </div>
+
+                    <!-- Tag Box -->
+                    <div>
+                      <label class="block text-xs font-medium text-gray-600 mb-1">Tag Box Text</label>
+                      <input
+                        type="text"
+                        :value="card.tagBox"
+                        @input="updateWhoWeAreStatCard(index, 'tagBox', ($event.target as HTMLInputElement).value)"
+                        placeholder="RESEARCH/EDUCATION/COLLABORATION"
+                        class="w-full px-2 py-1.5 border border-gray-300 rounded text-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
+                      />
+                    </div>
+
+                    <!-- Main Text -->
+                    <div>
+                      <label class="block text-xs font-medium text-gray-600 mb-1">Main Text</label>
+                      <input
+                        type="text"
+                        :value="card.mainText"
+                        @input="updateWhoWeAreStatCard(index, 'mainText', ($event.target as HTMLInputElement).value)"
+                        placeholder="10Gbps"
+                        class="w-full px-2 py-1.5 border border-gray-300 rounded text-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
+                      />
+                    </div>
+
+                    <!-- Subtitle -->
+                    <div>
+                      <label class="block text-xs font-medium text-gray-600 mb-1">Subtitle</label>
+                      <input
+                        type="text"
+                        :value="card.subtitle"
+                        @input="updateWhoWeAreStatCard(index, 'subtitle', ($event.target as HTMLInputElement).value)"
+                        placeholder="BACKBONE SPEED"
+                        class="w-full px-2 py-1.5 border border-gray-300 rounded text-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
+                      />
+                    </div>
+
+                    <!-- Description -->
+                    <div>
+                      <label class="block text-xs font-medium text-gray-600 mb-1">Description</label>
+                      <textarea
+                        :value="card.description"
+                        @input="updateWhoWeAreStatCard(index, 'description', ($event.target as HTMLTextAreaElement).value)"
+                        placeholder="Optional description"
+                        rows="2"
+                        class="w-full px-2 py-1.5 border border-gray-300 rounded text-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
+                      ></textarea>
+                    </div>
+
+                    <!-- Background Color -->
+                    <ElementorColorPicker
+                      :model-value="card.backgroundColor || '#1E40AF'"
+                      @update:model-value="updateWhoWeAreStatCard(index, 'backgroundColor', $event)"
+                      label="Background Color"
+                    />
+
+                    <!-- Background Image -->
+                    <ElementorImageUpload
+                      :model-value="card.backgroundImage || ''"
+                      @update:model-value="updateWhoWeAreStatCard(index, 'backgroundImage', $event)"
+                      label="Background Image (Optional)"
+                      type="general"
+                    />
+
+                    <!-- Show Decorations -->
+                    <div>
+                      <label class="flex items-center gap-2 cursor-pointer">
+                        <input
+                          type="checkbox"
+                          :checked="card.showDecorations || false"
+                          @change="updateWhoWeAreStatCard(index, 'showDecorations', ($event.target as HTMLInputElement).checked)"
+                          class="rounded border-gray-300 text-blue-600 focus:ring-2 focus:ring-blue-500"
+                        />
+                        <span class="text-xs font-medium text-gray-700">Show Network Decorations</span>
+                      </label>
+                    </div>
+
+                    <!-- Text Effect -->
+                    <div>
+                      <label class="block text-xs font-medium text-gray-600 mb-1">Text Effect</label>
+                      <select
+                        :value="card.textEffect || 'normal'"
+                        @input="updateWhoWeAreStatCard(index, 'textEffect', ($event.target as HTMLSelectElement).value)"
+                        class="w-full px-2 py-1.5 border border-gray-300 rounded text-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
+                      >
+                        <option value="normal">Normal</option>
+                        <option value="glitch">Glitch/Shadow Effect</option>
+                      </select>
+                    </div>
+
+                    <!-- Card Size -->
+                    <div>
+                      <label class="block text-xs font-medium text-gray-600 mb-1">Card Size</label>
+                      <select
+                        :value="card.size || 'normal'"
+                        @input="updateWhoWeAreStatCard(index, 'size', ($event.target as HTMLSelectElement).value)"
+                        class="w-full px-2 py-1.5 border border-gray-300 rounded text-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
+                      >
+                        <option value="normal">Normal (1 unit)</option>
+                        <option value="large">Large (2 columns wide)</option>
+                        <option value="tall">Tall (2 rows high)</option>
+                        <option value="large-tall">Large & Tall (2x2)</option>
+                      </select>
+                    </div>
+
+                    <button
+                      v-if="elementData.statCards.length > 3"
+                      @click="removeWhoWeAreStatCard(index)"
+                      class="text-xs text-red-600 hover:text-red-800 font-medium"
+                    >
+                      Remove Card
+                    </button>
+                  </div>
+                </div>
+              </div>
+              <button
+                @click="addWhoWeAreStatCard"
+                class="mt-3 text-sm text-blue-600 hover:text-blue-800 font-medium"
+              >
+                + Add Stat Card
+              </button>
             </div>
           </div>
         </div>
@@ -1970,6 +2249,60 @@ const removeIconCardItem = (index: number) => {
   const cards = [...elementData.value.cards]
   cards.splice(index, 1)
   emit('update', { cards })
+}
+
+// Who We Are helpers
+const updateWhoWeAreFeature = (index: number, key: string, value: any) => {
+  const features = [...elementData.value.features]
+  features[index] = { ...features[index], [key]: value }
+  emit('update', { features })
+}
+
+const addWhoWeAreFeature = () => {
+  const features = [...elementData.value.features]
+  features.push({
+    icon: 'users',
+    iconColor: '#1E40AF',
+    iconBgColor: '#EBF5FF',
+    title: 'New Feature',
+    description: 'Feature description...'
+  })
+  emit('update', { features })
+}
+
+const removeWhoWeAreFeature = (index: number) => {
+  const features = [...elementData.value.features]
+  features.splice(index, 1)
+  emit('update', { features })
+}
+
+const updateWhoWeAreStatCard = (index: number, key: string, value: any) => {
+  const statCards = [...elementData.value.statCards]
+  statCards[index] = { ...statCards[index], [key]: value }
+  emit('update', { statCards })
+}
+
+const addWhoWeAreStatCard = () => {
+  const statCards = [...elementData.value.statCards]
+  statCards.push({
+    label: '',
+    tagBox: '',
+    mainText: 'New',
+    subtitle: 'STAT',
+    description: '',
+    backgroundColor: '#1E40AF',
+    backgroundImage: '',
+    showDecorations: false,
+    textEffect: 'normal',
+    size: 'normal'
+  })
+  emit('update', { statCards })
+}
+
+const removeWhoWeAreStatCard = (index: number) => {
+  const statCards = [...elementData.value.statCards]
+  statCards.splice(index, 1)
+  emit('update', { statCards })
 }
 
 // Timeline helpers

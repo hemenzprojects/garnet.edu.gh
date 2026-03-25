@@ -120,6 +120,7 @@
       <PageBuilderStats v-else-if="widget.type === 'stats'" :data="widget.data" :block-id="widget.id" />
       <PageBuilderCardGrid v-else-if="widget.type === 'card_grid'" :data="widget.data" :block-id="widget.id" />
       <PageBuilderIconCards v-else-if="widget.type === 'icon_cards'" :data="widget.data" :block-id="widget.id" />
+      <PageBuilderWhoWeAre v-else-if="widget.type === 'who_we_are'" :data="widget.data" :block-id="widget.id" />
       <PageBuilderTimeline v-else-if="widget.type === 'timeline'" :data="widget.data" :block-id="widget.id" />
       <PageBuilderContactForm v-else-if="widget.type === 'contact_form'" :data="widget.data" :block-id="widget.id" />
       <PageBuilderSearchBox v-else-if="widget.type === 'search_box'" :data="widget.data" :block-id="widget.id" />

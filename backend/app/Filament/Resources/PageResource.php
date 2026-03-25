@@ -392,6 +392,12 @@ class PageResource extends Resource
                                                         Forms\Components\Toggle::make('showDecorations')
                                                             ->label('Show Background Decorations')
                                                             ->default(true),
+                                                        Forms\Components\FileUpload::make('backgroundImage')
+                                                            ->label('Background Image (Optional)')
+                                                            ->image()
+                                                            ->directory('page-builder')
+                                                            ->visibility('public')
+                                                            ->helperText('Background image with white overlay'),
                                                     ])
                                                     ->columns(2),
                                             ]),
@@ -555,6 +561,113 @@ class PageResource extends Resource
                                                         '4' => '4 Columns',
                                                     ])
                                                     ->default('2'),
+                                            ]),
+
+                                        Block::make('who_we_are')
+                                            ->label('Who We Are / About Section')
+                                            ->icon('heroicon-o-information-circle')
+                                            ->schema([
+                                                Forms\Components\TextInput::make('heading')
+                                                    ->label('Section Heading')
+                                                    ->placeholder('Who We Are'),
+                                                Forms\Components\ColorPicker::make('headingColor')
+                                                    ->label('Heading Color')
+                                                    ->default('#1E40AF'),
+                                                Forms\Components\Textarea::make('description')
+                                                    ->label('Description')
+                                                    ->rows(4)
+                                                    ->placeholder('Main description text...'),
+                                                Forms\Components\ColorPicker::make('featureTitleColor')
+                                                    ->label('Feature Title Color')
+                                                    ->default('#1E40AF'),
+                                                Forms\Components\Repeater::make('features')
+                                                    ->label('Feature Cards')
+                                                    ->schema([
+                                                        Forms\Components\Select::make('icon')
+                                                            ->label('Icon')
+                                                            ->options([
+                                                                'users' => 'Users / Team',
+                                                                'shield' => 'Shield / Security',
+                                                                'star' => 'Star / Quality',
+                                                                'heart' => 'Heart / Care',
+                                                                'globe' => 'Globe / Global',
+                                                                'lightbulb' => 'Lightbulb / Ideas',
+                                                                'target' => 'Target / Goals',
+                                                            ])
+                                                            ->default('users'),
+                                                        Forms\Components\ColorPicker::make('iconColor')
+                                                            ->label('Icon Color')
+                                                            ->default('#1E40AF'),
+                                                        Forms\Components\ColorPicker::make('iconBgColor')
+                                                            ->label('Icon Background Color')
+                                                            ->default('#EBF5FF'),
+                                                        Forms\Components\TextInput::make('title')
+                                                            ->label('Title')
+                                                            ->required()
+                                                            ->placeholder('Member-Driven'),
+                                                        Forms\Components\Textarea::make('description')
+                                                            ->label('Description')
+                                                            ->rows(3)
+                                                            ->required()
+                                                            ->placeholder('Feature description...'),
+                                                    ])
+                                                    ->minItems(1)
+                                                    ->maxItems(4)
+                                                    ->defaultItems(2)
+                                                    ->collapsible()
+                                                    ->itemLabel(fn (array $state): ?string => $state['title'] ?? null),
+                                                Forms\Components\Repeater::make('statCards')
+                                                    ->label('Stat/Info Cards (Right Side)')
+                                                    ->schema([
+                                                        Forms\Components\TextInput::make('label')
+                                                            ->label('Label/Tag (Optional)')
+                                                            ->placeholder('Research'),
+                                                        Forms\Components\TextInput::make('tagBox')
+                                                            ->label('Tag Box Text (Optional)')
+                                                            ->placeholder('RESEARCH/EDUCATION/COLLABORATION'),
+                                                        Forms\Components\TextInput::make('mainText')
+                                                            ->label('Main Text')
+                                                            ->placeholder('10Gbps'),
+                                                        Forms\Components\TextInput::make('subtitle')
+                                                            ->label('Subtitle')
+                                                            ->placeholder('BACKBONE SPEED'),
+                                                        Forms\Components\Textarea::make('description')
+                                                            ->label('Description (Optional)')
+                                                            ->rows(2),
+                                                        Forms\Components\ColorPicker::make('backgroundColor')
+                                                            ->label('Background Color')
+                                                            ->default('#1E40AF'),
+                                                        Forms\Components\FileUpload::make('backgroundImage')
+                                                            ->label('Background Image (Optional)')
+                                                            ->image()
+                                                            ->directory('page-builder')
+                                                            ->visibility('public'),
+                                                        Forms\Components\Toggle::make('showDecorations')
+                                                            ->label('Show Network Decorations')
+                                                            ->default(false)
+                                                            ->helperText('Shows network node graphics (for Research card)'),
+                                                        Forms\Components\Select::make('textEffect')
+                                                            ->label('Text Effect')
+                                                            ->options([
+                                                                'normal' => 'Normal',
+                                                                'glitch' => 'Glitch/Shadow Effect',
+                                                            ])
+                                                            ->default('normal'),
+                                                        Forms\Components\Select::make('size')
+                                                            ->label('Card Size')
+                                                            ->options([
+                                                                'normal' => 'Normal (1 unit)',
+                                                                'large' => 'Large (2 columns wide)',
+                                                                'tall' => 'Tall (2 rows high)',
+                                                                'large-tall' => 'Large & Tall (2x2)',
+                                                            ])
+                                                            ->default('normal'),
+                                                    ])
+                                                    ->minItems(3)
+                                                    ->maxItems(6)
+                                                    ->defaultItems(4)
+                                                    ->collapsible()
+                                                    ->itemLabel(fn (array $state): ?string => $state['mainText'] ?? null),
                                             ]),
 
                                         Block::make('timeline')

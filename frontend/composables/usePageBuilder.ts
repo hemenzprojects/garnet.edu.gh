@@ -18,6 +18,7 @@ export const usePageBuilder = () => {
     two_column: 'PageBuilderTwoColumn',
     card_grid: 'PageBuilderCardGrid',
     icon_cards: 'PageBuilderIconCards',
+    who_we_are: 'PageBuilderWhoWeAre',
     timeline: 'PageBuilderTimeline',
 
     // Form blocks

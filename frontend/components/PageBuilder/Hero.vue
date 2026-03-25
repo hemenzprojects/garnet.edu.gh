@@ -8,7 +8,7 @@
 
     <!-- Animated Particles -->
     <div v-if="data.showParticles" class="absolute inset-0">
-      <div v-for="i in 20" :key="`particle-${i}`" class="absolute w-2 h-2 bg-accent rounded-full opacity-30 animate-float" :style="getParticleStyle(i)"></div>
+      <div v-for="(particle, i) in particles" :key="`particle-${i}`" class="absolute w-2 h-2 bg-accent rounded-full opacity-30 animate-float" :style="particle"></div>
     </div>
 
     <!-- Content -->
@@ -84,16 +84,16 @@ const overlayClass = computed(() => {
   return overlayMap[props.data.overlay] || overlayMap.gradient
 })
 
-const getParticleStyle = (index: number) => {
-  const left = Math.random() * 100
-  const top = Math.random() * 100
-  const delay = Math.random() * 6
-  return {
-    left: `${left}%`,
-    top: `${top}%`,
-    animationDelay: `${delay}s`,
-  }
-}
+// Generate particles only on client-side to avoid hydration mismatch
+const particles = ref<Array<{ left: string; top: string; animationDelay: string }>>([])
+
+onMounted(() => {
+  particles.value = Array.from({ length: 20 }, () => ({
+    left: `${Math.random() * 100}%`,
+    top: `${Math.random() * 100}%`,
+    animationDelay: `${Math.random() * 6}s`,
+  }))
+})
 </script>
 
 <style scoped>
