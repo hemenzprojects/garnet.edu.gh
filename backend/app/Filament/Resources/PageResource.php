@@ -921,6 +921,56 @@ class PageResource extends Resource
                                                     ])
                                                     ->default('12'),
                                             ]),
+
+                                        Block::make('dynamic_team_members')
+                                            ->label('Team Members (Dynamic)')
+                                            ->icon('heroicon-o-user-group')
+                                            ->schema([
+                                                Forms\Components\TextInput::make('heading')
+                                                    ->label('Section Heading')
+                                                    ->default('Meet our professional and expert team members'),
+                                                Forms\Components\Textarea::make('subheading')
+                                                    ->label('Subheading (Optional)')
+                                                    ->rows(2)
+                                                    ->default('There are many variations of passages of Lorem Ipsum available, but the majority have suffered alteration in some form'),
+                                                Forms\Components\Select::make('limit')
+                                                    ->label('Number of Team Members')
+                                                    ->options([
+                                                        '3' => '3 Members',
+                                                        '4' => '4 Members',
+                                                        '6' => '6 Members',
+                                                        '8' => '8 Members',
+                                                        'all' => 'All Members',
+                                                    ])
+                                                    ->default('4'),
+                                                Forms\Components\Select::make('layout')
+                                                    ->options([
+                                                        'grid' => 'Grid Layout',
+                                                        'list' => 'List Layout',
+                                                    ])
+                                                    ->default('grid'),
+                                                Forms\Components\Select::make('columns')
+                                                    ->label('Grid Columns')
+                                                    ->options([
+                                                        '2' => '2 Columns',
+                                                        '3' => '3 Columns',
+                                                        '4' => '4 Columns',
+                                                    ])
+                                                    ->default('4')
+                                                    ->visible(fn (Get $get) => $get('layout') === 'grid'),
+                                                Forms\Components\Toggle::make('showPhoto')
+                                                    ->label('Show Photos')
+                                                    ->default(true),
+                                                Forms\Components\Toggle::make('showBio')
+                                                    ->label('Show Biography')
+                                                    ->default(false),
+                                                Forms\Components\Toggle::make('showEmail')
+                                                    ->label('Show Email')
+                                                    ->default(false),
+                                                Forms\Components\Toggle::make('showSocialLinks')
+                                                    ->label('Show Social Media Links')
+                                                    ->default(false),
+                                            ]),
                                     ])
                                     ->collapsible()
                                     ->columnSpanFull()

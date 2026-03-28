@@ -43,6 +43,14 @@ export const useApi = () => {
     return await $fetch(`${apiBase}/services/${slug}`)
   }
 
+  const fetchTeamMembers = async (params = {}) => {
+    return await $fetch(`${apiBase}/team-members`, { params })
+  }
+
+  const fetchTeamMember = async (slug: string) => {
+    return await $fetch(`${apiBase}/team-members/${slug}`)
+  }
+
   const fetchSettings = async () => {
     return await $fetch(`${apiBase}/settings`)
   }
@@ -86,6 +94,8 @@ export const useApi = () => {
     fetchMember,
     fetchServices,
     fetchService,
+    fetchTeamMembers,
+    fetchTeamMember,
     fetchSettings,
     fetchBranding,
     fetchPageForEdit,

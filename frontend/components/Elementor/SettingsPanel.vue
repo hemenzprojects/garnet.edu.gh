@@ -2067,6 +2067,125 @@
           </div>
         </div>
 
+        <!-- Dynamic Team Members Widget -->
+        <div v-else-if="widgetType === 'dynamic_team_members'">
+          <div v-if="activeTab === 'Content'" class="space-y-4">
+            <!-- Heading -->
+            <div>
+              <label class="block text-sm font-medium text-gray-700 mb-2">Heading</label>
+              <input
+                type="text"
+                :value="elementData.heading"
+                @input="updateData('heading', ($event.target as HTMLInputElement).value)"
+                class="w-full px-3 py-2 border border-gray-300 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
+              />
+            </div>
+
+            <!-- Subheading -->
+            <div>
+              <label class="block text-sm font-medium text-gray-700 mb-2">Subheading</label>
+              <textarea
+                :value="elementData.subheading"
+                @input="updateData('subheading', ($event.target as HTMLTextAreaElement).value)"
+                rows="3"
+                class="w-full px-3 py-2 border border-gray-300 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
+              ></textarea>
+            </div>
+
+            <!-- Limit -->
+            <div>
+              <label class="block text-sm font-medium text-gray-700 mb-2">Number of Team Members</label>
+              <input
+                type="number"
+                :value="elementData.limit"
+                @input="updateData('limit', parseInt(($event.target as HTMLInputElement).value))"
+                min="1"
+                max="20"
+                class="w-full px-3 py-2 border border-gray-300 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
+              />
+            </div>
+
+            <!-- Layout -->
+            <div>
+              <label class="block text-sm font-medium text-gray-700 mb-2">Layout</label>
+              <select
+                :value="elementData.layout || 'grid'"
+                @change="updateData('layout', ($event.target as HTMLSelectElement).value)"
+                class="w-full px-3 py-2 border border-gray-300 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
+              >
+                <option value="grid">Grid</option>
+                <option value="list">List</option>
+              </select>
+            </div>
+
+            <!-- Columns -->
+            <div v-if="elementData.layout === 'grid' || !elementData.layout">
+              <label class="block text-sm font-medium text-gray-700 mb-2">Columns</label>
+              <select
+                :value="elementData.columns || '4'"
+                @change="updateData('columns', ($event.target as HTMLSelectElement).value)"
+                class="w-full px-3 py-2 border border-gray-300 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
+              >
+                <option value="2">2 Columns</option>
+                <option value="3">3 Columns</option>
+                <option value="4">4 Columns</option>
+              </select>
+            </div>
+
+            <!-- Show Photo -->
+            <div>
+              <label class="flex items-center gap-2 cursor-pointer">
+                <input
+                  type="checkbox"
+                  :checked="elementData.showPhoto"
+                  @change="updateData('showPhoto', ($event.target as HTMLInputElement).checked)"
+                  class="rounded border-gray-300 text-blue-600 focus:ring-2 focus:ring-blue-500"
+                />
+                <span class="text-sm font-medium text-gray-700">Show Photos</span>
+              </label>
+            </div>
+
+            <!-- Show Bio -->
+            <div>
+              <label class="flex items-center gap-2 cursor-pointer">
+                <input
+                  type="checkbox"
+                  :checked="elementData.showBio"
+                  @change="updateData('showBio', ($event.target as HTMLInputElement).checked)"
+                  class="rounded border-gray-300 text-blue-600 focus:ring-2 focus:ring-blue-500"
+                />
+                <span class="text-sm font-medium text-gray-700">Show Biography</span>
+              </label>
+            </div>
+
+            <!-- Show Email -->
+            <div>
+              <label class="flex items-center gap-2 cursor-pointer">
+                <input
+                  type="checkbox"
+                  :checked="elementData.showEmail"
+                  @change="updateData('showEmail', ($event.target as HTMLInputElement).checked)"
+                  class="rounded border-gray-300 text-blue-600 focus:ring-2 focus:ring-blue-500"
+                />
+                <span class="text-sm font-medium text-gray-700">Show Email</span>
+              </label>
+            </div>
+
+            <!-- Show Social Links -->
+            <div>
+              <label class="flex items-center gap-2 cursor-pointer">
+                <input
+                  type="checkbox"
+                  :checked="elementData.showSocialLinks"
+                  @change="updateData('showSocialLinks', ($event.target as HTMLInputElement).checked)"
+                  class="rounded border-gray-300 text-blue-600 focus:ring-2 focus:ring-blue-500"
+                />
+                <span class="text-sm font-medium text-gray-700">Show Social Media Links</span>
+              </label>
+            </div>
+          </div>
+        </div>
+
         <!-- Generic Widget (for widgets without specific settings) -->
         <div v-else>
           <div class="text-center py-8">

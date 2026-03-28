@@ -8,6 +8,7 @@ use App\Models\News;
 use App\Models\Event;
 use App\Models\Service;
 use App\Models\Member;
+use App\Models\TeamMember;
 use Illuminate\Http\Request;
 
 class PageController extends Controller
@@ -111,6 +112,9 @@ class PageController extends Controller
                 case 'dynamic_members':
                     $block['data']['items'] = $this->fetchMembersForBlock($block['data']);
                     break;
+                case 'dynamic_team_members':
+                    $block['data']['items'] = $this->fetchTeamMembersForBlock($block['data']);
+                    break;
             }
 
             return $block;
@@ -176,6 +180,21 @@ class PageController extends Controller
             ->orderBy('name')
             ->limit($limit)
             ->select('id', 'name', 'slug', 'type', 'description', 'logo', 'website')
+            ->get()
+            ->toArray();
+    }
+
+    /**
+     * Fetch team members for dynamic team members block
+     */
+    protected function fetchTeamMembersForBlock(array $config): array
+    {
+        $limit = ($config['limit'] ?? '4') === 'all' ? 999 : (int) $config['limit'];
+
+        return TeamMember::where('is_active', true)
+            ->orderBy('order')
+            ->limit($limit)
+            ->select('id', 'name', 'slug', 'role', 'bio', 'photo', 'email', 'phone', 'social_links')
             ->get()
             ->toArray();
     }

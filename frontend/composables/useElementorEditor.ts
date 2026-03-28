@@ -61,6 +61,7 @@ export const useElementorEditor = () => {
     { type: 'dynamic_events', label: 'Events', icon: 'event', category: 'dynamic' },
     { type: 'dynamic_services', label: 'Services', icon: 'miscellaneous_services', category: 'dynamic' },
     { type: 'dynamic_members', label: 'Members', icon: 'groups', category: 'dynamic' },
+    { type: 'dynamic_team_members', label: 'Team', icon: 'people', category: 'dynamic' },
   ]
 
   const getDefaultWidgetData = (type: string): any => {
@@ -341,6 +342,18 @@ export const useElementorEditor = () => {
         columns: '4',
         showLogo: true,
         showDescription: false
+      },
+      dynamic_team_members: {
+        heading: 'Meet our professional and expert team members',
+        subheading: 'There are many variations of passages of Lorem Ipsum available, but the majority have suffered alteration in some form',
+        items: [],
+        limit: 4,
+        layout: 'grid',
+        columns: '4',
+        showPhoto: true,
+        showBio: false,
+        showEmail: false,
+        showSocialLinks: false
       }
     }
     return defaults[type] || {}

@@ -30,6 +30,7 @@ export const usePageBuilder = () => {
     dynamic_events: 'PageBuilderDynamicEvents',
     dynamic_services: 'PageBuilderDynamicServices',
     dynamic_members: 'PageBuilderDynamicMembers',
+    dynamic_team_members: 'PageBuilderDynamicTeamMembers',
   }
 
   /**
