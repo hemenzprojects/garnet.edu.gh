@@ -14,8 +14,10 @@ COPY . .
 # Build arguments for API URLs
 ARG NUXT_PUBLIC_API_BASE
 ARG NUXT_PUBLIC_BACKEND_URL
+ARG NUXT_API_BASE_SSR
 ENV NUXT_PUBLIC_API_BASE=${NUXT_PUBLIC_API_BASE}
 ENV NUXT_PUBLIC_BACKEND_URL=${NUXT_PUBLIC_BACKEND_URL}
+ENV NUXT_API_BASE_SSR=${NUXT_API_BASE_SSR}
 
 # Build the application
 RUN npm run build
@@ -43,6 +45,7 @@ EXPOSE 3000
 ENV NODE_ENV=production
 ENV HOST=0.0.0.0
 ENV PORT=3000
+# API URLs will be set at runtime via docker-compose
 
 # Health check
 HEALTHCHECK --interval=30s --timeout=3s --start-period=40s \
