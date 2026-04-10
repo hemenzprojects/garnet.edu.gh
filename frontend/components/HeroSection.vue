@@ -22,14 +22,14 @@
     <!-- Animated Particles/Dots -->
     <div class="absolute inset-0 overflow-hidden">
       <div
-        v-for="i in 30"
+        v-for="(particle, i) in particles"
         :key="i"
         class="absolute w-1 h-1 bg-accent rounded-full animate-float opacity-40"
         :style="{
-          left: `${Math.random() * 100}%`,
-          top: `${Math.random() * 100}%`,
-          animationDelay: `${Math.random() * 6}s`,
-          animationDuration: `${4 + Math.random() * 4}s`
+          left: `${particle.left}%`,
+          top: `${particle.top}%`,
+          animationDelay: `${particle.delay}s`,
+          animationDuration: `${particle.duration}s`
         }"
       ></div>
     </div>
@@ -111,6 +111,27 @@
     </div>
   </section>
 </template>
+
+<script setup lang="ts">
+interface Particle {
+  left: number
+  top: number
+  delay: number
+  duration: number
+}
+
+const particles = ref<Particle[]>([])
+
+// Generate particles only on client-side to avoid hydration mismatch
+onMounted(() => {
+  particles.value = Array.from({ length: 30 }, () => ({
+    left: Math.random() * 100,
+    top: Math.random() * 100,
+    delay: Math.random() * 6,
+    duration: 4 + Math.random() * 4
+  }))
+})
+</script>
 
 <style scoped>
 @keyframes spin-slow {
