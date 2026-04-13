@@ -331,14 +331,14 @@ export const useElementorEditor = () => {
         limit: 6,
         layout: 'grid',
         columns: '3',
-        showImage: true,
-        showExcerpt: true
+        showIcons: true,
+        showDescription: true
       },
       dynamic_members: {
         heading: 'Our Members',
         items: [],
         limit: 12,
-        layout: 'grid',
+        display: 'grid',
         columns: '4',
         showLogo: true,
         showDescription: false

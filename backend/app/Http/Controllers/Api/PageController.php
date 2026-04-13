@@ -44,6 +44,11 @@ class PageController extends Controller
     {
         $page = Page::findOrFail($id);
 
+        // Transform blocks to include dynamic data for preview
+        if ($page->usesBuilder()) {
+            $page->blocks = $this->transformBlocks($page->blocks);
+        }
+
         return response()->json($page);
     }
 

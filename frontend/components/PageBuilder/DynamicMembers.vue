@@ -5,7 +5,50 @@
         {{ data.heading }}
       </h2>
 
-      <div v-if="data.display === 'grid'" class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-8">
+      <!-- Carousel Display -->
+      <div v-if="displayMode === 'carousel'" class="relative">
+        <Swiper
+          :modules="[Navigation, Pagination, Autoplay]"
+          :slides-per-view="1"
+          :space-between="30"
+          :loop="true"
+          :autoplay="{ delay: 3000, disableOnInteraction: false }"
+          :navigation="true"
+          :pagination="{ clickable: true }"
+          :breakpoints="{
+            640: { slidesPerView: 2 },
+            768: { slidesPerView: 3 },
+            1024: { slidesPerView: 4 },
+            1280: { slidesPerView: 5 },
+          }"
+          class="members-carousel"
+        >
+          <SwiperSlide v-for="member in data.items" :key="member.id">
+            <NuxtLink
+              :to="`/members/${member.slug}`"
+              class="block bg-white rounded-xl shadow-sm hover:shadow-lg transition-all duration-300 p-6 h-full group"
+            >
+              <div v-if="member.logo" class="aspect-square w-full mb-4 flex items-center justify-center bg-gray-50 rounded-lg overflow-hidden">
+                <img
+                  :src="getImageUrl(member.logo)"
+                  :alt="member.name"
+                  class="max-w-full max-h-full object-contain p-4 group-hover:scale-105 transition-transform duration-300"
+                  loading="lazy"
+                />
+              </div>
+              <h3 class="text-center font-semibold text-gray-900 group-hover:text-primary transition">
+                {{ member.name }}
+              </h3>
+              <p v-if="member.type" class="text-center text-sm text-gray-500 mt-1 capitalize">
+                {{ member.type.replace('_', ' ') }}
+              </p>
+            </NuxtLink>
+          </SwiperSlide>
+        </Swiper>
+      </div>
+
+      <!-- Grid Display -->
+      <div v-else-if="displayMode === 'grid'" class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-8">
         <NuxtLink
           v-for="member in data.items"
           :key="member.id"
@@ -29,7 +72,7 @@
         </NuxtLink>
       </div>
 
-      <div v-else-if="data.display === 'logos'" class="grid grid-cols-3 md:grid-cols-4 lg:grid-cols-6 gap-6">
+      <div v-else-if="displayMode === 'logos'" class="grid grid-cols-3 md:grid-cols-4 lg:grid-cols-6 gap-6">
         <a
           v-for="member in data.items"
           :key="member.id"
@@ -49,7 +92,7 @@
         </a>
       </div>
 
-      <div v-else-if="data.display === 'list'" class="max-w-4xl mx-auto space-y-6">
+      <div v-else-if="displayMode === 'list'" class="max-w-4xl mx-auto space-y-6">
         <NuxtLink
           v-for="member in data.items"
           :key="member.id"
@@ -95,11 +138,18 @@
 </template>
 
 <script setup lang="ts">
+import { Swiper, SwiperSlide } from 'swiper/vue'
+import { Navigation, Pagination, Autoplay } from 'swiper/modules'
+import 'swiper/css'
+import 'swiper/css/navigation'
+import 'swiper/css/pagination'
+
 const props = defineProps<{
   data: {
     heading?: string
     items: any[]
-    display: 'grid' | 'logos' | 'list'
+    display?: 'grid' | 'logos' | 'list' | 'carousel'
+    layout?: 'grid' | 'logos' | 'list' | 'carousel' // Backward compatibility
     limit: string | number
   }
   blockId: string
@@ -107,9 +157,53 @@ const props = defineProps<{
 
 const { getImageUrl } = useImageUrl()
 
+// Use new property name, fallback to old one for backward compatibility
+const displayMode = computed(() => props.data.display ?? props.data.layout ?? 'grid')
+
 const truncate = (text: string, length: number) => {
   if (!text) return ''
   if (text.length <= length) return text
   return text.substring(0, length) + '...'
 }
 </script>
+
+<style scoped>
+.members-carousel :deep(.swiper-button-next),
+.members-carousel :deep(.swiper-button-prev) {
+  color: #0ea5e9;
+  background: white;
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
+}
+
+.members-carousel :deep(.swiper-button-next::after),
+.members-carousel :deep(.swiper-button-prev::after) {
+  font-size: 20px;
+  font-weight: bold;
+}
+
+.members-carousel :deep(.swiper-button-next:hover),
+.members-carousel :deep(.swiper-button-prev:hover) {
+  background: #0ea5e9;
+  color: white;
+}
+
+.members-carousel :deep(.swiper-pagination-bullet) {
+  width: 12px;
+  height: 12px;
+  background: #cbd5e1;
+  opacity: 1;
+}
+
+.members-carousel :deep(.swiper-pagination-bullet-active) {
+  background: #0ea5e9;
+  width: 30px;
+  border-radius: 6px;
+}
+
+.members-carousel :deep(.swiper-pagination) {
+  bottom: -40px;
+}
+</style>

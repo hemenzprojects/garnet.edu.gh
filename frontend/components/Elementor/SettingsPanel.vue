@@ -1961,8 +1961,8 @@
               <label class="flex items-center gap-2 cursor-pointer">
                 <input
                   type="checkbox"
-                  :checked="elementData.showImage"
-                  @change="updateData('showImage', ($event.target as HTMLInputElement).checked)"
+                  :checked="elementData.showIcons"
+                  @change="updateData('showIcons', ($event.target as HTMLInputElement).checked)"
                   class="rounded border-gray-300 text-blue-600 focus:ring-2 focus:ring-blue-500"
                 />
                 <span class="text-sm font-medium text-gray-700">Show Image</span>
@@ -1974,8 +1974,8 @@
               <label class="flex items-center gap-2 cursor-pointer">
                 <input
                   type="checkbox"
-                  :checked="elementData.showExcerpt"
-                  @change="updateData('showExcerpt', ($event.target as HTMLInputElement).checked)"
+                  :checked="elementData.showDescription"
+                  @change="updateData('showDescription', ($event.target as HTMLInputElement).checked)"
                   class="rounded border-gray-300 text-blue-600 focus:ring-2 focus:ring-blue-500"
                 />
                 <span class="text-sm font-medium text-gray-700">Show Description</span>
@@ -2011,21 +2011,23 @@
               />
             </div>
 
-            <!-- Layout -->
+            <!-- Display Type -->
             <div>
-              <label class="block text-sm font-medium text-gray-700 mb-2">Layout</label>
+              <label class="block text-sm font-medium text-gray-700 mb-2">Display Type</label>
               <select
-                :value="elementData.layout || 'grid'"
-                @change="updateData('layout', ($event.target as HTMLSelectElement).value)"
+                :value="elementData.display || 'grid'"
+                @change="updateData('display', ($event.target as HTMLSelectElement).value)"
                 class="w-full px-3 py-2 border border-gray-300 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
               >
-                <option value="grid">Grid</option>
+                <option value="grid">Grid (with details)</option>
+                <option value="logos">Logos Only</option>
                 <option value="list">List</option>
+                <option value="carousel">Carousel / Slider</option>
               </select>
             </div>
 
-            <!-- Columns -->
-            <div v-if="elementData.layout === 'grid' || !elementData.layout">
+            <!-- Columns (only for grid and logos) -->
+            <div v-if="(elementData.display === 'grid' || elementData.display === 'logos' || !elementData.display) && elementData.display !== 'carousel'">
               <label class="block text-sm font-medium text-gray-700 mb-2">Columns</label>
               <select
                 :value="elementData.columns || '4'"
