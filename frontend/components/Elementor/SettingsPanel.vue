@@ -1961,8 +1961,8 @@
               <label class="flex items-center gap-2 cursor-pointer">
                 <input
                   type="checkbox"
-                  :checked="elementData.showImage"
-                  @change="updateData('showImage', ($event.target as HTMLInputElement).checked)"
+                  :checked="elementData.showIcons"
+                  @change="updateData('showIcons', ($event.target as HTMLInputElement).checked)"
                   class="rounded border-gray-300 text-blue-600 focus:ring-2 focus:ring-blue-500"
                 />
                 <span class="text-sm font-medium text-gray-700">Show Image</span>
@@ -1974,8 +1974,8 @@
               <label class="flex items-center gap-2 cursor-pointer">
                 <input
                   type="checkbox"
-                  :checked="elementData.showExcerpt"
-                  @change="updateData('showExcerpt', ($event.target as HTMLInputElement).checked)"
+                  :checked="elementData.showDescription"
+                  @change="updateData('showDescription', ($event.target as HTMLInputElement).checked)"
                   class="rounded border-gray-300 text-blue-600 focus:ring-2 focus:ring-blue-500"
                 />
                 <span class="text-sm font-medium text-gray-700">Show Description</span>
@@ -2011,21 +2011,23 @@
               />
             </div>
 
-            <!-- Layout -->
+            <!-- Display Type -->
             <div>
-              <label class="block text-sm font-medium text-gray-700 mb-2">Layout</label>
+              <label class="block text-sm font-medium text-gray-700 mb-2">Display Type</label>
               <select
-                :value="elementData.layout || 'grid'"
-                @change="updateData('layout', ($event.target as HTMLSelectElement).value)"
+                :value="elementData.display || 'grid'"
+                @change="updateData('display', ($event.target as HTMLSelectElement).value)"
                 class="w-full px-3 py-2 border border-gray-300 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
               >
-                <option value="grid">Grid</option>
+                <option value="grid">Grid (with details)</option>
+                <option value="logos">Logos Only</option>
                 <option value="list">List</option>
+                <option value="carousel">Carousel / Slider</option>
               </select>
             </div>
 
-            <!-- Columns -->
-            <div v-if="elementData.layout === 'grid' || !elementData.layout">
+            <!-- Columns (only for grid and logos) -->
+            <div v-if="(elementData.display === 'grid' || elementData.display === 'logos' || !elementData.display) && elementData.display !== 'carousel'">
               <label class="block text-sm font-medium text-gray-700 mb-2">Columns</label>
               <select
                 :value="elementData.columns || '4'"
@@ -2186,6 +2188,204 @@
           </div>
         </div>
 
+        <!-- Dynamic Carousel Widget -->
+        <div v-else-if="widgetType === 'dynamic_carousel'">
+          <div v-if="activeTab === 'Content'" class="space-y-4">
+            <!-- Content Type -->
+            <div>
+              <label class="block text-sm font-medium text-gray-700 mb-2">Content Type</label>
+              <select
+                :value="elementData.contentType || 'members'"
+                @change="updateData('contentType', ($event.target as HTMLSelectElement).value)"
+                class="w-full px-3 py-2 border border-gray-300 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
+              >
+                <option value="members">Members</option>
+                <option value="services">Services</option>
+                <option value="news">News/Posts</option>
+                <option value="events">Events</option>
+                <option value="team_members">Team Members</option>
+              </select>
+            </div>
+
+            <!-- Heading -->
+            <div>
+              <label class="block text-sm font-medium text-gray-700 mb-2">Heading</label>
+              <input
+                type="text"
+                :value="elementData.heading"
+                @input="updateData('heading', ($event.target as HTMLInputElement).value)"
+                class="w-full px-3 py-2 border border-gray-300 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
+              />
+            </div>
+
+            <!-- Subheading -->
+            <div>
+              <label class="block text-sm font-medium text-gray-700 mb-2">Subheading (Optional)</label>
+              <textarea
+                :value="elementData.subheading"
+                @input="updateData('subheading', ($event.target as HTMLTextAreaElement).value)"
+                rows="2"
+                class="w-full px-3 py-2 border border-gray-300 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
+              ></textarea>
+            </div>
+
+            <!-- Limit -->
+            <div>
+              <label class="block text-sm font-medium text-gray-700 mb-2">Number of Items</label>
+              <input
+                type="number"
+                :value="elementData.limit"
+                @input="updateData('limit', parseInt(($event.target as HTMLInputElement).value))"
+                min="1"
+                max="50"
+                class="w-full px-3 py-2 border border-gray-300 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
+              />
+            </div>
+
+            <!-- Items Per View -->
+            <div>
+              <label class="block text-sm font-medium text-gray-700 mb-2">Items Per View (Desktop)</label>
+              <select
+                :value="elementData.itemsPerView || 4"
+                @change="updateData('itemsPerView', parseInt(($event.target as HTMLSelectElement).value))"
+                class="w-full px-3 py-2 border border-gray-300 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
+              >
+                <option value="2">2 Items</option>
+                <option value="3">3 Items</option>
+                <option value="4">4 Items</option>
+                <option value="5">5 Items</option>
+                <option value="6">6 Items</option>
+              </select>
+            </div>
+
+            <!-- Autoplay -->
+            <div>
+              <label class="flex items-center gap-2 cursor-pointer">
+                <input
+                  type="checkbox"
+                  :checked="elementData.autoplay !== false"
+                  @change="updateData('autoplay', ($event.target as HTMLInputElement).checked)"
+                  class="rounded border-gray-300 text-blue-600 focus:ring-2 focus:ring-blue-500"
+                />
+                <span class="text-sm font-medium text-gray-700">Enable Autoplay</span>
+              </label>
+            </div>
+
+            <!-- Autoplay Delay -->
+            <div v-if="elementData.autoplay !== false">
+              <label class="block text-sm font-medium text-gray-700 mb-2">Autoplay Delay (ms)</label>
+              <input
+                type="number"
+                :value="elementData.autoplayDelay || 3000"
+                @input="updateData('autoplayDelay', parseInt(($event.target as HTMLInputElement).value))"
+                min="1000"
+                max="10000"
+                step="500"
+                class="w-full px-3 py-2 border border-gray-300 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
+              />
+            </div>
+
+            <!-- Show Navigation -->
+            <div>
+              <label class="flex items-center gap-2 cursor-pointer">
+                <input
+                  type="checkbox"
+                  :checked="elementData.showNavigation !== false"
+                  @change="updateData('showNavigation', ($event.target as HTMLInputElement).checked)"
+                  class="rounded border-gray-300 text-blue-600 focus:ring-2 focus:ring-blue-500"
+                />
+                <span class="text-sm font-medium text-gray-700">Show Navigation Arrows</span>
+              </label>
+            </div>
+
+            <!-- Show Pagination -->
+            <div>
+              <label class="flex items-center gap-2 cursor-pointer">
+                <input
+                  type="checkbox"
+                  :checked="elementData.showPagination !== false"
+                  @change="updateData('showPagination', ($event.target as HTMLInputElement).checked)"
+                  class="rounded border-gray-300 text-blue-600 focus:ring-2 focus:ring-blue-500"
+                />
+                <span class="text-sm font-medium text-gray-700">Show Pagination Dots</span>
+              </label>
+            </div>
+          </div>
+
+          <!-- Style Tab -->
+          <div v-if="activeTab === 'Style'" class="space-y-4">
+            <h3 class="text-sm font-semibold text-gray-900 mb-3">Navigation Arrows</h3>
+
+            <!-- Navigation Color -->
+            <div>
+              <label class="block text-sm font-medium text-gray-700 mb-2">Arrow Color</label>
+              <input
+                type="color"
+                :value="elementData.navigationColor || '#0ea5e9'"
+                @input="updateData('navigationColor', ($event.target as HTMLInputElement).value)"
+                class="w-full h-10 border border-gray-300 rounded-lg cursor-pointer"
+              />
+            </div>
+
+            <!-- Navigation Background Color -->
+            <div>
+              <label class="block text-sm font-medium text-gray-700 mb-2">Arrow Background</label>
+              <input
+                type="color"
+                :value="elementData.navigationBgColor || '#ffffff'"
+                @input="updateData('navigationBgColor', ($event.target as HTMLInputElement).value)"
+                class="w-full h-10 border border-gray-300 rounded-lg cursor-pointer"
+              />
+            </div>
+
+            <!-- Navigation Hover Color -->
+            <div>
+              <label class="block text-sm font-medium text-gray-700 mb-2">Arrow Hover Background</label>
+              <input
+                type="color"
+                :value="elementData.navigationHoverColor || elementData.navigationColor || '#0ea5e9'"
+                @input="updateData('navigationHoverColor', ($event.target as HTMLInputElement).value)"
+                class="w-full h-10 border border-gray-300 rounded-lg cursor-pointer"
+              />
+            </div>
+
+            <hr class="my-4 border-gray-200">
+            <h3 class="text-sm font-semibold text-gray-900 mb-3">Pagination Dots</h3>
+
+            <!-- Pagination Color -->
+            <div>
+              <label class="block text-sm font-medium text-gray-700 mb-2">Dot Color (Inactive)</label>
+              <input
+                type="color"
+                :value="elementData.paginationColor || '#cbd5e1'"
+                @input="updateData('paginationColor', ($event.target as HTMLInputElement).value)"
+                class="w-full h-10 border border-gray-300 rounded-lg cursor-pointer"
+              />
+            </div>
+
+            <!-- Pagination Active Color -->
+            <div>
+              <label class="block text-sm font-medium text-gray-700 mb-2">Dot Color (Active)</label>
+              <input
+                type="color"
+                :value="elementData.paginationActiveColor || elementData.navigationColor || '#0ea5e9'"
+                @input="updateData('paginationActiveColor', ($event.target as HTMLInputElement).value)"
+                class="w-full h-10 border border-gray-300 rounded-lg cursor-pointer"
+              />
+            </div>
+
+            <!-- Reset Colors Button -->
+            <div class="pt-4">
+              <button
+                @click="resetCarouselColors"
+                class="w-full px-4 py-2 bg-gray-100 hover:bg-gray-200 text-gray-700 rounded-lg text-sm font-medium transition-colors"
+              >
+                Reset to Default Colors
+              </button>
+            </div>
+          </div>
+        </div>
+
         <!-- Generic Widget (for widgets without specific settings) -->
         <div v-else>
           <div class="text-center py-8">
@@ -2292,6 +2492,16 @@ const updateImageSize = (key: string, value: any) => {
   const width = { ...elementData.value.width }
   width[key] = value
   emit('update', { width })
+}
+
+const resetCarouselColors = () => {
+  emit('update', {
+    navigationColor: '#0ea5e9',
+    navigationBgColor: '#ffffff',
+    navigationHoverColor: '#0ea5e9',
+    paginationColor: '#cbd5e1',
+    paginationActiveColor: '#0ea5e9'
+  })
 }
 
 const updateSpaceSize = (key: string, value: any) => {

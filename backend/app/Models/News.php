@@ -17,6 +17,7 @@ class News extends Model
         'is_published',
         'is_featured',
         'published_at',
+        'order',
     ];
 
     protected $casts = [

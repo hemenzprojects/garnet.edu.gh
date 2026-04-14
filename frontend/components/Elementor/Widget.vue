@@ -129,6 +129,7 @@
       <PageBuilderDynamicServices v-else-if="widget.type === 'dynamic_services'" :data="widget.data" :block-id="widget.id" />
       <PageBuilderDynamicMembers v-else-if="widget.type === 'dynamic_members'" :data="widget.data" :block-id="widget.id" />
       <PageBuilderDynamicTeamMembers v-else-if="widget.type === 'dynamic_team_members'" :data="widget.data" :block-id="widget.id" />
+      <PageBuilderDynamicCarousel v-else-if="widget.type === 'dynamic_carousel'" :data="widget.data" :block-id="widget.id" />
 
       <!-- Unknown Widget -->
       <div v-else class="p-4 bg-gray-100 rounded text-center">

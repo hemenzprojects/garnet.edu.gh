@@ -23,27 +23,73 @@ class MemberResource extends Resource
     {
         return $form
             ->schema([
-                Forms\Components\TextInput::make('name')
-                    ->required(),
-                Forms\Components\TextInput::make('slug')
-                    ->required(),
-                Forms\Components\TextInput::make('type')
-                    ->required(),
-                Forms\Components\Textarea::make('description')
-                    ->columnSpanFull(),
-                Forms\Components\TextInput::make('logo'),
-                Forms\Components\TextInput::make('website'),
-                Forms\Components\TextInput::make('email')
-                    ->email(),
-                Forms\Components\TextInput::make('phone')
-                    ->tel(),
-                Forms\Components\TextInput::make('location'),
-                Forms\Components\Toggle::make('is_active')
-                    ->required(),
-                Forms\Components\TextInput::make('order')
-                    ->required()
-                    ->numeric()
-                    ->default(0),
+                Forms\Components\Section::make('Basic Information')
+                    ->schema([
+                        Forms\Components\TextInput::make('name')
+                            ->required()
+                            ->live(onBlur: true)
+                            ->afterStateUpdated(fn (string $operation, $state, Forms\Set $set) => $operation === 'create' ? $set('slug', \Illuminate\Support\Str::slug($state)) : null),
+                        Forms\Components\TextInput::make('slug')
+                            ->required()
+                            ->unique(ignoreRecord: true),
+                        Forms\Components\Select::make('type')
+                            ->required()
+                            ->options([
+                                'university' => 'University',
+                                'research_institution' => 'Research Institution',
+                                'corporate_partner' => 'Corporate Partner',
+                                'government_agency' => 'Government Agency',
+                                'ngo' => 'NGO',
+                                'other' => 'Other',
+                            ])
+                            ->native(false),
+                        Forms\Components\Textarea::make('description')
+                            ->rows(3)
+                            ->columnSpanFull(),
+                    ])
+                    ->columns(2),
+
+                Forms\Components\Section::make('Media')
+                    ->schema([
+                        Forms\Components\FileUpload::make('logo')
+                            ->image()
+                            ->disk('public')
+                            ->directory('members/logos')
+                            ->visibility('public')
+                            ->imageEditor()
+                            ->imageEditorAspectRatios([
+                                '1:1',
+                                '16:9',
+                                '4:3',
+                            ])
+                            ->maxSize(2048)
+                            ->columnSpanFull(),
+                    ]),
+
+                Forms\Components\Section::make('Contact Information')
+                    ->schema([
+                        Forms\Components\TextInput::make('website')
+                            ->url()
+                            ->prefix('https://'),
+                        Forms\Components\TextInput::make('email')
+                            ->email(),
+                        Forms\Components\TextInput::make('phone')
+                            ->tel(),
+                        Forms\Components\TextInput::make('location'),
+                    ])
+                    ->columns(2),
+
+                Forms\Components\Section::make('Settings')
+                    ->schema([
+                        Forms\Components\Toggle::make('is_active')
+                            ->default(true)
+                            ->required(),
+                        Forms\Components\TextInput::make('order')
+                            ->numeric()
+                            ->default(0)
+                            ->required(),
+                    ])
+                    ->columns(2),
             ]);
     }
 
@@ -57,8 +103,8 @@ class MemberResource extends Resource
                     ->searchable(),
                 Tables\Columns\TextColumn::make('type')
                     ->searchable(),
-                Tables\Columns\TextColumn::make('logo')
-                    ->searchable(),
+                Tables\Columns\ImageColumn::make('logo')
+                    ->square(),
                 Tables\Columns\TextColumn::make('website')
                     ->searchable(),
                 Tables\Columns\TextColumn::make('email')

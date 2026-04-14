@@ -13,10 +13,10 @@
       <div class="absolute bottom-0 left-0 w-96 h-96 bg-accent rounded-full blur-3xl"></div>
     </div>
 
-    <div class="container mx-auto px-6 lg:px-12 relative z-10 h-full flex items-center">
-      <div class="grid md:grid-cols-2 gap-12 lg:gap-16 items-center w-full">
+    <div class="container mx-auto px-6 lg:px-12 relative z-10 flex items-center">
+      <div class="grid md:grid-cols-2 gap-8 lg:gap-12 items-center w-full">
         <!-- Left Content -->
-        <div class="space-y-6">
+        <div class="space-y-4">
           <h1 class="text-4xl md:text-5xl lg:text-6xl font-bold leading-tight">
             <template v-if="data.headingLine1">
               <span :style="{ color: getHeadingColor(data.headingLine1Color, '#0A1E3E') }">{{ data.headingLine1 }}</span>
@@ -35,7 +35,7 @@
             {{ data.subheading }}
           </p>
 
-          <div class="flex flex-wrap gap-4 pt-4">
+          <div class="flex flex-wrap gap-4 pt-2">
             <NuxtLink
               v-if="data.primaryCtaText && data.primaryCtaLink"
               :to="data.primaryCtaLink"
@@ -57,11 +57,11 @@
         <!-- Right Content -->
         <div class="relative">
           <div
-            class="rounded-2xl p-12 md:p-16 shadow-2xl min-h-[400px] flex items-center justify-center"
+            class="rounded-2xl p-8 md:p-12 shadow-2xl min-h-[300px] flex items-center justify-center"
             :style="getFeatureBoxStyle()"
           >
-            <div class="text-center space-y-8">
-              <div class="space-y-4">
+            <div class="text-center space-y-4">
+              <div class="space-y-3">
                 <!-- Top Divider with Text -->
                 <div v-if="data.featureBoxTopText" class="flex items-center justify-center gap-4">
                   <div class="h-px bg-white/50 flex-1"></div>
@@ -132,11 +132,11 @@ const backgroundImageUrl = computed(() => transformImageUrl(props.data.backgroun
 
 const heightClass = computed(() => {
   const heightMap: Record<string, string> = {
-    medium: 'min-h-[600px] py-16 md:py-20',
-    large: 'min-h-[700px] py-16 md:py-24',
-    full: 'min-h-screen py-16 md:py-24',
+    medium: 'min-h-[500px] max-h-[600px] py-12 md:py-16',
+    large: 'min-h-[600px] max-h-[700px] py-16 md:py-20',
+    full: 'min-h-[700px] max-h-screen py-16 md:py-20',
   }
-  return heightMap[props.data.height] || heightMap.large
+  return heightMap[props.data.height] || heightMap.medium
 })
 
 const getHeadingColor = (color?: string, defaultHex: string = '#0A1E3E') => {

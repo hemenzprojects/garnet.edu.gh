@@ -971,6 +971,90 @@ class PageResource extends Resource
                                                     ->label('Show Social Media Links')
                                                     ->default(false),
                                             ]),
+
+                                        Block::make('dynamic_carousel')
+                                            ->label('Carousel (Dynamic)')
+                                            ->icon('heroicon-o-rectangle-stack')
+                                            ->schema([
+                                                Forms\Components\Select::make('contentType')
+                                                    ->label('Content Type')
+                                                    ->options([
+                                                        'members' => 'Members',
+                                                        'services' => 'Services',
+                                                        'news' => 'News/Posts',
+                                                        'events' => 'Events',
+                                                        'team_members' => 'Team Members',
+                                                    ])
+                                                    ->default('members')
+                                                    ->required()
+                                                    ->live(),
+                                                Forms\Components\TextInput::make('heading')
+                                                    ->label('Section Heading')
+                                                    ->default('Featured Content'),
+                                                Forms\Components\Textarea::make('subheading')
+                                                    ->label('Subheading (Optional)')
+                                                    ->rows(2),
+                                                Forms\Components\Select::make('limit')
+                                                    ->label('Number of Items')
+                                                    ->options([
+                                                        '6' => '6 Items',
+                                                        '9' => '9 Items',
+                                                        '12' => '12 Items',
+                                                        '20' => '20 Items',
+                                                        '40' => '40 Items',
+                                                        'all' => 'All Items',
+                                                    ])
+                                                    ->default('12'),
+                                                Forms\Components\Select::make('itemsPerView')
+                                                    ->label('Items Per View (Desktop)')
+                                                    ->options([
+                                                        '2' => '2 Items',
+                                                        '3' => '3 Items',
+                                                        '4' => '4 Items',
+                                                        '5' => '5 Items',
+                                                        '6' => '6 Items',
+                                                    ])
+                                                    ->default('4'),
+                                                Forms\Components\Toggle::make('autoplay')
+                                                    ->label('Enable Autoplay')
+                                                    ->default(true)
+                                                    ->live(),
+                                                Forms\Components\TextInput::make('autoplayDelay')
+                                                    ->label('Autoplay Delay (ms)')
+                                                    ->numeric()
+                                                    ->default(3000)
+                                                    ->minValue(1000)
+                                                    ->maxValue(10000)
+                                                    ->step(500)
+                                                    ->visible(fn (Get $get) => $get('autoplay') === true),
+                                                Forms\Components\Toggle::make('showNavigation')
+                                                    ->label('Show Navigation Arrows')
+                                                    ->default(true),
+                                                Forms\Components\Toggle::make('showPagination')
+                                                    ->label('Show Pagination Dots')
+                                                    ->default(true),
+                                                Forms\Components\Section::make('Carousel Colors')
+                                                    ->schema([
+                                                        Forms\Components\ColorPicker::make('navigationColor')
+                                                            ->label('Arrow Color')
+                                                            ->default('#0ea5e9'),
+                                                        Forms\Components\ColorPicker::make('navigationBgColor')
+                                                            ->label('Arrow Background')
+                                                            ->default('#ffffff'),
+                                                        Forms\Components\ColorPicker::make('navigationHoverColor')
+                                                            ->label('Arrow Hover Background')
+                                                            ->default('#0ea5e9'),
+                                                        Forms\Components\ColorPicker::make('paginationColor')
+                                                            ->label('Dot Color (Inactive)')
+                                                            ->default('#cbd5e1'),
+                                                        Forms\Components\ColorPicker::make('paginationActiveColor')
+                                                            ->label('Dot Color (Active)')
+                                                            ->default('#0ea5e9'),
+                                                    ])
+                                                    ->columns(2)
+                                                    ->collapsed()
+                                                    ->compact(),
+                                            ]),
                                     ])
                                     ->collapsible()
                                     ->columnSpanFull()

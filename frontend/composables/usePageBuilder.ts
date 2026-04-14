@@ -31,6 +31,7 @@ export const usePageBuilder = () => {
     dynamic_services: 'PageBuilderDynamicServices',
     dynamic_members: 'PageBuilderDynamicMembers',
     dynamic_team_members: 'PageBuilderDynamicTeamMembers',
+    dynamic_carousel: 'PageBuilderDynamicCarousel',
   }
 
   /**

@@ -32,6 +32,7 @@
           <PageBuilderDynamicServices v-else-if="block.type === 'dynamic_services'" :data="block.data" :block-id="block.id || `block-${blockIndex}`" />
           <PageBuilderDynamicMembers v-else-if="block.type === 'dynamic_members'" :data="block.data" :block-id="block.id || `block-${blockIndex}`" />
           <PageBuilderDynamicTeamMembers v-else-if="block.type === 'dynamic_team_members'" :data="block.data" :block-id="block.id || `block-${blockIndex}`" />
+          <PageBuilderDynamicCarousel v-else-if="block.type === 'dynamic_carousel'" :data="block.data" :block-id="block.id || `block-${blockIndex}`" />
 
           <!-- Unknown Block -->
           <PageBuilderUnknown v-else :data="block.data" :block-id="block.id || `block-${blockIndex}`" />
