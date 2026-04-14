@@ -120,6 +120,9 @@ class PageController extends Controller
                 case 'dynamic_team_members':
                     $block['data']['items'] = $this->fetchTeamMembersForBlock($block['data']);
                     break;
+                case 'dynamic_carousel':
+                    $block['data']['items'] = $this->fetchCarouselItems($block['data']);
+                    break;
             }
 
             return $block;
@@ -202,5 +205,28 @@ class PageController extends Controller
             ->select('id', 'name', 'slug', 'role', 'bio', 'photo', 'email', 'phone', 'social_links')
             ->get()
             ->toArray();
+    }
+
+    /**
+     * Fetch items for dynamic carousel block
+     */
+    protected function fetchCarouselItems(array $config): array
+    {
+        $contentType = $config['contentType'] ?? 'members';
+
+        switch ($contentType) {
+            case 'members':
+                return $this->fetchMembersForBlock($config);
+            case 'services':
+                return $this->fetchServicesForBlock($config);
+            case 'news':
+                return $this->fetchNewsForBlock($config);
+            case 'events':
+                return $this->fetchEventsForBlock($config);
+            case 'team_members':
+                return $this->fetchTeamMembersForBlock($config);
+            default:
+                return [];
+        }
     }
 }

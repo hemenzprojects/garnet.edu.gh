@@ -62,6 +62,7 @@ export const useElementorEditor = () => {
     { type: 'dynamic_services', label: 'Services', icon: 'miscellaneous_services', category: 'dynamic' },
     { type: 'dynamic_members', label: 'Members', icon: 'groups', category: 'dynamic' },
     { type: 'dynamic_team_members', label: 'Team', icon: 'people', category: 'dynamic' },
+    { type: 'dynamic_carousel', label: 'Carousel', icon: 'view_carousel', category: 'dynamic' },
   ]
 
   const getDefaultWidgetData = (type: string): any => {
@@ -354,6 +355,23 @@ export const useElementorEditor = () => {
         showBio: false,
         showEmail: false,
         showSocialLinks: false
+      },
+      dynamic_carousel: {
+        heading: 'Featured Content',
+        subheading: '',
+        contentType: 'members',
+        items: [],
+        limit: 12,
+        itemsPerView: 4,
+        autoplay: true,
+        autoplayDelay: 3000,
+        showNavigation: true,
+        showPagination: true,
+        navigationColor: '#0ea5e9',
+        navigationBgColor: '#ffffff',
+        navigationHoverColor: '#0ea5e9',
+        paginationColor: '#cbd5e1',
+        paginationActiveColor: '#0ea5e9'
       }
     }
     return defaults[type] || {}
