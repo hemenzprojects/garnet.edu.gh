@@ -46,6 +46,7 @@ export const useElementorEditor = () => {
     // Section Widgets
     { type: 'hero', label: 'Hero Section', icon: 'wallpaper', category: 'sections' },
     { type: 'hero_split', label: 'Hero Split', icon: 'view_column', category: 'sections' },
+    { type: 'hero_dynamic', label: 'Hero Dynamic', icon: 'dashboard', category: 'sections' },
     { type: 'stats', label: 'Counter', icon: 'analytics', category: 'sections' },
     { type: 'card_grid', label: 'Card Grid', icon: 'grid_view', category: 'sections' },
     { type: 'icon_cards', label: 'Icon Cards', icon: 'dashboard_customize', category: 'sections' },
@@ -111,24 +112,105 @@ export const useElementorEditor = () => {
         showParticles: true
       },
       hero_split: {
-        headingLine1: 'Empowering Ghana\'s',
+        headingLine1: 'Welcome to',
         headingLine1Color: 'primary',
-        headingLine2: 'Intellectual',
+        headingLine2: 'Our Platform',
         headingLine2Color: 'purple',
-        headingLine3: 'Backbone',
+        headingLine3: '',
         headingLine3Color: 'primary',
-        subheading: 'Join a prestigious ecosystem of research and education institutions.',
+        subheading: 'Discover amazing features and services designed to help you succeed.',
         primaryCtaText: 'Get Started',
         primaryCtaLink: '#',
         secondaryCtaText: 'Learn More',
         secondaryCtaLink: '#',
+        showFeatureBox: true,
+        featureBoxTopText: 'FEATURED',
+        featureBoxMainText: 'Innovation',
+        featureBoxBottomText: 'At Your Fingertips',
+        featureBoxColor: 'teal',
+        featureBoxShape: 'rounded',
+        backgroundImage: '',
+        height: 'large',
+        customHeight: 700,
+        showDecorations: true
+      },
+      hero_dynamic: {
+        topBadge: 'SAFETY & TRUST',
+        topBadgeColor: '#14b8a6',
+        topBadgeBgColor: 'rgba(20, 184, 166, 0.1)',
+        headingLine1: 'Safety that moves',
+        headingLine1Color: '#ffffff',
+        headingLine2: 'at city speed.',
+        headingLine2Color: '#14b8a6',
+        headingLine3: '',
+        headingLine3Color: 'primary',
+        subheading: 'We are committed to upholding high standards and safety regulations designed to protect our customers and communities at every step.',
+        primaryCtaText: 'Get Started',
+        primaryCtaLink: '#',
+        primaryCtaStyle: 'filled',
+        primaryCtaColor: '#ffffff',
+        primaryCtaBgColor: '#14b8a6',
+        secondaryCtaText: 'Learn More',
+        secondaryCtaLink: '#',
+        secondaryCtaStyle: 'outline',
+        secondaryCtaColor: '#ffffff',
+        secondaryCtaBgColor: 'transparent',
+        bottomBadges: ['Verified drivers', 'Live trip tracking', '24/7 support'],
+        bottomBadgeTextColor: '#ffffff',
+        bottomBadgeBgColor: 'rgba(255, 255, 255, 0.1)',
+        rightContentType: 'cards',
+        infoCards: [
+          {
+            header: 'LIVE TRIP STATUS',
+            title: 'Active',
+            description: 'Driver ETA: 3 min',
+            progress: 85,
+            progressLabel: 'Driver ETA',
+            progressValue: '3 min',
+            progressColor: '#14b8a6',
+            cardBackgroundColor: 'rgba(255, 255, 255, 0.05)',
+            cardBorderColor: 'rgba(255, 255, 255, 0.1)',
+            headerTextColor: '#9ca3af',
+            titleTextColor: '#ffffff',
+            descriptionTextColor: '#d1d5db'
+          },
+          {
+            header: 'SAFETY CHECK-IN',
+            title: 'All good',
+            description: 'We check rides in real time for unusual route changes and unexpected stops.',
+            cardBackgroundColor: 'rgba(255, 255, 255, 0.05)',
+            cardBorderColor: 'rgba(255, 255, 255, 0.1)',
+            headerTextColor: '#9ca3af',
+            titleTextColor: '#ffffff',
+            descriptionTextColor: '#d1d5db'
+          },
+          {
+            header: 'EMERGENCY ASSIST',
+            title: 'One tap',
+            description: 'Reach local emergency services and share trip details instantly.',
+            cardBackgroundColor: 'rgba(255, 255, 255, 0.05)',
+            cardBorderColor: 'rgba(255, 255, 255, 0.1)',
+            headerTextColor: '#9ca3af',
+            titleTextColor: '#ffffff',
+            descriptionTextColor: '#d1d5db'
+          }
+        ],
         featureBoxTopText: 'FEATURE',
         featureBoxMainText: 'MAIN TEXT',
         featureBoxBottomText: 'TAGLINE',
         featureBoxColor: 'teal',
+        circleImage: '',
+        showCircleImage: true,
+        circleImageSize: 'medium',
+        showHoverOverlay: true,
+        hoverOverlayColor: 'rgba(147, 51, 234, 0.85)',
+        hoverText: '',
         backgroundImage: '',
         height: 'large',
-        showDecorations: true
+        customHeight: 600,
+        showDecorations: true,
+        overlayColor: '#000000',
+        overlayOpacity: 0.5
       },
       stats: {
         heading: 'Our Achievements',
@@ -594,18 +676,30 @@ export const useElementorEditor = () => {
       // Add widgets with column reference
       section.columns.forEach(column => {
         column.widgets.forEach(widget => {
-          blocks.push({
+          const block = {
             id: widget.id,
             type: widget.type,
             data: widget.data,
             _columnId: column.id,
             _sectionId: section.id,
             order: blocks.length
-          })
+          }
+
+          // Debug: Log if widget type is missing or looks like an ID
+          if (!block.type || block.type.startsWith('widget-') || block.type.startsWith('column-')) {
+            console.error('Invalid widget type detected:', {
+              widgetId: widget.id,
+              type: widget.type,
+              widget: widget
+            })
+          }
+
+          blocks.push(block)
         })
       })
     })
 
+    console.log('Exporting blocks:', blocks)
     return blocks
   }
 
