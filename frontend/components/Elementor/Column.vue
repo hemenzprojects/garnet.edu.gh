@@ -6,11 +6,15 @@
     @dragleave="isDragOver = false"
     @drop="handleDrop"
     :class="[
-      'relative flex-1 min-h-[100px] transition-all',
+      'relative min-h-[100px] transition-all',
       isSelected ? 'ring-2 ring-green-500' : '',
       isDragOver ? 'ring-2 ring-blue-400 bg-blue-50' : ''
     ]"
-    :style="{ width: `${column.width}%` }"
+    :style="{
+      flexBasis: `${column.width}%`,
+      flexGrow: 0,
+      flexShrink: 0
+    }"
   >
     <!-- Column Outline when selected -->
     <div

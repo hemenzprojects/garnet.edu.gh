@@ -1,6 +1,6 @@
 
 <template>
-  <section :class="heightClass" class="relative overflow-hidden">
+  <section :class="heightClass" :style="heightStyle" class="relative overflow-hidden">
     <!-- Background Image -->
     <div v-if="backgroundImageUrl" class="absolute inset-0">
       <img :src="backgroundImageUrl" alt="" class="w-full h-full object-cover" />
@@ -13,10 +13,10 @@
       <div class="absolute bottom-0 left-0 w-96 h-96 bg-accent rounded-full blur-3xl"></div>
     </div>
 
-    <div class="container mx-auto px-6 lg:px-12 relative z-10 flex items-center">
-      <div class="grid md:grid-cols-2 gap-8 lg:gap-12 items-center w-full">
+    <div class="relative z-10 flex items-center px-0">
+      <div :class="[widthClass, paddingClass]" :style="widthStyle" class="grid md:grid-cols-2 gap-8 lg:gap-12 items-center">
         <!-- Left Content -->
-        <div class="space-y-4">
+        <div :class="['space-y-4', contentPaddingClass]">
           <h1 class="text-4xl md:text-5xl lg:text-6xl font-bold leading-tight">
             <template v-if="data.headingLine1">
               <span :style="{ color: getHeadingColor(data.headingLine1Color, '#0A1E3E') }">{{ data.headingLine1 }}</span>
@@ -55,9 +55,12 @@
         </div>
 
         <!-- Right Content -->
-        <div class="relative">
+        <div v-if="data.showFeatureBox !== false" :class="['relative', contentPaddingClass]">
           <div
-            class="rounded-2xl p-8 md:p-12 shadow-2xl min-h-[300px] flex items-center justify-center"
+            :class="[
+              'p-8 md:p-12 shadow-2xl min-h-[300px] flex items-center justify-center',
+              data.featureBoxShape === 'circle' ? 'rounded-full aspect-square' : 'rounded-2xl'
+            ]"
             :style="getFeatureBoxStyle()"
           >
             <div class="text-center space-y-4">
@@ -110,17 +113,22 @@ const props = defineProps<{
     secondaryCtaText?: string
     secondaryCtaLink?: string
 
-    // Feature Box
+    // Feature Box (Text Content)
+    showFeatureBox?: boolean
     featureBoxTopText?: string
     featureBoxMainText?: string
     featureBoxBottomText?: string
     featureBoxColor?: 'teal' | 'primary' | 'purple' | 'accent' | 'secondary'
+    featureBoxShape?: 'rounded' | 'circle'
 
     // Background
     backgroundImage?: string
 
     // Layout Options
-    height: 'medium' | 'large' | 'full'
+    height: 'medium' | 'large' | 'full' | 'custom'
+    customHeight?: number
+    width?: 'small' | 'medium' | 'large' | 'full' | 'custom'
+    customWidth?: number
     showDecorations: boolean
   }
   blockId: string
@@ -131,12 +139,65 @@ const { transformImageUrl } = usePageBuilder()
 const backgroundImageUrl = computed(() => transformImageUrl(props.data.backgroundImage || null))
 
 const heightClass = computed(() => {
+  if (props.data.height === 'custom') {
+    return 'py-12 md:py-16'
+  }
   const heightMap: Record<string, string> = {
     medium: 'min-h-[500px] max-h-[600px] py-12 md:py-16',
     large: 'min-h-[600px] max-h-[700px] py-16 md:py-20',
     full: 'min-h-[700px] max-h-screen py-16 md:py-20',
   }
   return heightMap[props.data.height] || heightMap.medium
+})
+
+const heightStyle = computed(() => {
+  if (props.data.height === 'custom' && props.data.customHeight) {
+    return {
+      minHeight: `${props.data.customHeight}px`,
+      maxHeight: `${props.data.customHeight}px`
+    }
+  }
+  return {}
+})
+
+const widthClass = computed(() => {
+  if (props.data.width === 'custom') {
+    return 'mx-auto'
+  }
+  const widthMap: Record<string, string> = {
+    small: 'max-w-4xl mx-auto',
+    medium: 'max-w-6xl mx-auto',
+    large: 'max-w-7xl mx-auto',
+    full: 'w-full',
+  }
+  return widthMap[props.data.width || 'full'] || widthMap.full
+})
+
+const widthStyle = computed(() => {
+  if (props.data.width === 'custom' && props.data.customWidth) {
+    return {
+      maxWidth: `${props.data.customWidth}px`
+    }
+  }
+  return {}
+})
+
+const paddingClass = computed(() => {
+  // No padding for full width - truly edge to edge
+  if (props.data.width === 'full' || !props.data.width) {
+    return ''
+  }
+  // Add padding for constrained widths
+  return 'px-6 lg:px-12'
+})
+
+const contentPaddingClass = computed(() => {
+  // When full width, add padding to content columns only
+  if (props.data.width === 'full' || !props.data.width) {
+    return 'px-6 lg:px-12'
+  }
+  // For constrained widths, no additional padding needed on content
+  return ''
 })
 
 const getHeadingColor = (color?: string, defaultHex: string = '#0A1E3E') => {
@@ -197,5 +258,14 @@ const adjustColorBrightness = (hex: string, percent: number) => {
 </script>
 
 <style scoped>
-/* Additional custom styles if needed */
+@keyframes pulse {
+  0%, 100% {
+    transform: scale(1.1);
+    opacity: 0.3;
+  }
+  50% {
+    transform: scale(1.15);
+    opacity: 0.2;
+  }
+}
 </style>

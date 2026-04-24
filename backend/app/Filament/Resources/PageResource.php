@@ -360,15 +360,22 @@ class PageResource extends Resource
                                                     ->columns(2),
                                                 Forms\Components\Fieldset::make('Feature Box (Right Side)')
                                                     ->schema([
+                                                        Forms\Components\Toggle::make('showFeatureBox')
+                                                            ->label('Show Feature Box')
+                                                            ->default(true)
+                                                            ->live(),
                                                         Forms\Components\TextInput::make('featureBoxTopText')
                                                             ->label('Top Text (Small)')
-                                                            ->placeholder('MADEMIIC'),
+                                                            ->placeholder('MADEMIIC')
+                                                            ->visible(fn (Get $get) => $get('showFeatureBox') !== false),
                                                         Forms\Components\TextInput::make('featureBoxMainText')
                                                             ->label('Main Text (Large)')
-                                                            ->placeholder('NAIDMIIC RESEARCH'),
+                                                            ->placeholder('NAIDMIIC RESEARCH')
+                                                            ->visible(fn (Get $get) => $get('showFeatureBox') !== false),
                                                         Forms\Components\TextInput::make('featureBoxBottomText')
                                                             ->label('Bottom Text (Medium)')
-                                                            ->placeholder('SAFE WORK'),
+                                                            ->placeholder('SAFE WORK')
+                                                            ->visible(fn (Get $get) => $get('showFeatureBox') !== false),
                                                         Forms\Components\Select::make('featureBoxColor')
                                                             ->label('Feature Box Color')
                                                             ->options([
@@ -378,7 +385,16 @@ class PageResource extends Resource
                                                                 'accent' => 'Accent (Cyan)',
                                                                 'secondary' => 'Secondary (Green)',
                                                             ])
-                                                            ->default('teal'),
+                                                            ->default('teal')
+                                                            ->visible(fn (Get $get) => $get('showFeatureBox') !== false),
+                                                        Forms\Components\Select::make('featureBoxShape')
+                                                            ->label('Feature Box Shape')
+                                                            ->options([
+                                                                'rounded' => 'Rounded Square',
+                                                                'circle' => 'Circle',
+                                                            ])
+                                                            ->default('rounded')
+                                                            ->visible(fn (Get $get) => $get('showFeatureBox') !== false),
                                                     ]),
                                                 Forms\Components\Fieldset::make('Layout Options')
                                                     ->schema([
@@ -387,8 +403,37 @@ class PageResource extends Resource
                                                                 'medium' => 'Medium (600px)',
                                                                 'large' => 'Large (700px)',
                                                                 'full' => 'Full Screen',
+                                                                'custom' => 'Custom Height',
                                                             ])
-                                                            ->default('large'),
+                                                            ->default('large')
+                                                            ->live(),
+                                                        Forms\Components\TextInput::make('customHeight')
+                                                            ->label('Custom Height (px)')
+                                                            ->numeric()
+                                                            ->minValue(300)
+                                                            ->maxValue(1000)
+                                                            ->default(700)
+                                                            ->helperText('Set custom height between 300px and 1000px')
+                                                            ->visible(fn (Get $get) => $get('height') === 'custom'),
+                                                        Forms\Components\Select::make('width')
+                                                            ->label('Content Width')
+                                                            ->options([
+                                                                'small' => 'Small (1024px)',
+                                                                'medium' => 'Medium (1280px)',
+                                                                'large' => 'Large (1536px)',
+                                                                'full' => 'Full Width',
+                                                                'custom' => 'Custom Width',
+                                                            ])
+                                                            ->default('full')
+                                                            ->live(),
+                                                        Forms\Components\TextInput::make('customWidth')
+                                                            ->label('Custom Width (px)')
+                                                            ->numeric()
+                                                            ->minValue(800)
+                                                            ->maxValue(1920)
+                                                            ->default(1280)
+                                                            ->helperText('Set custom width between 800px and 1920px')
+                                                            ->visible(fn (Get $get) => $get('width') === 'custom'),
                                                         Forms\Components\Toggle::make('showDecorations')
                                                             ->label('Show Background Decorations')
                                                             ->default(true),
@@ -398,6 +443,336 @@ class PageResource extends Resource
                                                             ->directory('page-builder')
                                                             ->visibility('public')
                                                             ->helperText('Background image with white overlay'),
+                                                    ])
+                                                    ->columns(2),
+                                            ]),
+
+                                        Block::make('hero_dynamic')
+                                            ->label('Hero Dynamic Section')
+                                            ->icon('heroicon-o-sparkles')
+                                            ->schema([
+                                                Forms\Components\Fieldset::make('Top Badge')
+                                                    ->schema([
+                                                        Forms\Components\TextInput::make('topBadge')
+                                                            ->label('Badge Text')
+                                                            ->placeholder('NEW FEATURE'),
+                                                        Forms\Components\ColorPicker::make('topBadgeColor')
+                                                            ->label('Text Color')
+                                                            ->default('#14b8a6'),
+                                                        Forms\Components\ColorPicker::make('topBadgeBgColor')
+                                                            ->label('Background Color')
+                                                            ->default('rgba(20, 184, 166, 0.1)'),
+                                                    ])
+                                                    ->columns(3)
+                                                    ->collapsed(),
+
+                                                Forms\Components\Fieldset::make('Heading Configuration')
+                                                    ->schema([
+                                                        Forms\Components\TextInput::make('headingLine1')
+                                                            ->label('Heading Line 1')
+                                                            ->placeholder('Empowering Ghana\'s'),
+                                                        Forms\Components\Select::make('headingLine1Color')
+                                                            ->label('Line 1 Color')
+                                                            ->options([
+                                                                'primary' => 'Primary (Navy Blue)',
+                                                                'purple' => 'Purple',
+                                                                'accent' => 'Accent (Cyan)',
+                                                                'secondary' => 'Secondary (Green)',
+                                                                'gray' => 'Gray',
+                                                            ])
+                                                            ->default('primary'),
+                                                        Forms\Components\TextInput::make('headingLine2')
+                                                            ->label('Heading Line 2')
+                                                            ->placeholder('Intellectual'),
+                                                        Forms\Components\Select::make('headingLine2Color')
+                                                            ->label('Line 2 Color')
+                                                            ->options([
+                                                                'primary' => 'Primary (Navy Blue)',
+                                                                'purple' => 'Purple',
+                                                                'accent' => 'Accent (Cyan)',
+                                                                'secondary' => 'Secondary (Green)',
+                                                                'gray' => 'Gray',
+                                                            ])
+                                                            ->default('purple'),
+                                                        Forms\Components\TextInput::make('headingLine3')
+                                                            ->label('Heading Line 3')
+                                                            ->placeholder('Backbone'),
+                                                        Forms\Components\Select::make('headingLine3Color')
+                                                            ->label('Line 3 Color')
+                                                            ->options([
+                                                                'primary' => 'Primary (Navy Blue)',
+                                                                'purple' => 'Purple',
+                                                                'accent' => 'Accent (Cyan)',
+                                                                'secondary' => 'Secondary (Green)',
+                                                                'gray' => 'Gray',
+                                                            ])
+                                                            ->default('primary'),
+                                                    ])
+                                                    ->columns(2),
+
+                                                Forms\Components\Textarea::make('subheading')
+                                                    ->label('Subheading')
+                                                    ->rows(3)
+                                                    ->placeholder('Join a prestigious ecosystem...'),
+
+                                                Forms\Components\Fieldset::make('Call to Action Buttons')
+                                                    ->schema([
+                                                        Forms\Components\TextInput::make('primaryCtaText')
+                                                            ->label('Primary Button Text')
+                                                            ->placeholder('Get Started'),
+                                                        Forms\Components\TextInput::make('primaryCtaLink')
+                                                            ->label('Primary Button Link')
+                                                            ->placeholder('/get-started'),
+                                                        Forms\Components\Select::make('primaryCtaStyle')
+                                                            ->label('Primary Button Style')
+                                                            ->options([
+                                                                'filled' => 'Filled',
+                                                                'outline' => 'Outline',
+                                                            ])
+                                                            ->default('filled'),
+                                                        Forms\Components\ColorPicker::make('primaryCtaColor')
+                                                            ->label('Primary Text Color')
+                                                            ->default('#ffffff'),
+                                                        Forms\Components\ColorPicker::make('primaryCtaBgColor')
+                                                            ->label('Primary Background Color')
+                                                            ->default('#14b8a6'),
+                                                        Forms\Components\TextInput::make('secondaryCtaText')
+                                                            ->label('Secondary Button Text')
+                                                            ->placeholder('Learn More'),
+                                                        Forms\Components\TextInput::make('secondaryCtaLink')
+                                                            ->label('Secondary Button Link')
+                                                            ->placeholder('/about'),
+                                                        Forms\Components\Select::make('secondaryCtaStyle')
+                                                            ->label('Secondary Button Style')
+                                                            ->options([
+                                                                'filled' => 'Filled',
+                                                                'outline' => 'Outline',
+                                                            ])
+                                                            ->default('outline'),
+                                                        Forms\Components\ColorPicker::make('secondaryCtaColor')
+                                                            ->label('Secondary Text Color')
+                                                            ->default('#ffffff'),
+                                                        Forms\Components\ColorPicker::make('secondaryCtaBgColor')
+                                                            ->label('Secondary Background Color')
+                                                            ->default('rgba(255, 255, 255, 0.1)'),
+                                                    ])
+                                                    ->columns(2),
+
+                                                Forms\Components\Fieldset::make('Bottom Badges')
+                                                    ->schema([
+                                                        Forms\Components\Repeater::make('bottomBadges')
+                                                            ->label('Badge Items')
+                                                            ->simple(
+                                                                Forms\Components\TextInput::make('badge')
+                                                                    ->label('Badge Text')
+                                                                    ->placeholder('Feature 1')
+                                                            )
+                                                            ->minItems(0)
+                                                            ->maxItems(5)
+                                                            ->helperText('Add badges that will appear below the CTA buttons'),
+                                                        Forms\Components\ColorPicker::make('bottomBadgeTextColor')
+                                                            ->label('Badge Text Color')
+                                                            ->default('#ffffff'),
+                                                        Forms\Components\ColorPicker::make('bottomBadgeBgColor')
+                                                            ->label('Badge Background Color')
+                                                            ->default('rgba(255, 255, 255, 0.1)'),
+                                                    ])
+                                                    ->columns(2)
+                                                    ->collapsed(),
+
+                                                Forms\Components\Fieldset::make('Right Content')
+                                                    ->schema([
+                                                        Forms\Components\Select::make('rightContentType')
+                                                            ->label('Content Type')
+                                                            ->options([
+                                                                'text' => 'Feature Box (Text)',
+                                                                'image' => 'Circular Image',
+                                                                'cards' => 'Info Cards',
+                                                            ])
+                                                            ->default('text')
+                                                            ->live(),
+
+                                                        // Feature Box Options (Text Content)
+                                                        Forms\Components\Fieldset::make('Feature Box Settings')
+                                                            ->schema([
+                                                                Forms\Components\TextInput::make('featureBoxTopText')
+                                                                    ->label('Top Text (Small)')
+                                                                    ->placeholder('NAIDMIIC'),
+                                                                Forms\Components\TextInput::make('featureBoxMainText')
+                                                                    ->label('Main Text (Large)')
+                                                                    ->placeholder('RESEARCH'),
+                                                                Forms\Components\TextInput::make('featureBoxBottomText')
+                                                                    ->label('Bottom Text (Medium)')
+                                                                    ->placeholder('INNOVATION'),
+                                                                Forms\Components\Select::make('featureBoxColor')
+                                                                    ->label('Feature Box Color')
+                                                                    ->options([
+                                                                        'teal' => 'Teal',
+                                                                        'primary' => 'Primary (Navy Blue)',
+                                                                        'purple' => 'Purple',
+                                                                        'accent' => 'Accent (Cyan)',
+                                                                        'secondary' => 'Secondary (Green)',
+                                                                    ])
+                                                                    ->default('teal'),
+                                                            ])
+                                                            ->columns(2)
+                                                            ->visible(fn (Get $get) => $get('rightContentType') === 'text'),
+
+                                                        // Circular Image Options
+                                                        Forms\Components\Fieldset::make('Circular Image Settings')
+                                                            ->schema([
+                                                                Forms\Components\FileUpload::make('circleImage')
+                                                                    ->label('Circle Image')
+                                                                    ->image()
+                                                                    ->directory('page-builder')
+                                                                    ->visibility('public'),
+                                                                Forms\Components\Select::make('circleImageSize')
+                                                                    ->label('Image Size')
+                                                                    ->options([
+                                                                        'small' => 'Small (250px)',
+                                                                        'medium' => 'Medium (350px)',
+                                                                        'large' => 'Large (450px)',
+                                                                        'xlarge' => 'Extra Large (550px)',
+                                                                    ])
+                                                                    ->default('medium'),
+                                                                Forms\Components\Toggle::make('showHoverOverlay')
+                                                                    ->label('Show Hover Overlay')
+                                                                    ->default(false)
+                                                                    ->live(),
+                                                                Forms\Components\ColorPicker::make('hoverOverlayColor')
+                                                                    ->label('Hover Overlay Color')
+                                                                    ->default('rgba(147, 51, 234, 0.85)')
+                                                                    ->visible(fn (Get $get) => $get('showHoverOverlay') === true),
+                                                                Forms\Components\TextInput::make('hoverText')
+                                                                    ->label('Hover Text')
+                                                                    ->placeholder('Learn More')
+                                                                    ->visible(fn (Get $get) => $get('showHoverOverlay') === true),
+                                                            ])
+                                                            ->columns(2)
+                                                            ->visible(fn (Get $get) => $get('rightContentType') === 'image'),
+
+                                                        // Info Cards Options
+                                                        Forms\Components\Fieldset::make('Info Cards Settings')
+                                                            ->schema([
+                                                                Forms\Components\Repeater::make('infoCards')
+                                                                    ->label('Cards')
+                                                                    ->schema([
+                                                                        Forms\Components\TextInput::make('header')
+                                                                            ->label('Header (Small Text)')
+                                                                            ->placeholder('UPCOMING EVENT'),
+                                                                        Forms\Components\TextInput::make('title')
+                                                                            ->label('Title (Large Text)')
+                                                                            ->required()
+                                                                            ->placeholder('May 15-17'),
+                                                                        Forms\Components\Textarea::make('description')
+                                                                            ->label('Description')
+                                                                            ->rows(2)
+                                                                            ->placeholder('Annual conference...'),
+                                                                        Forms\Components\TextInput::make('progress')
+                                                                            ->label('Progress (0-100)')
+                                                                            ->numeric()
+                                                                            ->minValue(0)
+                                                                            ->maxValue(100)
+                                                                            ->placeholder('75'),
+                                                                        Forms\Components\TextInput::make('progressLabel')
+                                                                            ->label('Progress Label')
+                                                                            ->placeholder('Progress'),
+                                                                        Forms\Components\TextInput::make('progressValue')
+                                                                            ->label('Progress Value Display')
+                                                                            ->placeholder('75'),
+                                                                        Forms\Components\ColorPicker::make('progressColor')
+                                                                            ->label('Progress Bar Color')
+                                                                            ->default('#14b8a6'),
+                                                                        Forms\Components\Section::make('Card Colors')
+                                                                            ->schema([
+                                                                                Forms\Components\ColorPicker::make('cardBackgroundColor')
+                                                                                    ->label('Card Background Color')
+                                                                                    ->default('rgba(255, 255, 255, 0.05)'),
+                                                                                Forms\Components\ColorPicker::make('cardBorderColor')
+                                                                                    ->label('Card Border Color')
+                                                                                    ->default('rgba(255, 255, 255, 0.1)'),
+                                                                                Forms\Components\ColorPicker::make('headerTextColor')
+                                                                                    ->label('Header Text Color')
+                                                                                    ->default('#9ca3af'),
+                                                                                Forms\Components\ColorPicker::make('titleTextColor')
+                                                                                    ->label('Title Text Color')
+                                                                                    ->default('#ffffff'),
+                                                                                Forms\Components\ColorPicker::make('descriptionTextColor')
+                                                                                    ->label('Description Text Color')
+                                                                                    ->default('#d1d5db'),
+                                                                            ])
+                                                                            ->columns(2)
+                                                                            ->collapsed()
+                                                                            ->compact(),
+                                                                    ])
+                                                                    ->minItems(1)
+                                                                    ->maxItems(3)
+                                                                    ->collapsible()
+                                                                    ->itemLabel(fn (array $state): ?string => $state['title'] ?? null),
+                                                            ])
+                                                            ->visible(fn (Get $get) => $get('rightContentType') === 'cards'),
+                                                    ]),
+
+                                                Forms\Components\Fieldset::make('Layout Options')
+                                                    ->schema([
+                                                        Forms\Components\FileUpload::make('backgroundImage')
+                                                            ->label('Background Image (Optional)')
+                                                            ->image()
+                                                            ->directory('page-builder')
+                                                            ->visibility('public')
+                                                            ->helperText('Background image with overlay'),
+                                                        Forms\Components\ColorPicker::make('overlayColor')
+                                                            ->label('Background Overlay Color')
+                                                            ->default('#000000')
+                                                            ->helperText('Color of the overlay on top of the background image'),
+                                                        Forms\Components\TextInput::make('overlayOpacity')
+                                                            ->label('Overlay Opacity (0-1)')
+                                                            ->numeric()
+                                                            ->minValue(0)
+                                                            ->maxValue(1)
+                                                            ->step(0.05)
+                                                            ->default(0.5)
+                                                            ->helperText('0 = transparent, 1 = fully opaque'),
+                                                        Forms\Components\Select::make('height')
+                                                            ->options([
+                                                                'medium' => 'Medium (500-600px)',
+                                                                'large' => 'Large (600-700px)',
+                                                                'full' => 'Full Screen (700px+)',
+                                                                'custom' => 'Custom Height',
+                                                            ])
+                                                            ->default('large')
+                                                            ->live(),
+                                                        Forms\Components\TextInput::make('customHeight')
+                                                            ->label('Custom Height (px)')
+                                                            ->numeric()
+                                                            ->minValue(300)
+                                                            ->maxValue(1000)
+                                                            ->default(600)
+                                                            ->helperText('Set custom height between 300px and 1000px')
+                                                            ->visible(fn (Get $get) => $get('height') === 'custom'),
+                                                        Forms\Components\Select::make('width')
+                                                            ->label('Content Width')
+                                                            ->options([
+                                                                'small' => 'Small (1024px)',
+                                                                'medium' => 'Medium (1280px)',
+                                                                'large' => 'Large (1536px)',
+                                                                'full' => 'Full Width',
+                                                                'custom' => 'Custom Width',
+                                                            ])
+                                                            ->default('full')
+                                                            ->live(),
+                                                        Forms\Components\TextInput::make('customWidth')
+                                                            ->label('Custom Width (px)')
+                                                            ->numeric()
+                                                            ->minValue(800)
+                                                            ->maxValue(1920)
+                                                            ->default(1280)
+                                                            ->helperText('Set custom width between 800px and 1920px')
+                                                            ->visible(fn (Get $get) => $get('width') === 'custom'),
+                                                        Forms\Components\Toggle::make('showDecorations')
+                                                            ->label('Show Background Decorations')
+                                                            ->default(true)
+                                                            ->helperText('Animated gradient circles and decorative elements'),
                                                     ])
                                                     ->columns(2),
                                             ]),
