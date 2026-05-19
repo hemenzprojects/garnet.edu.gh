@@ -11,7 +11,7 @@ services:
     volumes:
       # Only mount .env file and storage directories, not the entire source code
       # Source code and vendor are baked into the Docker image
-      - ./backend/.env:/var/www/html/.env:ro
+      - ./backend/.env:/var/www/html/.env
       - backend_storage:/var/www/html/storage/app
       - backend_logs:/var/www/html/storage/logs
     environment:
