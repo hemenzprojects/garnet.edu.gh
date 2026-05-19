@@ -1,7 +1,10 @@
 export default defineNuxtConfig({
   compatibilityDate: '2024-11-01',
-  devtools: { enabled: true },
+  devtools: { enabled: process.env.NODE_ENV !== 'production' },
   modules: ['@nuxtjs/tailwindcss'],
+
+  // Disable dev-only features in production
+  dev: process.env.NODE_ENV !== 'production',
 
   runtimeConfig: {
     // Server-only runtime config (not exposed to client)
