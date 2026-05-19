@@ -13,6 +13,12 @@ export default defineNuxtConfig({
     minify: true,
   },
 
+  // Disable experimental features that cause build metadata requests
+  experimental: {
+    payloadExtraction: false,
+    renderJsonPayloads: false,
+  },
+
   runtimeConfig: {
     // Server-only runtime config (not exposed to client)
     apiBaseSSR: process.env.NUXT_API_BASE_SSR || 'http://laravel.test/api/v1',
@@ -25,6 +31,7 @@ export default defineNuxtConfig({
   },
 
   app: {
+    buildAssetsDir: '/_nuxt/',
     head: {
       title: 'GARNET - Ghanaian Academic and Research Network',
       meta: [
