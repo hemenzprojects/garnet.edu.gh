@@ -66,10 +66,12 @@ sleep 15
 echo -e "\n${GREEN}[4/6] Configuring Laravel...${NC}"
 
 # Generate application key if not set
-if ! grep -q "APP_KEY=base64:" backend/.env; then
+if ! grep -q "APP_KEY=base64:" backend/.env 2>/dev/null; then
     echo "Generating Laravel application key..."
     docker compose -f docker-compose.prod.yml exec -T backend php artisan key:generate --force
     echo -e "${GREEN}✓ App key generated${NC}"
+else
+    echo -e "${GREEN}✓ App key already set${NC}"
 fi
 
 # Run database migrations
