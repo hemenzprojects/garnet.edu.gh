@@ -84,8 +84,12 @@
                 }"
               />
 
+              <!-- Carousel Block -->
+              <PageBuilderCarousel v-else-if="block.type === 'carousel'" :data="block.data" :block-id="block.id || `block-${blockIndex}`" />
+
               <!-- Section Blocks -->
               <PageBuilderHero v-else-if="block.type === 'hero'" :data="block.data" :block-id="block.id || `block-${blockIndex}`" />
+              <PageBuilderHeroSlider v-else-if="block.type === 'hero_slider'" :data="block.data" :block-id="block.id || `block-${blockIndex}`" />
               <PageBuilderHeroSplit v-else-if="block.type === 'hero_split'" :data="block.data" :block-id="block.id || `block-${blockIndex}`" />
               <PageBuilderHeroDynamic v-else-if="block.type === 'hero_dynamic'" :data="block.data" :block-id="block.id || `block-${blockIndex}`" />
               <PageBuilderStats v-else-if="block.type === 'stats'" :data="block.data" :block-id="block.id || `block-${blockIndex}`" />
@@ -126,6 +130,7 @@
 
             <!-- Section Blocks -->
             <PageBuilderHero v-else-if="block.type === 'hero'" :data="block.data" :block-id="block.id || `block-${blockIndex}`" />
+            <PageBuilderHeroSlider v-else-if="block.type === 'hero_slider'" :data="block.data" :block-id="block.id || `block-${blockIndex}`" />
             <PageBuilderHeroSplit v-else-if="block.type === 'hero_split'" :data="block.data" :block-id="block.id || `block-${blockIndex}`" />
             <PageBuilderHeroDynamic v-else-if="block.type === 'hero_dynamic'" :data="block.data" :block-id="block.id || `block-${blockIndex}`" />
             <PageBuilderStats v-else-if="block.type === 'stats'" :data="block.data" :block-id="block.id || `block-${blockIndex}`" />

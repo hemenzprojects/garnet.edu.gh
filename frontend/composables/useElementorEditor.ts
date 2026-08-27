@@ -45,6 +45,7 @@ export const useElementorEditor = () => {
 
     // Section Widgets
     { type: 'hero', label: 'Hero Section', icon: 'wallpaper', category: 'sections' },
+    { type: 'hero_slider', label: 'Hero Slider', icon: 'view_carousel', category: 'sections' },
     { type: 'hero_split', label: 'Hero Split', icon: 'view_column', category: 'sections' },
     { type: 'hero_dynamic', label: 'Hero Dynamic', icon: 'dashboard', category: 'sections' },
     { type: 'stats', label: 'Counter', icon: 'analytics', category: 'sections' },
@@ -110,6 +111,36 @@ export const useElementorEditor = () => {
         ctaLink: '#',
         height: 'large',
         showParticles: true
+      },
+      hero_slider: {
+        slides: [
+          {
+            backgroundImage: '',
+            backgroundOverlay: 'gradient',
+            preHeading: 'Welcome to',
+            heading: 'Our Platform',
+            headingColor: '#1e293b',
+            subheading: 'Discover amazing features and services designed to help you succeed.',
+            subheadingColor: '#64748b',
+            buttonText: 'Get Started',
+            buttonLink: '#',
+            secondaryButtonText: 'Learn More',
+            secondaryButtonLink: '#',
+            showFeaturedCard: true,
+            featuredTitle: 'Innovation At Your Fingertips',
+            featuredDescription: '',
+            featuredImage: '',
+            featuredImageMode: 'background',
+            contentAlign: 'left'
+          }
+        ],
+        autoplay: true,
+        interval: 6,
+        showIndicators: true,
+        showArrows: true,
+        height: 'large',
+        transition: 'fade',
+        transitionSpeed: 700
       },
       hero_split: {
         headingLine1: 'Welcome to',

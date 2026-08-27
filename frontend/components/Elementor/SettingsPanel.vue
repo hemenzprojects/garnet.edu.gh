@@ -3138,6 +3138,14 @@
           </div>
         </div>
 
+        <!-- Hero Slider Widget -->
+        <div v-else-if="widgetType === 'hero_slider'">
+          <ElementorHeroSliderSettings
+            :widget="currentWidget"
+            @update="handleHeroSliderUpdate"
+          />
+        </div>
+
         <!-- Generic Widget (for widgets without specific settings) -->
         <div v-else>
           <div class="text-center py-8">
@@ -3187,6 +3195,18 @@ const widgetType = computed(() => {
       for (const column of section.columns) {
         const widget = column.widgets.find((w: any) => w.id === props.selectedElement.id)
         if (widget) return widget.type
+      }
+    }
+  }
+  return null
+})
+
+const currentWidget = computed(() => {
+  if (props.selectedElement.type === 'widget') {
+    for (const section of props.sections) {
+      for (const column of section.columns) {
+        const widget = column.widgets.find((w: any) => w.id === props.selectedElement.id)
+        if (widget) return widget
       }
     }
   }
@@ -3281,6 +3301,10 @@ const resetCarouselColors = () => {
     paginationColor: '#cbd5e1',
     paginationActiveColor: '#0ea5e9'
   })
+}
+
+const handleHeroSliderUpdate = (data: any) => {
+  emit('update', data)
 }
 
 const updateSpaceSize = (key: string, value: any) => {

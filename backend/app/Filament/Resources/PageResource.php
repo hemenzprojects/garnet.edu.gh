@@ -244,6 +244,221 @@ class PageResource extends Resource
                                                     ->default('medium'),
                                             ]),
 
+                                        Block::make('carousel')
+                                            ->label('Image Carousel')
+                                            ->icon('heroicon-o-photo')
+                                            ->schema([
+                                                Forms\Components\Repeater::make('slides')
+                                                    ->label('Carousel Slides')
+                                                    ->schema([
+                                                        Forms\Components\FileUpload::make('image')
+                                                            ->label('Slide Image')
+                                                            ->image()
+                                                            ->disk('public')
+                                                            ->directory('pages/carousel')
+                                                            ->imageEditor()
+                                                            ->maxSize(5120)
+                                                            ->required(),
+                                                        Forms\Components\TextInput::make('title')
+                                                            ->label('Slide Title (Optional)'),
+                                                        Forms\Components\Textarea::make('caption')
+                                                            ->label('Slide Caption (Optional)')
+                                                            ->rows(2),
+                                                        Forms\Components\TextInput::make('link')
+                                                            ->label('Link (Optional)')
+                                                            ->url(),
+                                                        Forms\Components\Toggle::make('openInNewTab')
+                                                            ->label('Open Link in New Tab')
+                                                            ->default(false),
+                                                    ])
+                                                    ->minItems(2)
+                                                    ->defaultItems(3)
+                                                    ->columnSpanFull()
+                                                    ->collapsible()
+                                                    ->itemLabel(fn (array $state): ?string => $state['title'] ?? 'Slide'),
+                                                Forms\Components\Toggle::make('autoplay')
+                                                    ->label('Auto-play Carousel')
+                                                    ->default(true),
+                                                Forms\Components\TextInput::make('interval')
+                                                    ->label('Auto-play Interval (seconds)')
+                                                    ->numeric()
+                                                    ->default(5)
+                                                    ->minValue(2)
+                                                    ->maxValue(20)
+                                                    ->visible(fn ($get) => $get('autoplay')),
+                                                Forms\Components\Toggle::make('showIndicators')
+                                                    ->label('Show Slide Indicators')
+                                                    ->default(true),
+                                                Forms\Components\Toggle::make('showArrows')
+                                                    ->label('Show Navigation Arrows')
+                                                    ->default(true),
+                                                Forms\Components\Select::make('height')
+                                                    ->label('Carousel Height')
+                                                    ->options([
+                                                        'small' => 'Small (400px)',
+                                                        'medium' => 'Medium (500px)',
+                                                        'large' => 'Large (600px)',
+                                                        'xlarge' => 'Extra Large (700px)',
+                                                    ])
+                                                    ->default('medium'),
+                                                Forms\Components\Select::make('transition')
+                                                    ->label('Transition Effect')
+                                                    ->options([
+                                                        'slide' => 'Slide',
+                                                        'fade' => 'Fade',
+                                                    ])
+                                                    ->default('slide'),
+                                            ]),
+
+                                        Block::make('hero_slider')
+                                            ->label('Hero Slider / Banner')
+                                            ->icon('heroicon-o-rectangle-stack')
+                                            ->schema([
+                                                Forms\Components\Repeater::make('slides')
+                                                    ->label('Hero Slides')
+                                                    ->schema([
+                                                        Forms\Components\FileUpload::make('backgroundImage')
+                                                            ->label('Background Image')
+                                                            ->image()
+                                                            ->disk('public')
+                                                            ->directory('pages/hero-slider')
+                                                            ->imageEditor()
+                                                            ->maxSize(5120)
+                                                            ->required(),
+                                                        Forms\Components\Select::make('overlay')
+                                                            ->label('Background Overlay')
+                                                            ->options([
+                                                                'none' => 'No Overlay',
+                                                                'dark' => 'Dark Overlay (50%)',
+                                                                'darker' => 'Dark Overlay (70%)',
+                                                                'gradient' => 'Gradient Overlay',
+                                                                'primary' => 'Primary Color Overlay',
+                                                            ])
+                                                            ->default('gradient'),
+                                                        Forms\Components\Fieldset::make('Content')
+                                                            ->schema([
+                                                                Forms\Components\TextInput::make('heading')
+                                                                    ->label('Main Heading')
+                                                                    ->required()
+                                                                    ->maxLength(150),
+                                                                Forms\Components\ColorPicker::make('headingColor')
+                                                                    ->label('Heading Color')
+                                                                    ->default('#ffffff'),
+                                                                Forms\Components\Textarea::make('subheading')
+                                                                    ->label('Subheading / Description')
+                                                                    ->rows(3)
+                                                                    ->maxLength(500),
+                                                                Forms\Components\ColorPicker::make('subheadingColor')
+                                                                    ->label('Subheading Color')
+                                                                    ->default('#ffffff'),
+                                                            ]),
+                                                        Forms\Components\Fieldset::make('Call to Action Buttons')
+                                                            ->schema([
+                                                                Forms\Components\TextInput::make('buttonText')
+                                                                    ->label('Primary Button Text'),
+                                                                Forms\Components\TextInput::make('buttonLink')
+                                                                    ->label('Primary Button Link')
+                                                                    ->url(),
+                                                                Forms\Components\Select::make('buttonStyle')
+                                                                    ->label('Primary Button Style')
+                                                                    ->options([
+                                                                        'primary' => 'Primary (Solid)',
+                                                                        'outline' => 'Outline',
+                                                                        'accent' => 'Accent',
+                                                                    ])
+                                                                    ->default('primary'),
+                                                                Forms\Components\TextInput::make('secondaryButtonText')
+                                                                    ->label('Secondary Button Text'),
+                                                                Forms\Components\TextInput::make('secondaryButtonLink')
+                                                                    ->label('Secondary Button Link')
+                                                                    ->url(),
+                                                            ]),
+                                                        Forms\Components\Fieldset::make('Foreground Element (Optional)')
+                                                            ->schema([
+                                                                Forms\Components\FileUpload::make('foregroundImage')
+                                                                    ->label('Foreground Image/Icon')
+                                                                    ->image()
+                                                                    ->disk('public')
+                                                                    ->directory('pages/hero-slider')
+                                                                    ->imageEditor(),
+                                                                Forms\Components\Select::make('foregroundPosition')
+                                                                    ->label('Foreground Position')
+                                                                    ->options([
+                                                                        'right' => 'Right Side',
+                                                                        'left' => 'Left Side',
+                                                                        'center' => 'Center',
+                                                                    ])
+                                                                    ->default('right'),
+                                                            ]),
+                                                        Forms\Components\Select::make('contentAlign')
+                                                            ->label('Content Alignment')
+                                                            ->options([
+                                                                'left' => 'Left',
+                                                                'center' => 'Center',
+                                                                'right' => 'Right',
+                                                            ])
+                                                            ->default('left'),
+                                                        Forms\Components\Select::make('contentVerticalAlign')
+                                                            ->label('Content Vertical Position')
+                                                            ->options([
+                                                                'top' => 'Top',
+                                                                'center' => 'Center',
+                                                                'bottom' => 'Bottom',
+                                                            ])
+                                                            ->default('center'),
+                                                    ])
+                                                    ->minItems(1)
+                                                    ->defaultItems(1)
+                                                    ->columnSpanFull()
+                                                    ->collapsible()
+                                                    ->itemLabel(fn (array $state): ?string => $state['heading'] ?? 'Slide'),
+                                                Forms\Components\Fieldset::make('Slider Settings')
+                                                    ->schema([
+                                                        Forms\Components\Toggle::make('autoplay')
+                                                            ->label('Auto-play Slider')
+                                                            ->default(true),
+                                                        Forms\Components\TextInput::make('interval')
+                                                            ->label('Auto-play Interval (seconds)')
+                                                            ->numeric()
+                                                            ->default(6)
+                                                            ->minValue(3)
+                                                            ->maxValue(20)
+                                                            ->visible(fn ($get) => $get('autoplay')),
+                                                        Forms\Components\Toggle::make('showIndicators')
+                                                            ->label('Show Slide Indicators (Dots)')
+                                                            ->default(true),
+                                                        Forms\Components\Toggle::make('showArrows')
+                                                            ->label('Show Navigation Arrows')
+                                                            ->default(true),
+                                                        Forms\Components\Toggle::make('showParticles')
+                                                            ->label('Show Animated Particles')
+                                                            ->default(true),
+                                                        Forms\Components\Select::make('height')
+                                                            ->label('Slider Height')
+                                                            ->options([
+                                                                'medium' => 'Medium (600px)',
+                                                                'large' => 'Large (700px)',
+                                                                'xlarge' => 'Extra Large (800px)',
+                                                                'full' => 'Full Screen',
+                                                            ])
+                                                            ->default('large'),
+                                                        Forms\Components\Select::make('transition')
+                                                            ->label('Transition Effect')
+                                                            ->options([
+                                                                'slide' => 'Slide',
+                                                                'fade' => 'Fade',
+                                                                'zoom' => 'Zoom',
+                                                            ])
+                                                            ->default('fade'),
+                                                        Forms\Components\TextInput::make('transitionSpeed')
+                                                            ->label('Transition Speed (milliseconds)')
+                                                            ->numeric()
+                                                            ->default(700)
+                                                            ->minValue(300)
+                                                            ->maxValue(2000),
+                                                    ]),
+                                            ]),
+
                                         // Section Blocks
                                         Block::make('hero')
                                             ->label('Hero Section')
@@ -463,8 +678,7 @@ class PageResource extends Resource
                                                             ->label('Background Color')
                                                             ->default('rgba(20, 184, 166, 0.1)'),
                                                     ])
-                                                    ->columns(3)
-                                                    ->collapsed(),
+                                                    ->columns(3),
 
                                                 Forms\Components\Fieldset::make('Heading Configuration')
                                                     ->schema([
@@ -577,8 +791,7 @@ class PageResource extends Resource
                                                             ->label('Badge Background Color')
                                                             ->default('rgba(255, 255, 255, 0.1)'),
                                                     ])
-                                                    ->columns(2)
-                                                    ->collapsed(),
+                                                    ->columns(2),
 
                                                 Forms\Components\Fieldset::make('Right Content')
                                                     ->schema([
@@ -702,7 +915,7 @@ class PageResource extends Resource
                                                                                     ->default('#d1d5db'),
                                                                             ])
                                                                             ->columns(2)
-                                                                            ->collapsed()
+                                                                            ->collapsible()
                                                                             ->compact(),
                                                                     ])
                                                                     ->minItems(1)
@@ -1427,7 +1640,7 @@ class PageResource extends Resource
                                                             ->default('#0ea5e9'),
                                                     ])
                                                     ->columns(2)
-                                                    ->collapsed()
+                                                    ->collapsible()
                                                     ->compact(),
                                             ]),
                                     ])
