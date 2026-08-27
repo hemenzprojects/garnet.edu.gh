@@ -229,11 +229,6 @@ const groupedSections = computed(() => {
     }
   })
 
-  // Debug output in development
-  if (import.meta.dev) {
-    console.log('Grouped sections:', sections)
-  }
-
   return sections
 })
 
