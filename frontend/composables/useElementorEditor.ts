@@ -42,6 +42,7 @@ export const useElementorEditor = () => {
     { type: 'button', label: 'Button', icon: 'smart_button', category: 'basic' },
     { type: 'spacer', label: 'Spacer', icon: 'space_bar', category: 'basic' },
     { type: 'divider', label: 'Divider', icon: 'horizontal_rule', category: 'basic' },
+    { type: 'gallery', label: 'Gallery', icon: 'collections', category: 'basic' },
 
     // Section Widgets
     { type: 'hero', label: 'Hero Section', icon: 'wallpaper', category: 'sections' },
@@ -100,6 +101,17 @@ export const useElementorEditor = () => {
         style: 'solid',
         weight: { size: 1, unit: 'px' },
         color: '#e0e0e0'
+      },
+      gallery: {
+        title: 'Our Gallery',
+        titleColor: '#1e293b',
+        description: 'Browse our latest work and achievements',
+        descriptionColor: '#64748b',
+        images: [],
+        columns: 3,
+        gap: 4,
+        aspectRatio: 'square',
+        layout: 'grid'
       },
       hero: {
         heading: 'Welcome to Our Website',

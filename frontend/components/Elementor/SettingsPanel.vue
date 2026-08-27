@@ -533,6 +533,14 @@
           </div>
         </div>
 
+        <!-- Gallery Widget -->
+        <div v-else-if="widgetType === 'gallery'">
+          <ElementorGallerySettings
+            :widget="currentWidget"
+            @update="handleHeroSliderUpdate"
+          />
+        </div>
+
         <!-- Hero Widget -->
         <div v-else-if="widgetType === 'hero'">
           <div v-if="activeTab === 'Content'" class="space-y-4">

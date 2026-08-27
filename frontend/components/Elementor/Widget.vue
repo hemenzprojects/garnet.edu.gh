@@ -114,6 +114,9 @@
         />
       </div>
 
+      <!-- Gallery Widget -->
+      <PageBuilderGallery v-else-if="widget.type === 'gallery'" :data="widget.data" :block-id="widget.id" />
+
       <!-- Other Widgets (use existing PageBuilder components) -->
       <PageBuilderHero v-else-if="widget.type === 'hero'" :data="widget.data" :block-id="widget.id" />
       <PageBuilderHeroSlider v-else-if="widget.type === 'hero_slider'" :data="widget.data" :block-id="widget.id" />

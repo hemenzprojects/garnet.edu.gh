@@ -87,6 +87,9 @@
               <!-- Carousel Block -->
               <PageBuilderCarousel v-else-if="block.type === 'carousel'" :data="block.data" :block-id="block.id || `block-${blockIndex}`" />
 
+              <!-- Gallery Block -->
+              <PageBuilderGallery v-else-if="block.type === 'gallery'" :data="block.data" :block-id="block.id || `block-${blockIndex}`" />
+
               <!-- Section Blocks -->
               <PageBuilderHero v-else-if="block.type === 'hero'" :data="block.data" :block-id="block.id || `block-${blockIndex}`" />
               <PageBuilderHeroSlider v-else-if="block.type === 'hero_slider'" :data="block.data" :block-id="block.id || `block-${blockIndex}`" />
@@ -127,6 +130,9 @@
             <PageBuilderButton v-else-if="block.type === 'button'" :data="block.data" :block-id="block.id || `block-${blockIndex}`" />
             <PageBuilderSpacer v-else-if="block.type === 'spacer'" :data="block.data" :block-id="block.id || `block-${blockIndex}`" />
             <PageBuilderDivider v-else-if="block.type === 'divider'" :data="block.data" :block-id="block.id || `block-${blockIndex}`" />
+
+            <!-- Gallery Block -->
+            <PageBuilderGallery v-else-if="block.type === 'gallery'" :data="block.data" :block-id="block.id || `block-${blockIndex}`" />
 
             <!-- Section Blocks -->
             <PageBuilderHero v-else-if="block.type === 'hero'" :data="block.data" :block-id="block.id || `block-${blockIndex}`" />
