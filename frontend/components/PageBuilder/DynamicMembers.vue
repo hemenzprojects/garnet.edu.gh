@@ -24,9 +24,9 @@
           class="members-carousel"
         >
           <SwiperSlide v-for="member in data.items" :key="member.id">
-            <NuxtLink
-              :to="`/members/${member.slug}`"
-              class="block bg-white rounded-xl shadow-sm hover:shadow-lg transition-all duration-300 p-6 h-full group"
+            <button
+              @click="openModal(member)"
+              class="block bg-white rounded-xl shadow-sm hover:shadow-lg transition-all duration-300 p-6 h-full group w-full text-left cursor-pointer"
             >
               <div v-if="member.logo" class="aspect-square w-full mb-4 flex items-center justify-center bg-gray-50 rounded-lg overflow-hidden">
                 <img
@@ -42,18 +42,18 @@
               <p v-if="member.type" class="text-center text-sm text-gray-500 mt-1 capitalize">
                 {{ member.type.replace('_', ' ') }}
               </p>
-            </NuxtLink>
+            </button>
           </SwiperSlide>
         </Swiper>
       </div>
 
       <!-- Grid Display -->
       <div v-else-if="displayMode === 'grid'" class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-8">
-        <NuxtLink
+        <button
           v-for="member in data.items"
           :key="member.id"
-          :to="`/members/${member.slug}`"
-          class="bg-white rounded-xl shadow-sm hover:shadow-lg transition-all duration-300 p-6 group"
+          @click="openModal(member)"
+          class="bg-white rounded-xl shadow-sm hover:shadow-lg transition-all duration-300 p-6 group text-left cursor-pointer w-full"
         >
           <div v-if="member.logo" class="aspect-square w-full mb-4 flex items-center justify-center bg-gray-50 rounded-lg overflow-hidden">
             <img
@@ -69,7 +69,7 @@
           <p v-if="member.type" class="text-center text-sm text-gray-500 mt-1 capitalize">
             {{ member.type.replace('_', ' ') }}
           </p>
-        </NuxtLink>
+        </button>
       </div>
 
       <div v-else-if="displayMode === 'logos'" class="grid grid-cols-3 md:grid-cols-4 lg:grid-cols-6 gap-6">
@@ -93,11 +93,11 @@
       </div>
 
       <div v-else-if="displayMode === 'list'" class="max-w-4xl mx-auto space-y-6">
-        <NuxtLink
+        <button
           v-for="member in data.items"
           :key="member.id"
-          :to="`/members/${member.slug}`"
-          class="flex gap-6 bg-white rounded-xl shadow-sm hover:shadow-lg transition-all duration-300 p-6 group"
+          @click="openModal(member)"
+          class="flex gap-6 bg-white rounded-xl shadow-sm hover:shadow-lg transition-all duration-300 p-6 group text-left cursor-pointer w-full"
         >
           <div v-if="member.logo" class="w-24 h-24 flex-shrink-0 bg-gray-50 rounded-lg flex items-center justify-center p-3">
             <img
@@ -131,9 +131,16 @@
               </svg>
             </a>
           </div>
-        </NuxtLink>
+        </button>
       </div>
     </div>
+
+    <!-- Member Detail Modal -->
+    <MemberDetailModal
+      :is-open="isModalOpen"
+      :member="selectedMember"
+      @close="closeModal"
+    />
   </section>
 </template>
 
@@ -159,6 +166,22 @@ const { getImageUrl } = useImageUrl()
 
 // Use new property name, fallback to old one for backward compatibility
 const displayMode = computed(() => props.data.display ?? props.data.layout ?? 'grid')
+
+// Modal state
+const isModalOpen = ref(false)
+const selectedMember = ref(null)
+
+const openModal = (member: any) => {
+  selectedMember.value = member
+  isModalOpen.value = true
+}
+
+const closeModal = () => {
+  isModalOpen.value = false
+  setTimeout(() => {
+    selectedMember.value = null
+  }, 300) // Wait for modal close animation
+}
 
 const truncate = (text: string, length: number) => {
   if (!text) return ''

@@ -14,19 +14,37 @@
         </NuxtLink>
 
         <!-- Desktop Menu -->
-        <div class="hidden md:flex items-center space-x-8">
-          <NuxtLink to="/" class="text-gray-700 hover:text-primary transition">Home</NuxtLink>
-          <NuxtLink to="/about" class="text-gray-700 hover:text-primary transition">About</NuxtLink>
-          <NuxtLink to="/services" class="text-gray-700 hover:text-primary transition">Services</NuxtLink>
-          <NuxtLink to="/news" class="text-gray-700 hover:text-primary transition">News</NuxtLink>
-          <NuxtLink to="/members" class="text-gray-700 hover:text-primary transition">Members</NuxtLink>
-          <NuxtLink to="/contact" class="text-gray-700 hover:text-primary transition">Contact</NuxtLink>
+        <div class="hidden md:flex items-center">
+          <!-- Loading state -->
+          <div v-if="menuLoading" class="flex items-center space-x-4">
+            <div class="h-4 w-16 bg-gray-200 rounded animate-pulse" />
+            <div class="h-4 w-16 bg-gray-200 rounded animate-pulse" />
+            <div class="h-4 w-16 bg-gray-200 rounded animate-pulse" />
+          </div>
+
+          <!-- Menu items -->
+          <MenuItems
+            v-else-if="headerMenu && headerMenu.items.length > 0"
+            :items="headerMenu.items"
+            mode="desktop"
+          />
+
+          <!-- Fallback to hardcoded menu if no dynamic menu exists -->
+          <div v-else class="flex items-center space-x-8">
+            <NuxtLink to="/" class="text-gray-700 hover:text-primary transition">Home</NuxtLink>
+            <NuxtLink to="/about" class="text-gray-700 hover:text-primary transition">About</NuxtLink>
+            <NuxtLink to="/services" class="text-gray-700 hover:text-primary transition">Services</NuxtLink>
+            <NuxtLink to="/news" class="text-gray-700 hover:text-primary transition">News</NuxtLink>
+            <NuxtLink to="/members" class="text-gray-700 hover:text-primary transition">Members</NuxtLink>
+            <NuxtLink to="/contact" class="text-gray-700 hover:text-primary transition">Contact</NuxtLink>
+          </div>
         </div>
 
         <!-- Mobile Menu Button -->
         <button
           @click="mobileMenuOpen = !mobileMenuOpen"
           class="md:hidden p-2 rounded-lg hover:bg-gray-100 transition"
+          aria-label="Toggle menu"
         >
           <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
             <path
@@ -48,24 +66,48 @@
       </div>
 
       <!-- Mobile Menu -->
-      <div
-        v-if="mobileMenuOpen"
-        class="md:hidden mt-4 py-4 border-t border-gray-200"
+      <Transition
+        enter-active-class="transition-all duration-200 ease-out"
+        enter-from-class="opacity-0 -translate-y-2"
+        enter-to-class="opacity-100 translate-y-0"
+        leave-active-class="transition-all duration-150 ease-in"
+        leave-from-class="opacity-100 translate-y-0"
+        leave-to-class="opacity-0 -translate-y-2"
       >
-        <div class="flex flex-col space-y-4">
-          <NuxtLink to="/" class="text-gray-700 hover:text-primary transition">Home</NuxtLink>
-          <NuxtLink to="/about" class="text-gray-700 hover:text-primary transition">About</NuxtLink>
-          <NuxtLink to="/services" class="text-gray-700 hover:text-primary transition">Services</NuxtLink>
-          <NuxtLink to="/news" class="text-gray-700 hover:text-primary transition">News</NuxtLink>
-          <NuxtLink to="/members" class="text-gray-700 hover:text-primary transition">Members</NuxtLink>
-          <NuxtLink to="/contact" class="text-gray-700 hover:text-primary transition">Contact</NuxtLink>
+        <div
+          v-if="mobileMenuOpen"
+          class="md:hidden mt-4 py-4 border-t border-gray-200"
+        >
+          <!-- Loading state -->
+          <div v-if="menuLoading" class="flex flex-col space-y-3">
+            <div class="h-4 w-24 bg-gray-200 rounded animate-pulse" />
+            <div class="h-4 w-32 bg-gray-200 rounded animate-pulse" />
+            <div class="h-4 w-28 bg-gray-200 rounded animate-pulse" />
+          </div>
+
+          <!-- Menu items -->
+          <MenuItems
+            v-else-if="headerMenu && headerMenu.items.length > 0"
+            :items="headerMenu.items"
+            mode="mobile"
+          />
+
+          <!-- Fallback to hardcoded menu if no dynamic menu exists -->
+          <div v-else class="flex flex-col space-y-4">
+            <NuxtLink to="/" class="text-gray-700 hover:text-primary transition">Home</NuxtLink>
+            <NuxtLink to="/about" class="text-gray-700 hover:text-primary transition">About</NuxtLink>
+            <NuxtLink to="/services" class="text-gray-700 hover:text-primary transition">Services</NuxtLink>
+            <NuxtLink to="/news" class="text-gray-700 hover:text-primary transition">News</NuxtLink>
+            <NuxtLink to="/members" class="text-gray-700 hover:text-primary transition">Members</NuxtLink>
+            <NuxtLink to="/contact" class="text-gray-700 hover:text-primary transition">Contact</NuxtLink>
+          </div>
         </div>
-      </div>
+      </Transition>
     </nav>
   </header>
 </template>
 
-<script setup>
+<script setup lang="ts">
 const props = defineProps({
   branding: {
     type: Object,
@@ -75,6 +117,25 @@ const props = defineProps({
 
 const config = useRuntimeConfig()
 const mobileMenuOpen = ref(false)
+
+// Fetch the header menu dynamically
+const { fetchMenuByLocation } = useMenu()
+const headerMenu = ref(null)
+const menuLoading = ref(true)
+const menuError = ref(null)
+
+// Fetch menu on component mount
+onMounted(async () => {
+  try {
+    menuLoading.value = true
+    headerMenu.value = await fetchMenuByLocation('header')
+  } catch (error) {
+    menuError.value = error
+    console.error('Failed to load header menu:', error)
+  } finally {
+    menuLoading.value = false
+  }
+})
 
 // Computed properties for branding
 const siteName = computed(() => props.branding?.site_name || 'GARNET')

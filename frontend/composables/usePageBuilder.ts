@@ -10,9 +10,11 @@ export const usePageBuilder = () => {
     button: 'PageBuilderButton',
     spacer: 'PageBuilderSpacer',
     divider: 'PageBuilderDivider',
+    carousel: 'PageBuilderCarousel',
 
     // Section blocks
     hero: 'PageBuilderHero',
+    hero_slider: 'PageBuilderHeroSlider',
     hero_split: 'PageBuilderHeroSplit',
     stats: 'PageBuilderStats',
     two_column: 'PageBuilderTwoColumn',

@@ -42,9 +42,11 @@ export const useElementorEditor = () => {
     { type: 'button', label: 'Button', icon: 'smart_button', category: 'basic' },
     { type: 'spacer', label: 'Spacer', icon: 'space_bar', category: 'basic' },
     { type: 'divider', label: 'Divider', icon: 'horizontal_rule', category: 'basic' },
+    { type: 'gallery', label: 'Gallery', icon: 'collections', category: 'basic' },
 
     // Section Widgets
     { type: 'hero', label: 'Hero Section', icon: 'wallpaper', category: 'sections' },
+    { type: 'hero_slider', label: 'Hero Slider', icon: 'view_carousel', category: 'sections' },
     { type: 'hero_split', label: 'Hero Split', icon: 'view_column', category: 'sections' },
     { type: 'hero_dynamic', label: 'Hero Dynamic', icon: 'dashboard', category: 'sections' },
     { type: 'stats', label: 'Counter', icon: 'analytics', category: 'sections' },
@@ -100,6 +102,17 @@ export const useElementorEditor = () => {
         weight: { size: 1, unit: 'px' },
         color: '#e0e0e0'
       },
+      gallery: {
+        title: 'Our Gallery',
+        titleColor: '#1e293b',
+        description: 'Browse our latest work and achievements',
+        descriptionColor: '#64748b',
+        images: [],
+        columns: 3,
+        gap: 4,
+        aspectRatio: 'square',
+        layout: 'grid'
+      },
       hero: {
         heading: 'Welcome to Our Website',
         subheading: 'Discover amazing content and services',
@@ -110,6 +123,36 @@ export const useElementorEditor = () => {
         ctaLink: '#',
         height: 'large',
         showParticles: true
+      },
+      hero_slider: {
+        slides: [
+          {
+            backgroundImage: '',
+            backgroundOverlay: 'gradient',
+            preHeading: 'Welcome to',
+            heading: 'Our Platform',
+            headingColor: '#1e293b',
+            subheading: 'Discover amazing features and services designed to help you succeed.',
+            subheadingColor: '#64748b',
+            buttonText: 'Get Started',
+            buttonLink: '#',
+            secondaryButtonText: 'Learn More',
+            secondaryButtonLink: '#',
+            showFeaturedCard: true,
+            featuredTitle: 'Innovation At Your Fingertips',
+            featuredDescription: '',
+            featuredImage: '',
+            featuredImageMode: 'background',
+            contentAlign: 'left'
+          }
+        ],
+        autoplay: true,
+        interval: 6,
+        showIndicators: true,
+        showArrows: true,
+        height: 'large',
+        transition: 'fade',
+        transitionSpeed: 700
       },
       hero_split: {
         headingLine1: 'Welcome to',

@@ -2,20 +2,22 @@
   <section class="relative py-20 overflow-hidden">
     <!-- Background with network pattern -->
     <div class="absolute inset-0 bg-hero-gradient">
-      <!-- Animated particles -->
-      <div class="absolute inset-0">
-        <div
-          v-for="i in 20"
-          :key="i"
-          class="absolute w-1 h-1 bg-accent rounded-full animate-float opacity-20"
-          :style="{
-            left: `${Math.random() * 100}%`,
-            top: `${Math.random() * 100}%`,
-            animationDelay: `${Math.random() * 3}s`,
-            animationDuration: `${3 + Math.random() * 3}s`
-          }"
-        ></div>
-      </div>
+      <!-- Animated particles (client-only to avoid hydration mismatch) -->
+      <ClientOnly>
+        <div class="absolute inset-0">
+          <div
+            v-for="i in 20"
+            :key="i"
+            class="absolute w-1 h-1 bg-accent rounded-full animate-float opacity-20"
+            :style="{
+              left: `${Math.random() * 100}%`,
+              top: `${Math.random() * 100}%`,
+              animationDelay: `${Math.random() * 3}s`,
+              animationDuration: `${3 + Math.random() * 3}s`
+            }"
+          ></div>
+        </div>
+      </ClientOnly>
 
       <!-- Light beams -->
       <div class="absolute inset-0 opacity-30">

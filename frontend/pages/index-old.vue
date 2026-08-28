@@ -1,27 +1,5 @@
 <template>
-  <div v-if="page">
-    <!-- Legacy Content Mode -->
-    <div v-if="page.template_type === 'content'" class="container mx-auto px-4 py-12">
-      <h1 class="text-4xl md:text-5xl font-bold mb-6 text-gray-900">{{ page.title }}</h1>
-      <p v-if="page.excerpt" class="text-xl text-gray-600 mb-8">{{ page.excerpt }}</p>
-      <div v-if="page.featured_image" class="mb-8 rounded-2xl overflow-hidden">
-        <img :src="getImageUrl(page.featured_image)" :alt="page.title" class="w-full h-auto" />
-      </div>
-      <div class="prose prose-lg max-w-none" v-html="page.content" />
-    </div>
-
-    <!-- Page Builder Mode -->
-    <PageBuilderPageRenderer v-else-if="page.blocks && page.blocks.length > 0" :blocks="page.blocks" />
-
-    <!-- Fallback -->
-    <div v-else class="container mx-auto px-4 py-12">
-      <h1 class="text-4xl md:text-5xl font-bold mb-6 text-gray-900">{{ page.title }}</h1>
-      <p v-if="page.excerpt" class="text-xl text-gray-600">{{ page.excerpt }}</p>
-    </div>
-  </div>
-
-  <!-- Fallback to old homepage if no page found -->
-  <div v-else>
+  <div>
     <!-- Hero Section -->
     <HeroSection />
 
@@ -129,29 +107,19 @@
 </template>
 
 <script setup>
-const { fetchPage, fetchServices, fetchNews } = useApi()
+const { fetchServices, fetchNews } = useApi()
 const { getImageUrl } = useImageUrl()
-
-// Try to fetch a dynamic homepage with slug 'home'
-const { data: page, error: pageError } = await useAsyncData(
-  'homepage',
-  () => fetchPage('home'),
-  {
-    // Don't throw error if page doesn't exist - fallback to old homepage
-    server: false,
-  }
-)
 
 // Helper to get news image URL
 const getNewsImageUrl = (path) => getImageUrl(path)
 
-// Fetch services from backend (for fallback homepage)
+// Fetch services from backend
 const { data: services, pending: servicesPending, error: servicesError } = await useAsyncData(
   'services',
   () => fetchServices()
 )
 
-// Fetch latest news from backend (for fallback homepage)
+// Fetch latest news from backend
 const { data: newsData, pending: newsPending, error: newsError } = await useAsyncData(
   'news',
   () => fetchNews({ limit: 3 })
@@ -159,13 +127,8 @@ const { data: newsData, pending: newsPending, error: newsError } = await useAsyn
 
 const news = computed(() => newsData.value?.data || [])
 
-// SEO Meta Tags - use page data if available, otherwise default
 useSeoMeta({
-  title: page.value?.meta_title || page.value?.title || 'GARNET - Ghanaian Academic and Research Network',
-  description: page.value?.meta_description || page.value?.excerpt || 'Connecting Ghana\'s education sector through high-speed internet and innovation',
-  ogTitle: page.value?.meta_title || page.value?.title || 'GARNET - Ghanaian Academic and Research Network',
-  ogDescription: page.value?.meta_description || page.value?.excerpt || 'Connecting Ghana\'s education sector through high-speed internet and innovation',
-  ogImage: page.value?.featured_image ? getImageUrl(page.value.featured_image) : undefined,
-  twitterCard: 'summary_large_image',
+  title: 'GARNET - Ghanaian Academic and Research Network',
+  description: 'Connecting Ghana\'s education sector through high-speed internet and innovation'
 })
 </script>

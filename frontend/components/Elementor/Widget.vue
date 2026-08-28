@@ -114,8 +114,12 @@
         />
       </div>
 
+      <!-- Gallery Widget -->
+      <PageBuilderGallery v-else-if="widget.type === 'gallery'" :data="widget.data" :block-id="widget.id" />
+
       <!-- Other Widgets (use existing PageBuilder components) -->
       <PageBuilderHero v-else-if="widget.type === 'hero'" :data="widget.data" :block-id="widget.id" />
+      <PageBuilderHeroSlider v-else-if="widget.type === 'hero_slider'" :data="widget.data" :block-id="widget.id" />
       <PageBuilderHeroSplit v-else-if="widget.type === 'hero_split'" :data="widget.data" :block-id="widget.id" />
       <PageBuilderHeroDynamic v-else-if="widget.type === 'hero_dynamic'" :data="widget.data" :block-id="widget.id" />
       <PageBuilderStats v-else-if="widget.type === 'stats'" :data="widget.data" :block-id="widget.id" />
