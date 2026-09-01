@@ -218,9 +218,7 @@ const openModal = (member: any) => {
 
 const closeModal = () => {
   isModalOpen.value = false
-  setTimeout(() => {
-    selectedMember.value = null
-  }, 300)
+  setTimeout(() => { selectedMember.value = null }, 300)
 }
 
 // Calculate slides per view based on content type
