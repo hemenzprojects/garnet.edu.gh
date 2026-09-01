@@ -132,13 +132,15 @@
 const { fetchPage, fetchServices, fetchNews } = useApi()
 const { getImageUrl } = useImageUrl()
 
-// Try to fetch a dynamic homepage with slug 'home'
-const { data: page, error: pageError } = await useAsyncData(
+// Try to fetch a dynamic homepage with slug 'home' (SSR so no flash on load)
+const { data: page } = await useAsyncData(
   'homepage',
-  () => fetchPage('home'),
-  {
-    // Don't throw error if page doesn't exist - fallback to old homepage
-    server: false,
+  async () => {
+    try {
+      return await fetchPage('home')
+    } catch {
+      return null
+    }
   }
 )
 

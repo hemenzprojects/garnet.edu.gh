@@ -1,4 +1,4 @@
-.PHONY: help up down restart build shell logs clean install migrate migrate-fresh migrate-rollback seed test tinker composer npm artisan db-shell redis-shell cache-clear route-clear config-clear view-clear clear-all queue storage-link pint stan docker-reset docker-prune docker-check frontend-shell frontend-logs db-pull db-pull-dump
+.PHONY: help up down restart build shell logs clean install migrate migrate-fresh migrate-rollback seed test tinker composer npm artisan db-shell redis-shell cache-clear route-clear config-clear view-clear clear-all queue storage-link pint stan docker-reset docker-prune docker-check frontend-shell frontend-logs db-pull db-pull-dump db-import
 
 # Default target
 help:
@@ -37,6 +37,7 @@ help:
 	@echo "  make redis-shell     - Access Redis shell"
 	@echo "  make db-pull         - Download & import production database to local"
 	@echo "  make db-pull-dump    - Download production database dump only"
+	@echo "  make db-import       - Import dump from backend/storage/app/import/production-db.sql"
 	@echo ""
 	@echo "  make cache-clear     - Clear application cache"
 	@echo "  make route-clear     - Clear route cache"
@@ -159,16 +160,26 @@ redis-shell:
 # Database sync from production
 db-pull-dump:
 	@echo "Downloading production database..."
-	@ssh sysadmin@169.239.249.15 "docker exec garnet_mysql mysqldump -u garnet_user -p'GarnetUserPass2024SecureDB!' garnet_db --single-transaction --quick --lock-tables=false --no-tablespaces" > backend/storage/app/production-db.sql 2>/dev/null || true
+	@ssh garnet-prod "docker exec garnet_mysql mysqldump -u garnet_user -p'GarnetUserPass2024SecureDB!' garnet_db --single-transaction --quick --lock-tables=false --no-tablespaces" > backend/storage/app/production-db.sql
 	@echo "Database dump saved to backend/storage/app/production-db.sql"
 	@echo "Dump size: $$(du -h backend/storage/app/production-db.sql | cut -f1)"
 
+db-import:
+	@if [ ! -f backend/storage/app/import/production-db.sql ]; then \
+		echo "No dump found. Place a .sql file at backend/storage/app/import/production-db.sql"; \
+		exit 1; \
+	fi
+	@echo "Importing database from backend/storage/app/import/production-db.sql ..."
+	@docker exec -i backend-mysql-1 mysql -u root garnet < backend/storage/app/import/production-db.sql
+	@echo "Done! Verifying..."
+	@cd backend && ./vendor/bin/sail artisan tinker --execute="echo 'Users: ' . App\Models\User::count() . PHP_EOL; echo 'Pages: ' . App\Models\Page::count() . PHP_EOL;"
+
 db-pull: db-pull-dump
 	@echo "Importing database into local MySQL container..."
-	@docker exec -i backend-mysql-1 mysql -u garnet_user -p'MySecureDBPass123!' garnet_db < backend/storage/app/production-db.sql 2>/dev/null
+	@docker exec -i backend-mysql-1 mysql -u root garnet < backend/storage/app/production-db.sql
 	@echo "Database imported successfully!"
 	@echo "Verifying import..."
-	@cd backend && ./vendor/bin/sail artisan tinker --execute="echo 'Users: ' . App\Models\User::count(); echo PHP_EOL; echo 'News: ' . (class_exists('App\Models\News') ? App\Models\News::count() : 'N/A'); echo PHP_EOL;"
+	@cd backend && ./vendor/bin/sail artisan tinker --execute="echo 'Users: ' . App\Models\User::count() . PHP_EOL; echo 'Pages: ' . App\Models\Page::count() . PHP_EOL;"
 	@echo "Cleaning up..."
 	@rm backend/storage/app/production-db.sql
 	@echo "Done! Production database is now in your local environment."

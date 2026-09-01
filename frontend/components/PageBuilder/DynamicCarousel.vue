@@ -32,9 +32,9 @@
           <SwiperSlide v-for="item in data.items" :key="item.id">
             <!-- Members -->
             <div v-if="data.contentType === 'members'" class="h-full">
-              <NuxtLink
-                :to="`/members/${item.slug}`"
-                class="block bg-white rounded-xl shadow-sm hover:shadow-lg transition-all duration-300 p-6 h-full group"
+              <button
+                @click="openModal(item)"
+                class="block bg-white rounded-xl shadow-sm hover:shadow-lg transition-all duration-300 p-6 h-full group w-full text-left cursor-pointer"
               >
                 <div v-if="item.logo" class="aspect-square w-full mb-4 flex items-center justify-center bg-gray-50 rounded-lg overflow-hidden">
                   <img
@@ -50,7 +50,7 @@
                 <p v-if="item.type" class="text-center text-sm text-gray-500 mt-1 capitalize">
                   {{ item.type.replace('_', ' ') }}
                 </p>
-              </NuxtLink>
+              </button>
             </div>
 
             <!-- Services -->
@@ -169,6 +169,12 @@
       </div>
     </div>
   </section>
+
+  <MemberDetailModal
+    :is-open="isModalOpen"
+    :member="selectedMember"
+    @close="closeModal"
+  />
 </template>
 
 <script setup lang="ts">
@@ -201,6 +207,21 @@ const props = defineProps<{
 }>()
 
 const { getImageUrl } = useImageUrl()
+
+const isModalOpen = ref(false)
+const selectedMember = ref(null)
+
+const openModal = (member: any) => {
+  selectedMember.value = member
+  isModalOpen.value = true
+}
+
+const closeModal = () => {
+  isModalOpen.value = false
+  setTimeout(() => {
+    selectedMember.value = null
+  }, 300)
+}
 
 // Calculate slides per view based on content type
 const slidesPerView = computed(() => {
