@@ -10,7 +10,6 @@
 Thumbs.db
 
 # Environment files
-frontend/.env
 .env
 .env.local
 .env.*.local
