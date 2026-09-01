@@ -1,4 +1,4 @@
-.PHONY: help up down restart build shell logs clean install migrate migrate-fresh migrate-rollback seed test tinker composer npm artisan db-shell redis-shell cache-clear route-clear config-clear view-clear clear-all queue storage-link pint stan docker-reset docker-prune docker-check frontend-shell frontend-logs db-pull db-pull-dump
+.PHONY: help up down restart build shell logs clean install migrate migrate-fresh migrate-rollback seed test tinker composer npm artisan db-shell redis-shell cache-clear route-clear config-clear view-clear clear-all queue storage-link pint stan docker-reset docker-prune docker-check frontend-shell frontend-logs db-pull db-pull-dump ssl-renew
 
 # Default target
 help:
@@ -47,6 +47,7 @@ help:
 	@echo "  make queue           - Start queue worker"
 	@echo "  make storage-link    - Create storage symlink"
 	@echo "  make pint            - Run Laravel Pint (code style fixer)"
+	@echo "  make ssl-renew       - Renew SSL certificates on production"
 
 # Docker commands
 up:
@@ -200,3 +201,9 @@ storage-link:
 # Code quality
 pint:
 	cd backend && ./vendor/bin/sail pint
+
+# SSL
+ssl-renew:
+	@echo "Renewing SSL certificates..."
+	@ssh garnet-prod "sudo certbot renew --webroot -w /var/www/garnet/certbot/www --quiet && docker restart garnet_nginx"
+	@echo "SSL renewed and Nginx reloaded."
