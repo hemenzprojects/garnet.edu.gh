@@ -205,5 +205,6 @@ pint:
 # SSL
 ssl-renew:
 	@echo "Renewing SSL certificates..."
-	@ssh garnet-prod "sudo certbot renew --webroot -w /var/www/garnet/certbot/www --quiet && docker restart garnet_nginx"
+	@sudo certbot renew --webroot -w /var/www/garnet/certbot/www --quiet
+	@docker restart garnet_nginx
 	@echo "SSL renewed and Nginx reloaded."
