@@ -38,7 +38,9 @@ export const useMenu = () => {
    */
   const fetchMenuByLocation = async (location: string): Promise<Menu | null> => {
     try {
-      return await $fetch(`${apiBase}/menus/${location}`)
+      // The API answers with an empty body when no menu exists at this location
+      const menu = await $fetch<Menu | null>(`${apiBase}/menus/${location}`)
+      return menu?.items ? menu : null
     } catch (error) {
       console.error(`Error fetching menu for location "${location}":`, error)
       return null
