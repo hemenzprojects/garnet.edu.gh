@@ -2741,6 +2741,19 @@
                 <span class="text-sm font-medium text-gray-700">Show Description</span>
               </label>
             </div>
+
+            <!-- Show Read More -->
+            <div>
+              <label class="flex items-center gap-2 cursor-pointer">
+                <input
+                  type="checkbox"
+                  :checked="elementData.showReadMore ?? true"
+                  @change="updateData('showReadMore', ($event.target as HTMLInputElement).checked)"
+                  class="rounded border-gray-300 text-blue-600 focus:ring-2 focus:ring-blue-500"
+                />
+                <span class="text-sm font-medium text-gray-700">Show Read More</span>
+              </label>
+            </div>
           </div>
         </div>
 

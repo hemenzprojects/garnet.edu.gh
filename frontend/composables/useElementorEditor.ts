@@ -458,7 +458,8 @@ export const useElementorEditor = () => {
         layout: 'grid',
         columns: '3',
         showIcons: true,
-        showDescription: true
+        showDescription: true,
+        showReadMore: true
       },
       dynamic_members: {
         heading: 'Our Members',
