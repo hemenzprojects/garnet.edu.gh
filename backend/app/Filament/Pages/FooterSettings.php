@@ -4,7 +4,6 @@ namespace App\Filament\Pages;
 
 use App\Models\Menu;
 use App\Models\Setting;
-use App\Support\SocialPlatforms;
 use Filament\Actions\Action;
 use Filament\Forms;
 use Filament\Forms\Concerns\InteractsWithForms;
@@ -40,7 +39,7 @@ class FooterSettings extends Page implements HasForms
 
     protected static ?string $navigationGroup = 'Customize';
 
-    protected static ?int $navigationSort = 4;
+    protected static ?int $navigationSort = 5;
 
     protected static ?string $title = 'Footer Settings';
 
@@ -164,32 +163,10 @@ class FooterSettings extends Page implements HasForms
                 ]),
 
             Forms\Components\Builder\Block::make('social')
-                ->label('Social media links')
+                ->label('Social media icons')
                 ->icon('heroicon-o-share')
                 ->schema([
-                    $heading()->helperText('Optional. Shown above the icons.'),
-                    Forms\Components\Repeater::make('links')
-                        ->label('Icons')
-                        ->schema([
-                            Forms\Components\Select::make('platform')
-                                ->label('Icon')
-                                ->options(SocialPlatforms::selectOptions())
-                                ->allowHtml()
-                                ->required()
-                                ->native(false),
-                            Forms\Components\TextInput::make('url')
-                                ->label('Link')
-                                ->required()
-                                ->url()
-                                ->maxLength(255)
-                                ->placeholder('https://'),
-                        ])
-                        ->columns(2)
-                        ->defaultItems(1)
-                        ->minItems(1)
-                        ->maxItems(12)
-                        ->reorderable()
-                        ->addActionLabel('Add icon'),
+                    $heading()->helperText('Optional. The icons come from Customize → Branding & Settings (Social Media Links).'),
                 ]),
 
             Forms\Components\Builder\Block::make('contact')

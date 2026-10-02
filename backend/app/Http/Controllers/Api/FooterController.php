@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Api;
 
 use App\Filament\Pages\FooterSettings;
 use App\Http\Controllers\Controller;
+use App\Models\Branding;
 use App\Models\Menu;
 use App\Models\Setting;
 use App\Support\SocialPlatforms;
@@ -69,15 +70,7 @@ class FooterController extends Controller
             'social' => [
                 'type' => 'social',
                 'heading' => $heading,
-                'links' => collect($data['links'] ?? [])
-                    ->filter(fn ($link) => isset(SocialPlatforms::PLATFORMS[$link['platform'] ?? '']) && filled($link['url'] ?? null))
-                    ->map(fn ($link) => [
-                        'platform' => $link['platform'],
-                        'label' => SocialPlatforms::PLATFORMS[$link['platform']]['label'],
-                        'icon' => SocialPlatforms::PLATFORMS[$link['platform']]['icon'],
-                        'url' => $link['url'],
-                    ])
-                    ->values(),
+                'links' => SocialPlatforms::fromBranding(Branding::settings()),
             ],
             'menu' => ($menu = $menus->get($data['menu_id'] ?? null))
                 ? ['type' => 'menu', 'heading' => $heading, 'items' => $menu->getNestedItems()]

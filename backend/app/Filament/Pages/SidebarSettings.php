@@ -51,7 +51,7 @@ class SidebarSettings extends Page implements HasForms
 
     protected static ?string $navigationGroup = 'Customize';
 
-    protected static ?int $navigationSort = 3;
+    protected static ?int $navigationSort = 4;
 
     protected static ?string $title = 'Sidebar Settings';
 
