@@ -14,6 +14,7 @@ use App\Http\Controllers\Api\ContactFormController;
 use App\Http\Controllers\Api\MediaController;
 use App\Http\Controllers\Api\MenuController;
 use App\Http\Controllers\Api\FooterController;
+use App\Http\Controllers\Api\HeaderController;
 
 Route::get('/user', function (Request $request) {
     return $request->user();
@@ -62,6 +63,9 @@ Route::prefix('v1')->group(function () {
     // Menus
     Route::get('/menus', [MenuController::class, 'index']);
     Route::get('/menus/{location}', [MenuController::class, 'show']);
+
+    // Header
+    Route::get('/header', [HeaderController::class, 'index']);
 
     // Footer
     Route::get('/footer', [FooterController::class, 'index']);

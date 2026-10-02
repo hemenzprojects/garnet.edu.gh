@@ -59,6 +59,10 @@ export const useApi = () => {
     return await $fetch(`${apiBase}/branding`)
   }
 
+  const fetchHeader = async () => {
+    return await $fetch(`${apiBase}/header`)
+  }
+
   const fetchFooter = async () => {
     return await $fetch(`${apiBase}/footer`)
   }
@@ -102,6 +106,7 @@ export const useApi = () => {
     fetchTeamMember,
     fetchSettings,
     fetchBranding,
+    fetchHeader,
     fetchFooter,
     fetchPageForEdit,
     updatePageBlocks,
