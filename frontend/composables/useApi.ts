@@ -51,12 +51,16 @@ export const useApi = () => {
     return await $fetch(`${apiBase}/team-members/${slug}`)
   }
 
-  const fetchSettings = async () => {
-    return await $fetch(`${apiBase}/settings`)
+  const fetchSettings = async (params = {}) => {
+    return await $fetch(`${apiBase}/settings`, { params })
   }
 
   const fetchBranding = async () => {
     return await $fetch(`${apiBase}/branding`)
+  }
+
+  const fetchFooter = async () => {
+    return await $fetch(`${apiBase}/footer`)
   }
 
   const fetchPageForEdit = async (id: number | string) => {
@@ -98,6 +102,7 @@ export const useApi = () => {
     fetchTeamMember,
     fetchSettings,
     fetchBranding,
+    fetchFooter,
     fetchPageForEdit,
     updatePageBlocks,
     publishPage,
