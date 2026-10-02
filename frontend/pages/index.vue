@@ -47,19 +47,11 @@
         </div>
 
         <div v-else class="grid grid-cols-1 md:grid-cols-3 gap-8">
-          <div
+          <ServiceCard
             v-for="service in services"
             :key="service.id"
-            class="group p-8 border border-gray-200 rounded-2xl hover:border-accent hover:shadow-xl transition-all duration-300"
-          >
-            <div class="w-12 h-12 bg-gradient-to-br from-primary to-accent rounded-lg flex items-center justify-center mb-4">
-              <svg class="w-6 h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z" />
-              </svg>
-            </div>
-            <h3 class="text-xl font-bold text-gray-900 mb-3 group-hover:text-primary transition">{{ service.name }}</h3>
-            <p class="text-gray-600 leading-relaxed">{{ service.description }}</p>
-          </div>
+            :service="service"
+          />
         </div>
       </div>
     </section>

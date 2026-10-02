@@ -60,6 +60,10 @@ class NewsResource extends Resource
                     ->required(),
                 Forms\Components\Toggle::make('is_featured')
                     ->required(),
+                Forms\Components\Toggle::make('show_sidebar')
+                    ->label('Show sidebar')
+                    ->helperText('List other news articles in a sidebar on this page')
+                    ->default(true),
                 Forms\Components\DateTimePicker::make('published_at'),
             ]);
     }
@@ -78,6 +82,9 @@ class NewsResource extends Resource
                 Tables\Columns\IconColumn::make('is_published')
                     ->boolean(),
                 Tables\Columns\IconColumn::make('is_featured')
+                    ->boolean(),
+                Tables\Columns\IconColumn::make('show_sidebar')
+                    ->label('Sidebar')
                     ->boolean(),
                 Tables\Columns\TextColumn::make('published_at')
                     ->dateTime()

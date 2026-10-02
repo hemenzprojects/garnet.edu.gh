@@ -39,6 +39,10 @@ class ServiceResource extends Resource
                     ->required(),
                 Forms\Components\Toggle::make('is_featured')
                     ->required(),
+                Forms\Components\Toggle::make('show_sidebar')
+                    ->label('Show sidebar')
+                    ->helperText('List the other services in a sidebar on this service\'s page')
+                    ->default(true),
                 Forms\Components\TextInput::make('order')
                     ->required()
                     ->numeric()
@@ -60,6 +64,9 @@ class ServiceResource extends Resource
                 Tables\Columns\IconColumn::make('is_active')
                     ->boolean(),
                 Tables\Columns\IconColumn::make('is_featured')
+                    ->boolean(),
+                Tables\Columns\IconColumn::make('show_sidebar')
+                    ->label('Sidebar')
                     ->boolean(),
                 Tables\Columns\TextColumn::make('order')
                     ->numeric()

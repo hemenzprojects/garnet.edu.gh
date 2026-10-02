@@ -21,6 +21,10 @@ class BrandingResource extends Resource
 
     protected static ?string $navigationLabel = 'Branding & Settings';
 
+    protected static ?string $navigationGroup = 'Customize';
+
+    protected static ?int $navigationSort = 1;
+
     protected static ?string $modelLabel = 'Branding';
 
     public static function form(Form $form): Form

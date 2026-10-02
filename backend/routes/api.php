@@ -13,6 +13,7 @@ use App\Http\Controllers\Api\BrandingController;
 use App\Http\Controllers\Api\ContactFormController;
 use App\Http\Controllers\Api\MediaController;
 use App\Http\Controllers\Api\MenuController;
+use App\Http\Controllers\Api\FooterController;
 
 Route::get('/user', function (Request $request) {
     return $request->user();
@@ -61,6 +62,9 @@ Route::prefix('v1')->group(function () {
     // Menus
     Route::get('/menus', [MenuController::class, 'index']);
     Route::get('/menus/{location}', [MenuController::class, 'show']);
+
+    // Footer
+    Route::get('/footer', [FooterController::class, 'index']);
 
     // Contact Form
     Route::post('/contact-form', [ContactFormController::class, 'store']);
