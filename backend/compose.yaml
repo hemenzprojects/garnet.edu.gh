@@ -77,6 +77,9 @@ services:
         environment:
             - NUXT_HOST=0.0.0.0
             - NUXT_PORT=3000
+            # Local dev talks to the local backend (frontend/.env holds production values)
+            - NUXT_PUBLIC_API_BASE=http://localhost:${APP_PORT:-80}/api/v1
+            - NUXT_PUBLIC_BACKEND_URL=http://localhost:${APP_PORT:-80}
 networks:
     sail:
         driver: bridge
